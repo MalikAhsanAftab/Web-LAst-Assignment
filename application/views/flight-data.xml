@@ -1,0 +1,1090 @@
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP:Body>
+<air:LowFareSearchRsp xmlns:air="http://www.travelport.com/schema/air_v33_0" TraceId="trace" TransactionId="E32F9DA70A0764784F5F7FEDCEE3FA05" ResponseTime="11269" DistanceUnits="MI" CurrencyType="PKR">
+<air:FlightDetailsList>
+<air:FlightDetails Key="VPUkUL4R2BKAFp0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T10:20:00.000+04:00" ArrivalTime="2018-04-30T13:25:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAcp0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T07:30:00.000+04:00" ArrivalTime="2018-04-30T10:40:00.000+05:00" FlightTime="130" TravelTime="130" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAnp0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T19:55:00.000+04:00" ArrivalTime="2018-04-30T23:05:00.000+05:00" FlightTime="130" TravelTime="130" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAYp0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T00:20:00.000+04:00" ArrivalTime="2018-04-30T03:30:00.000+05:00" FlightTime="130" TravelTime="130" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAzp0nCAAAAA==" Origin="DXB" Destination="MCT" DepartureTime="2018-04-30T06:05:00.000+04:00" ArrivalTime="2018-04-30T07:15:00.000+04:00" FlightTime="70" TravelTime="245" Equipment="738" OriginTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKA1p0nCAAAAA==" Origin="MCT" Destination="KHI" DepartureTime="2018-04-30T08:30:00.000+04:00" ArrivalTime="2018-04-30T11:10:00.000+05:00" FlightTime="100" TravelTime="245" Equipment="738"/>
+<air:FlightDetails Key="VPUkUL4R2BKAJq0nCAAAAA==" Origin="DXB" Destination="MCT" DepartureTime="2018-04-30T17:15:00.000+04:00" ArrivalTime="2018-04-30T18:25:00.000+04:00" FlightTime="70" TravelTime="270" Equipment="738" OriginTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAMq0nCAAAAA==" Origin="MCT" Destination="KHI" DepartureTime="2018-04-30T20:05:00.000+04:00" ArrivalTime="2018-04-30T22:45:00.000+05:00" FlightTime="100" TravelTime="270" Equipment="738"/>
+<air:FlightDetails Key="VPUkUL4R2BKATq0nCAAAAA==" Origin="DXB" Destination="CMB" DepartureTime="2018-04-30T22:50:00.000+04:00" ArrivalTime="2018-05-01T04:55:00.000+05:30" FlightTime="275" TravelTime="920" Equipment="333" OriginTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAVq0nCAAAAA==" Origin="CMB" Destination="KHI" DepartureTime="2018-05-01T12:10:00.000+05:30" ArrivalTime="2018-05-01T15:10:00.000+05:00" FlightTime="210" TravelTime="920" Equipment="320" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAhq0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T02:30:00.000+04:00" ArrivalTime="2018-04-30T05:30:00.000+05:00" FlightTime="120" TravelTime="120" Equipment="77W" OriginTerminal="3"/>
+<air:FlightDetails Key="VPUkUL4R2BKA1q0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T07:50:00.000+04:00" ArrivalTime="2018-04-30T10:55:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="77W" OriginTerminal="3"/>
+<air:FlightDetails Key="VPUkUL4R2BKA/q0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T18:00:00.000+04:00" ArrivalTime="2018-04-30T21:05:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="77W" OriginTerminal="3"/>
+<air:FlightDetails Key="VPUkUL4R2BKAJr0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T15:00:00.000+04:00" ArrivalTime="2018-04-30T18:10:00.000+05:00" FlightTime="130" TravelTime="130" Equipment="77W" OriginTerminal="3"/>
+<air:FlightDetails Key="VPUkUL4R2BKAxq0nCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T21:25:00.000+04:00" ArrivalTime="2018-05-01T00:40:00.000+05:00" FlightTime="135" TravelTime="135" Equipment="77W" OriginTerminal="3"/>
+<air:FlightDetails Key="VPUkUL4R2BKAUr0nCAAAAA==" Origin="DXB" Destination="IST" DepartureTime="2018-04-30T07:15:00.000+04:00" ArrivalTime="2018-04-30T10:50:00.000+03:00" FlightTime="275" TravelTime="1180" Equipment="77W" OriginTerminal="1" DestinationTerminal="I"/>
+<air:FlightDetails Key="VPUkUL4R2BKAWr0nCAAAAA==" Origin="IST" Destination="KHI" DepartureTime="2018-04-30T20:35:00.000+03:00" ArrivalTime="2018-05-01T03:55:00.000+05:00" FlightTime="320" TravelTime="1180" Equipment="332" OriginTerminal="I"/>
+<air:FlightDetails Key="VPUkUL4R2BKAor0nCAAAAA==" Origin="DXB" Destination="IST" DepartureTime="2018-04-30T02:00:00.000+04:00" ArrivalTime="2018-04-30T05:40:00.000+03:00" FlightTime="280" TravelTime="1495" Equipment="77W" OriginTerminal="1" DestinationTerminal="I"/>
+<air:FlightDetails Key="VPUkUL4R2BKAvr0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T10:40:00.000+04:00" ArrivalTime="2018-04-30T11:45:00.000+03:00" FlightTime="125" TravelTime="470" Equipment="333" OriginTerminal="1" DestinationTerminal="2"/>
+<air:FlightDetails Key="VPUkUL4R2BKAxr0nCAAAAA==" Origin="RUH" Destination="KHI" DepartureTime="2018-04-30T14:30:00.000+03:00" ArrivalTime="2018-04-30T19:30:00.000+05:00" FlightTime="180" TravelTime="470" Equipment="777" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKAMs0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T22:30:00.000+04:00" ArrivalTime="2018-04-30T23:35:00.000+03:00" FlightTime="125" TravelTime="615" Equipment="333" OriginTerminal="1" DestinationTerminal="2"/>
+<air:FlightDetails Key="VPUkUL4R2BKAHs0nCAAAAA==" Origin="RUH" Destination="KHI" DepartureTime="2018-05-01T04:45:00.000+03:00" ArrivalTime="2018-05-01T09:45:00.000+05:00" FlightTime="180" TravelTime="615" Equipment="773" OriginTerminal="2" DestinationTerminal="M"/>
+<air:FlightDetails Key="VPUkUL4R2BKADs0nCAAAAA==" Origin="DXB" Destination="MED" DepartureTime="2018-04-30T14:10:00.000+04:00" ArrivalTime="2018-04-30T16:10:00.000+03:00" FlightTime="180" TravelTime="1115" Equipment="320" OriginTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAGs0nCAAAAA==" Origin="MED" Destination="RUH" DepartureTime="2018-05-01T02:10:00.000+03:00" ArrivalTime="2018-05-01T03:30:00.000+03:00" FlightTime="80" TravelTime="1115" Distance="439" Equipment="773" OnTimePerformance="-1" DestinationTerminal="2"/>
+<air:FlightDetails Key="VPUkUL4R2BKAas0nCAAAAA==" Origin="DXB" Destination="BAH" DepartureTime="2018-04-30T07:40:00.000+04:00" ArrivalTime="2018-04-30T08:00:00.000+03:00" FlightTime="80" TravelTime="630" Equipment="333" OriginTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAcs0nCAAAAA==" Origin="BAH" Destination="KHI" DepartureTime="2018-04-30T14:30:00.000+03:00" ArrivalTime="2018-04-30T19:10:00.000+05:00" FlightTime="160" TravelTime="630" Equipment="320"/>
+<air:FlightDetails Key="VPUkUL4R2BKAss0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T11:25:00.000+04:00" ArrivalTime="2018-04-30T12:20:00.000+03:00" FlightTime="115" TravelTime="425" Equipment="320" OriginTerminal="1" DestinationTerminal="2"/>
+<air:FlightDetails Key="VPUkUL4R2BKA/s0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T23:00:00.000+04:00" ArrivalTime="2018-04-30T23:55:00.000+03:00" FlightTime="115" TravelTime="585" Equipment="320" OriginTerminal="1" DestinationTerminal="2"/>
+<air:FlightDetails Key="VPUkUL4R2BKAJt0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T07:50:00.000+04:00" ArrivalTime="2018-04-30T08:50:00.000+03:00" FlightTime="120" TravelTime="640" Equipment="73H" OriginTerminal="2" DestinationTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAht0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T19:15:00.000+04:00" ArrivalTime="2018-04-30T20:15:00.000+03:00" FlightTime="120" TravelTime="810" Equipment="73H" OriginTerminal="2" DestinationTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKAqt0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T06:55:00.000+04:00" ArrivalTime="2018-04-30T07:50:00.000+03:00" FlightTime="115" TravelTime="695" Equipment="77W" OriginTerminal="3" DestinationTerminal="1"/>
+<air:FlightDetails Key="VPUkUL4R2BKA/t0nCAAAAA==" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T18:50:00.000+04:00" ArrivalTime="2018-04-30T19:35:00.000+03:00" FlightTime="105" TravelTime="835" Equipment="77W" OriginTerminal="3" DestinationTerminal="1"/>
+</air:FlightDetailsList>
+<air:AirSegmentList>
+<air:AirSegment Key="VPUkUL4R2BKAEp0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="335" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T10:20:00.000+04:00" ArrivalTime="2018-04-30T13:25:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAFp0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAbp0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="333" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T07:30:00.000+04:00" ArrivalTime="2018-04-30T10:40:00.000+05:00" FlightTime="130" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAcp0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAmp0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="329" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T19:55:00.000+04:00" ArrivalTime="2018-04-30T23:05:00.000+05:00" FlightTime="130" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAnp0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAXp0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="331" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T00:20:00.000+04:00" ArrivalTime="2018-04-30T03:30:00.000+05:00" FlightTime="130" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAYp0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAyp0nCAAAAA==" Group="0" Carrier="WY" FlightNumber="602" Origin="DXB" Destination="MCT" DepartureTime="2018-04-30T06:05:00.000+04:00" ArrivalTime="2018-04-30T07:15:00.000+04:00" FlightTime="70" Distance="230" ETicketability="Yes" Equipment="738" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|W0|Z0|C7|D6|R3|Y7|X0|V0|S0|H7|M7|B7|K7|I7|Q7|T7|N7|L4|U0|O0|E0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAzp0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKA0p0nCAAAAA==" Group="0" Carrier="WY" FlightNumber="323" Origin="MCT" Destination="KHI" DepartureTime="2018-04-30T08:30:00.000+04:00" ArrivalTime="2018-04-30T11:10:00.000+05:00" FlightTime="100" Distance="550" ETicketability="Yes" Equipment="738" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|W0|Z0|C7|D6|R3|Y7|X0|V0|S0|H7|M7|B7|K7|I7|Q7|T7|N7|L4|U0|O0|E0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKA1p0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAIq0nCAAAAA==" Group="0" Carrier="WY" FlightNumber="610" Origin="DXB" Destination="MCT" DepartureTime="2018-04-30T17:15:00.000+04:00" ArrivalTime="2018-04-30T18:25:00.000+04:00" FlightTime="70" Distance="230" ETicketability="Yes" Equipment="738" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|W0|Z0|C7|D5|R0|Y7|X0|V0|S0|H7|M7|B7|K7|I7|Q7|T7|N7|L7|U7|O7|E2"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAJq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKALq0nCAAAAA==" Group="0" Carrier="WY" FlightNumber="325" Origin="MCT" Destination="KHI" DepartureTime="2018-04-30T20:05:00.000+04:00" ArrivalTime="2018-04-30T22:45:00.000+05:00" FlightTime="100" Distance="550" ETicketability="Yes" Equipment="738" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|W0|Z0|C7|D5|R0|Y7|X0|V0|S0|H7|M7|B7|K7|I7|Q7|T7|N7|L7|U7|O7|E2"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAMq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKASq0nCAAAAA==" Group="0" Carrier="UL" FlightNumber="226" Origin="DXB" Destination="CMB" DepartureTime="2018-04-30T22:50:00.000+04:00" ArrivalTime="2018-05-01T04:55:00.000+05:30" FlightTime="275" Distance="2043" ETicketability="Yes" Equipment="333" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|D4|I7|Y7|B7|P7|H7|K7|W7|M7|E7|L7|R7|V7|S7|N7|Q7|O7"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKATq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAUq0nCAAAAA==" Group="0" Carrier="UL" FlightNumber="183" Origin="CMB" Destination="KHI" DepartureTime="2018-05-01T12:10:00.000+05:30" ArrivalTime="2018-05-01T15:10:00.000+05:00" FlightTime="210" Distance="1486" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|D4|I7|Y7|B7|P7|H7|K7|W7|M7|E7|L7|R7|V7|S7|N7|Q7|O7"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAVq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAgq0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="604" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T02:30:00.000+04:00" ArrivalTime="2018-04-30T05:30:00.000+05:00" FlightTime="120" Distance="746" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAhq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKA0q0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="600" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T07:50:00.000+04:00" ArrivalTime="2018-04-30T10:55:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKA1q0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKA+q0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="602" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T18:00:00.000+04:00" ArrivalTime="2018-04-30T21:05:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKA/q0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAIr0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="608" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T15:00:00.000+04:00" ArrivalTime="2018-04-30T18:10:00.000+05:00" FlightTime="130" Distance="746" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAJr0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAwq0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="606" Origin="DXB" Destination="KHI" DepartureTime="2018-04-30T21:25:00.000+04:00" ArrivalTime="2018-05-01T00:40:00.000+05:00" FlightTime="135" Distance="746" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAxq0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKATr0nCAAAAA==" Group="0" Carrier="TK" FlightNumber="763" Origin="DXB" Destination="IST" DepartureTime="2018-04-30T07:15:00.000+04:00" ArrivalTime="2018-04-30T10:50:00.000+03:00" FlightTime="275" Distance="1861" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="C4|D4|Z4|K4|J4|I0|R0|Y9|B9|M9|A9|H9|S9|O9|E9|Q9|T9|L9|V9|P9|W9|U9|X9|N9|G9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAUr0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAVr0nCAAAAA==" Group="0" Carrier="TK" FlightNumber="708" Origin="IST" Destination="KHI" DepartureTime="2018-04-30T20:35:00.000+03:00" ArrivalTime="2018-05-01T03:55:00.000+05:00" FlightTime="320" Distance="2446" ETicketability="Yes" Equipment="332" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="C4|D0|Z0|K0|J0|I0|R0|Y9|B9|M9|A9|H9|S9|O9|E9|Q9|T9|L9|V9|P9|W9|U9|X9|N9|G9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAWr0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAnr0nCAAAAA==" Group="0" Carrier="TK" FlightNumber="761" Origin="DXB" Destination="IST" DepartureTime="2018-04-30T02:00:00.000+04:00" ArrivalTime="2018-04-30T05:40:00.000+03:00" FlightTime="280" Distance="1861" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="C4|D4|Z4|K4|J4|I0|R0|Y9|B9|M9|A9|H9|S9|O9|E9|Q9|T9|L9|V9|P9|W9|U9|X9|N9|G9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAor0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAur0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="563" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T10:40:00.000+04:00" ArrivalTime="2018-04-30T11:45:00.000+03:00" FlightTime="125" Distance="536" ETicketability="Yes" Equipment="333" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C5|D1|I0|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAvr0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAwr0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="708" Origin="RUH" Destination="KHI" DepartureTime="2018-04-30T14:30:00.000+03:00" ArrivalTime="2018-04-30T19:30:00.000+05:00" FlightTime="180" Distance="1281" ETicketability="Yes" Equipment="777" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I9|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAxr0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKALs0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="553" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T22:30:00.000+04:00" ArrivalTime="2018-04-30T23:35:00.000+03:00" FlightTime="125" Distance="536" ETicketability="Yes" Equipment="333" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I9|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAMs0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKANs0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="706" Origin="RUH" Destination="KHI" DepartureTime="2018-05-01T04:45:00.000+03:00" ArrivalTime="2018-05-01T09:45:00.000+05:00" FlightTime="180" Distance="1281" ETicketability="Yes" Equipment="773" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I9|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAHs0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKACs0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="565" Origin="DXB" Destination="MED" DepartureTime="2018-04-30T14:10:00.000+04:00" ArrivalTime="2018-04-30T16:10:00.000+03:00" FlightTime="180" Distance="975" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I5|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKADs0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAFs0nCAAAAA==" Group="0" Carrier="SV" FlightNumber="706" Origin="MED" Destination="KHI" DepartureTime="2018-05-01T02:10:00.000+03:00" ArrivalTime="2018-05-01T09:45:00.000+05:00" FlightTime="335" Distance="1720" ETicketability="Yes" Equipment="773" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" NumberOfStops="1" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I9|Y9|E9|B9|M9|K9|H9|L9|Q9|T9|N9|V9|G0"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAGs0nCAAAAA=="/>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAHs0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAZs0nCAAAAA==" Group="0" Carrier="CX" FlightNumber="745" Origin="DXB" Destination="BAH" DepartureTime="2018-04-30T07:40:00.000+04:00" ArrivalTime="2018-04-30T08:00:00.000+03:00" FlightTime="80" Distance="300" ETicketability="Yes" Equipment="333" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J9|C9|D9|I9|Y9|B9|H9|K9|M9|L9|V9|S9|N9|Q9|O9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAas0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAbs0nCAAAAA==" Group="0" Carrier="GF" FlightNumber="754" Origin="BAH" Destination="KHI" DepartureTime="2018-04-30T14:30:00.000+03:00" ArrivalTime="2018-04-30T19:10:00.000+05:00" FlightTime="160" Distance="1034" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J7|C7|D7|I4|Y7|H7|M7|L7|B7|K7|X7|Q7|V7|E7|O7|N7|S7|W7"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAcs0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKArs0nCAAAAA==" Group="0" Carrier="XY" FlightNumber="202" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T11:25:00.000+04:00" ArrivalTime="2018-04-30T12:20:00.000+03:00" FlightTime="115" Distance="536" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="R9|C9|J9|Y9|I9|B9|M9|K9|L9|V9|E9|O9|U9|P9|N9|A9|G9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAss0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKA+s0nCAAAAA==" Group="0" Carrier="XY" FlightNumber="210" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T23:00:00.000+04:00" ArrivalTime="2018-04-30T23:55:00.000+03:00" FlightTime="115" Distance="536" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="R9|C9|J9|Y9|I9|B9|M9|K9|L9|V9|E9|O9|U9|P9|N9|A9|G9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKA/s0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAIt0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="847" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T07:50:00.000+04:00" ArrivalTime="2018-04-30T08:50:00.000+03:00" FlightTime="120" Distance="536" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAJt0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKAgt0nCAAAAA==" Group="0" Carrier="FZ" FlightNumber="843" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T19:15:00.000+04:00" ArrivalTime="2018-04-30T20:15:00.000+03:00" FlightTime="120" Distance="536" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAht0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKApt0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="819" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T06:55:00.000+04:00" ArrivalTime="2018-04-30T07:50:00.000+03:00" FlightTime="115" Distance="536" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="F4|A4|J7|C2|I0|O0|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H0|Q9|L9|T9|V3|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKAqt0nCAAAAA=="/>
+</air:AirSegment>
+<air:AirSegment Key="VPUkUL4R2BKA+t0nCAAAAA==" Group="0" Carrier="EK" FlightNumber="817" Origin="DXB" Destination="RUH" DepartureTime="2018-04-30T18:50:00.000+04:00" ArrivalTime="2018-04-30T19:35:00.000+03:00" FlightTime="105" Distance="536" ETicketability="Yes" Equipment="77W" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail used" OptionalServicesIndicator="false" AvailabilitySource="S" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+<air:AirAvailInfo ProviderCode="1G">
+<air:BookingCodeInfo BookingCounts="F4|A4|J7|C7|I7|O7|P0|Y9|E9|R9|W9|M9|B9|U9|K9|H9|Q9|L9|T9|V9|X9"/>
+</air:AirAvailInfo>
+<air:FlightDetailsRef Key="VPUkUL4R2BKA/t0nCAAAAA=="/>
+</air:AirSegment>
+</air:AirSegmentList>
+<air:FareInfoList>
+<air:FareInfo Key="VPUkUL4R2BKAOp0nCAAAAA==" FareBasis="UOWBGAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR6950" NegotiatedFare="false">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAOp0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjsEOAiEMRD9mM/cpoOsRlgXXmOBFouvB//8MC2hiEzrTvDLgvTeUE52h/6sJ7ym/UGoECoye63bBUYyD6LCDNIJ6eyznkAQjwlJR6Xio9MXMLCqIEg8DtcLe+/pclLEnqwray2hWb+Bn0qa2hPVOCYnW0pFz/ULO0K9+AIc0K3Y=
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAGu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKA+p0nCAAAAA==" FareBasis="LVEOWAE" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR10870" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:FareSurcharge Key="VPUkUL4R2BKANq0nCAAAAA==" Type="Other" Amount="NUC5.00"/>
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKA+p0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjs0OwiAQhB+mmfsu1NbeQEpao8GDP5WL7/8YDqBJJ1lmyLcs65wzokfpjbidOny6LSM9A5BgWJf1jEn7AcpLhohRXF/xtvmINsEKSaq0uda+oOFAQxijaagIuZ7z+0Qm08DBdEX5GCXyBf4hrozJzw8fl7tYq9QPyQju+QUi9isy
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAIu0nCAAAAA==" BrandID="102530"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAcq0nCAAAAA==" FareBasis="ROWAE" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR17810" NegotiatedFare="false" NotValidBefore="2018-05-01" NotValidAfter="2018-05-01">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAcq0nCAAAAA==" ProviderCode="1G">
+gws-eJxNTssKwzAM+5iiu5ws7Y7J0pSWjQzKytbL/v8z6iQb1GBLtvzy3hvKlRdDf7IO3257IG8RyDDq93mB9OwJ0WwHaQTr8x0S2gJLreeqNZTaFSU6BUycpEnFsNc4fm6qtbVUgnIXheoE/iTNSnMYXyFRaC2dc8P6EzlAHz0AICoq8w==
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAKu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAoq0nCAAAAA==" FareBasis="ULSOSAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR19920" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjsEOwiAQRD+mmfssWKs3KqWpqcFDbWIv/v9nOEBM3ISdgbfsbgjB0S48OYa/6PDp0oq8RyDD6azLHTZczz1MtwOkM+yP7bmNydB6eArliptaLYwWewlmm9lQCRw1T++bWOtMGZTRKFY/8DNpkc3j9NIw0nt6PTbEAdr0C2FSKyk=
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAMu0nCAAAAA==" BrandID="102508"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAer0nCAAAAA==" FareBasis="QS2PXOW" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR31090" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAer0nCAAAAA==" ProviderCode="1G">
+gws-eJxNTtEKwjAM/Jhx79dU6R6ra2UyqBUndi/+/2eYtg4WSO7CJZd474Vm5EnoDzHgO6wL0nsCEkRzme+QkdbBaLeBFIPnS3J5fNAtLFVJTe1o2lxw01kB0d2kSzWwtRrKtVo1Y5IG9TIq1Q3sJM5K0yWsORahtaIrLv9FOuirP6MjK9w=
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAOu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKA5r0nCAAAAA==" FareBasis="TOWSVR" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR46180" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjsEKwjAQRD+mzH12U9Fj1BoqQgRbq734/5/RSaLgQjKzvN1JYoxOO7B3xr/q8OmmBfl5BjJc5zZe0dvODKZuBemG+f6algdaQqBArrCp1bHkiRIkSisqhbXew/sk1nJJGsrDKFYb+JnLKJuPw+ylDYHSL+Ie+ucGFd8qvg==
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAQu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAms0nCAAAAA==" FareBasis="YOW" PassengerTypeCode="ADT" Origin="DXB" Destination="BAH" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR71230" NegotiatedFare="false">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAms0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjrEOwyAMRD8mut0GlHSEQKJMZGlVWPr/n9EzLLFkfPB8NjFGJ/qS4CQ+YsFvyQ31k4EKx9zThTW4oFDeOkQ0od9fTLsXvtZBZtXRk/2xseCUUyeyQB9naTvZHCqcB9sKk3TAhKc4Lsqayjs3UfHeaDG2CujhL/+WXio7
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKASu0nCAAAAA==" BrandID="88997"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAns0nCAAAAA==" FareBasis="KOPROBH" PassengerTypeCode="ADT" Origin="BAH" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR12980" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:BaggageAllowance>
+<air:MaxWeight Value="30" Unit="Kilograms"/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAns0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjt0OwiAMhR9mOfdtEZl3DFAxS9iyuIvd+P6PsQKa2KTtab7+ee+FeKSLkP+zAZ/h+UDZI1Ag6nN+gdmRtOoAkTDmZd2WkNFXGFJSGu2ZW1+UOGpCcunWUTUcLYYpK+uLSQXqZVSpE/iJe1ZZpvQOed3IGGstXfcvJAd99QSE0Sui
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAUu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKA0s0nCAAAAA==" FareBasis="AFARE" PassengerTypeCode="ADT" Origin="DXB" Destination="RUH" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR10940" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:FareSurcharge Key="VPUkUL4R2BKABt0nCAAAAA==" Type="Other" Amount="NUC2.00"/>
+<air:FareSurcharge Key="VPUkUL4R2BKACt0nCAAAAA==" Type="Other" Amount="NUC26.62"/>
+<air:FareSurcharge Key="VPUkUL4R2BKADt0nCAAAAA==" Type="Other" Amount="NUC19.96"/>
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKA0s0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjrEOwjAMRD+muv2cUChbAm3UKUNFpWbh/z+DcwoSlpx3ztmyU0qBNvESmP5iwHs4Gur+BCqCcttXjOQIU9FAWkYueVtwzkfqv3bvpPWuYoUCCsVueaD1dz4e8nifrtFp8LVwqQn8xLJK1jy/zMsYHV+LN+jKD6zXKjM=
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAWu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKA8s0nCAAAAA==" FareBasis="YIF" PassengerTypeCode="ADT" Origin="RUH" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR96550" NegotiatedFare="false">
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKA8s0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjUsOwjAMRA9TzX6cNDTsgpqiVIgsCkXyhvsfAyfZMJK/z5+UkqNEzo7pTxO+kyrquQIVzuxRdsSFF/ZKQTqB7neMdU/r1k5GlD6T5zVYQA75OlATtPvjLMbGUZKC9hUttQ0TxUXBVizVW34/t3rQ+0ZlMRh883h98APYxCrh
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAYu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKATt0nCAAAAA==" FareBasis="TOWBGAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="RUH" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR26190" NegotiatedFare="false">
+<air:FareSurcharge Key="VPUkUL4R2BKAjt0nCAAAAA==" Type="Other" Amount="NUC4.00"/>
+<air:FareSurcharge Key="VPUkUL4R2BKAkt0nCAAAAA==" Type="Other" Amount="NUC1.36"/>
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKATt0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjkEOwyAMBB8T7X2N2yRHCIHmRKUqUZse+v9n1IAq1RLehbGxvfeOMvPi6P9iwGfIb5QjAgXOzuPY4ETHGWK3E6QE7PfncgtJ0P9QGioNd5VWmJnFBFHitaMaOFteX4sxp6OoKQV1NKq1DvxM2syWsO42NVGVkz12xAm26RduNCtH
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAau0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAdt0nCAAAAA==" FareBasis="YIF" PassengerTypeCode="ADT" Origin="RUH" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR96660" NegotiatedFare="false">
+<air:FareSurcharge Key="VPUkUL4R2BKAet0nCAAAAA==" Type="Other" Amount="NUC17.09"/>
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAdt0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjUsOwjAMRA9TzX6cNDTsgpqiVIgsCkXyhvsfAyfZMJK/z5+UkqNEzo7pTxO+kyrquQIVzuxRdsSFF/ZKQTqB7neMdU/r1k5GlD6T5zVYQA75OlATtPvjLMbGUZKC9hUttQ0TxUXBVizVW34/t3rQ+0ZlMRh883h98APYxCrh
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAcu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKAzt0nCAAAAA==" FareBasis="MSSOSAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="RUH" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR38640" NegotiatedFare="false" NotValidBefore="2018-04-30" NotValidAfter="2018-04-30">
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKAzt0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjtEKwyAMRT+m3PdEHeujzloKYw7mCuvL/v8zdjUUFtDc5MQbY4xOdJbgJP7FhO9U7qh7Biocz2vf4MMcHJTVARFNeLT2bKkozMMLUR3Yso7BrPnChFVXMdQDx7iXz43MnIWm6KvRJV/gFGWjrGl5cxmnvTg2DckV/OkPbtArOw==
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAeu0nCAAAAA==" BrandID="102508"/>
+</air:FareInfo>
+<air:FareInfo Key="VPUkUL4R2BKA8t0nCAAAAA==" FareBasis="YIF" PassengerTypeCode="ADT" Origin="RUH" Destination="KHI" EffectiveDate="2018-04-20T18:13:00.000+05:00" DepartureDate="2018-04-30" Amount="PKR96580" NegotiatedFare="false">
+<air:BaggageAllowance>
+<air:NumberOfPieces>2</air:NumberOfPieces>
+<air:MaxWeight/>
+</air:BaggageAllowance>
+<air:FareRuleKey FareInfoRef="VPUkUL4R2BKA8t0nCAAAAA==" ProviderCode="1G">
+gws-eJxNjUsOwjAMRA9TzX6cNDTsgpqiVIgsCkXyhvsfAyfZMJK/z5+UkqNEzo7pTxO+kyrquQIVzuxRdsSFF/ZKQTqB7neMdU/r1k5GlD6T5zVYQA75OlATtPvjLMbGUZKC9hUttQ0TxUXBVizVW34/t3rQ+0ZlMRh883h98APYxCrh
+</air:FareRuleKey>
+<air:Brand Key="VPUkUL4R2BKAgu0nCAAAAA==" BrandFound="false"/>
+</air:FareInfo>
+</air:FareInfoList>
+<air:RouteList>
+<air:Route Key="VPUkUL4R2BKAEu0nCAAAAA==">
+<air:Leg Key="VPUkUL4R2BKAGp0nCAAAAA==" Group="0" Origin="DXB" Destination="KHI"/>
+</air:Route>
+</air:RouteList>
+<air:AirPricingSolution Key="VPUkUL4R2BKADp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
+<air:Journey TravelTime="P0DT2H5M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAEp0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAHp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAOp0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAOp0nCAAAAA==" SegmentRef="VPUkUL4R2BKAEp0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR1261"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>DXB FZ KHI 61.24UOWBGAE1 NUC61.24END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAap0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
+<air:Journey TravelTime="P0DT2H10M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAbp0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAdp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAOp0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAOp0nCAAAAA==" SegmentRef="VPUkUL4R2BKAbp0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR1261"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>DXB FZ KHI 61.24UOWBGAE1 NUC61.24END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAlp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
+<air:Journey TravelTime="P0DT2H10M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAmp0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAop0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAOp0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAOp0nCAAAAA==" SegmentRef="VPUkUL4R2BKAmp0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR1261"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>DXB FZ KHI 61.24UOWBGAE1 NUC61.24END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAwp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
+<air:Journey TravelTime="P0DT2H10M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAXp0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAPp0nCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAOp0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAOp0nCAAAAA==" SegmentRef="VPUkUL4R2BKAXp0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR1261"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>DXB FZ KHI 61.24UOWBGAE1 NUC61.24END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAxp0nCAAAAA==" TotalPrice="PKR15559" BasePrice="AED360" ApproximateTotalPrice="PKR15559" ApproximateBasePrice="PKR10870" EquivalentBasePrice="PKR10870" Taxes="PKR4689" ApproximateTaxes="PKR4689">
+<air:Journey TravelTime="P0DT4H5M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAyp0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKA0p0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA2p0nCAAAAA==" TotalPrice="PKR15559" BasePrice="AED360" ApproximateTotalPrice="PKR15559" ApproximateBasePrice="PKR10870" EquivalentBasePrice="PKR10870" Taxes="PKR4689" ApproximateTaxes="PKR4689" LatestTicketingTime="2018-04-23T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="WY" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA+p0nCAAAAA=="/>
+<air:BookingInfo BookingCode="L" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA+p0nCAAAAA==" SegmentRef="VPUkUL4R2BKAyp0nCAAAAA=="/>
+<air:BookingInfo BookingCode="L" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA+p0nCAAAAA==" SegmentRef="VPUkUL4R2BKA0p0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="I2" Amount="PKR302"/>
+<air:TaxInfo Category="OM" Amount="PKR302"/>
+<air:TaxInfo Category="YR" Amount="PKR302"/>
+<air:FareCalc>
+DXB WY X/MCT WY KHI Q DXBKHI5.00 91.46LVEOWAE NUC96.46END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR3320.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAQq0nCAAAAA==" TotalPrice="PKR15559" BasePrice="AED360" ApproximateTotalPrice="PKR15559" ApproximateBasePrice="PKR10870" EquivalentBasePrice="PKR10870" Taxes="PKR4689" ApproximateTaxes="PKR4689">
+<air:Journey TravelTime="P0DT4H30M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAIq0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKALq0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA/p0nCAAAAA==" TotalPrice="PKR15559" BasePrice="AED360" ApproximateTotalPrice="PKR15559" ApproximateBasePrice="PKR10870" EquivalentBasePrice="PKR10870" Taxes="PKR4689" ApproximateTaxes="PKR4689" LatestTicketingTime="2018-04-23T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="WY" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA+p0nCAAAAA=="/>
+<air:BookingInfo BookingCode="L" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA+p0nCAAAAA==" SegmentRef="VPUkUL4R2BKAIq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="L" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA+p0nCAAAAA==" SegmentRef="VPUkUL4R2BKALq0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="I2" Amount="PKR302"/>
+<air:TaxInfo Category="OM" Amount="PKR302"/>
+<air:TaxInfo Category="YR" Amount="PKR302"/>
+<air:FareCalc>
+DXB WY X/MCT WY KHI Q DXBKHI5.00 91.46LVEOWAE NUC96.46END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR3320.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKARq0nCAAAAA==" TotalPrice="PKR30273" BasePrice="AED590" ApproximateTotalPrice="PKR30273" ApproximateBasePrice="PKR17810" EquivalentBasePrice="PKR17810" Taxes="PKR12463" ApproximateTaxes="PKR12463">
+<air:Journey TravelTime="P0DT15H20M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKASq0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAUq0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAWq0nCAAAAA==" TotalPrice="PKR30273" BasePrice="AED590" ApproximateTotalPrice="PKR30273" ApproximateBasePrice="PKR17810" EquivalentBasePrice="PKR17810" Taxes="PKR12463" ApproximateTaxes="PKR12463" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="UL" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAcq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="R" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAcq0nCAAAAA==" SegmentRef="VPUkUL4R2BKASq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="R" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAcq0nCAAAAA==" SegmentRef="VPUkUL4R2BKAUq0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR8680"/>
+<air:FareCalc>
+DXB UL X/CMB UL KHI 160.60ROWAE NUC160.60END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR2720.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR9360.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAfq0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653">
+<air:Journey TravelTime="P0DT2H0M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAgq0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAiq0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAoq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" SegmentRef="VPUkUL4R2BKAgq0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR7870"/>
+<air:FareCalc>DXB EK KHI 179.65ULSOSAE1 NUC179.65END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAzq0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653">
+<air:Journey TravelTime="P0DT2H5M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKA0q0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA2q0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAoq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" SegmentRef="VPUkUL4R2BKA0q0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR7870"/>
+<air:FareCalc>DXB EK KHI 179.65ULSOSAE1 NUC179.65END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKA9q0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653">
+<air:Journey TravelTime="P0DT2H5M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKA+q0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAAr0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAoq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" SegmentRef="VPUkUL4R2BKA+q0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR7870"/>
+<air:FareCalc>DXB EK KHI 179.65ULSOSAE1 NUC179.65END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAHr0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653">
+<air:Journey TravelTime="P0DT2H10M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAIr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAKr0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAoq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" SegmentRef="VPUkUL4R2BKAIr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR7870"/>
+<air:FareCalc>DXB EK KHI 179.65ULSOSAE1 NUC179.65END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKARr0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653">
+<air:Journey TravelTime="P0DT2H15M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAwq0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKApq0nCAAAAA==" TotalPrice="PKR31573" BasePrice="AED660" ApproximateTotalPrice="PKR31573" ApproximateBasePrice="PKR19920" EquivalentBasePrice="PKR19920" Taxes="PKR11653" ApproximateTaxes="PKR11653" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAoq0nCAAAAA=="/>
+<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAoq0nCAAAAA==" SegmentRef="VPUkUL4R2BKAwq0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="YQ" Amount="PKR7870"/>
+<air:FareCalc>DXB EK KHI 179.65ULSOSAE1 NUC179.65END ROE3.673637</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3020.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKASr0nCAAAAA==" TotalPrice="PKR50055" BasePrice="AED1030" ApproximateTotalPrice="PKR50055" ApproximateBasePrice="PKR31090" EquivalentBasePrice="PKR31090" Taxes="PKR18965" ApproximateTaxes="PKR18965">
+<air:Journey TravelTime="P0DT19H40M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKATr0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAVr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAXr0nCAAAAA==" TotalPrice="PKR50055" BasePrice="AED1030" ApproximateTotalPrice="PKR50055" ApproximateBasePrice="PKR31090" EquivalentBasePrice="PKR31090" Taxes="PKR18965" ApproximateTaxes="PKR18965" LatestTicketingTime="2018-04-23T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="TK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAer0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Q" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAer0nCAAAAA==" SegmentRef="VPUkUL4R2BKATr0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Q" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAer0nCAAAAA==" SegmentRef="VPUkUL4R2BKAVr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="TR" Amount="PKR714"/>
+<air:TaxInfo Category="YR" Amount="PKR14468"/>
+<air:FareCalc>
+DXB TK X/IST TK KHI 280.37QS2PXOW NUC280.37END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR7210.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR14420</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAsr0nCAAAAA==" TotalPrice="PKR50055" BasePrice="AED1030" ApproximateTotalPrice="PKR50055" ApproximateBasePrice="PKR31090" EquivalentBasePrice="PKR31090" Taxes="PKR18965" ApproximateTaxes="PKR18965">
+<air:Journey TravelTime="P1DT0H55M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAnr0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAVr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAfr0nCAAAAA==" TotalPrice="PKR50055" BasePrice="AED1030" ApproximateTotalPrice="PKR50055" ApproximateBasePrice="PKR31090" EquivalentBasePrice="PKR31090" Taxes="PKR18965" ApproximateTaxes="PKR18965" LatestTicketingTime="2018-04-23T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="TK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAer0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Q" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAer0nCAAAAA==" SegmentRef="VPUkUL4R2BKAnr0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Q" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAer0nCAAAAA==" SegmentRef="VPUkUL4R2BKAVr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="TR" Amount="PKR714"/>
+<air:TaxInfo Category="YR" Amount="PKR14468"/>
+<air:FareCalc>
+DXB TK X/IST TK KHI 280.37QS2PXOW NUC280.37END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR7210.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR14420</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAtr0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936">
+<air:Journey TravelTime="P0DT7H50M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAur0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAwr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAyr0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="SV" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA5r0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKAur0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKAwr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR2689"/>
+<air:FareCalc>
+DXB SV X/RUH SV KHI 415.11TOWSVR NUC415.11END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR5910.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR8860.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAKs0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936">
+<air:Journey TravelTime="P0DT10H15M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKALs0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKANs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAOs0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="SV" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA5r0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKALs0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKANs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR2689"/>
+<air:FareCalc>
+DXB SV X/RUH SV KHI 415.11TOWSVR NUC415.11END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR5910.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR8860.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAXs0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936">
+<air:Journey TravelTime="P0DT18H35M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKACs0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAFs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA6r0nCAAAAA==" TotalPrice="PKR53116" BasePrice="AED1530" ApproximateTotalPrice="PKR53116" ApproximateBasePrice="PKR46180" EquivalentBasePrice="PKR46180" Taxes="PKR6936" ApproximateTaxes="PKR6936" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="SV" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA5r0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKACs0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA5r0nCAAAAA==" SegmentRef="VPUkUL4R2BKAFs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR2689"/>
+<air:FareCalc>
+DXB SV X/MED SV KHI 415.11TOWSVR NUC415.11END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR5910.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR8860.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAYs0nCAAAAA==" TotalPrice="PKR96042" BasePrice="AED2790" ApproximateTotalPrice="PKR96042" ApproximateBasePrice="PKR84210" EquivalentBasePrice="PKR84210" Taxes="PKR11832" ApproximateTaxes="PKR11832">
+<air:Journey TravelTime="P0DT10H30M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAZs0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAbs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAds0nCAAAAA==" TotalPrice="PKR96042" BasePrice="AED2790" ApproximateTotalPrice="PKR96042" ApproximateBasePrice="PKR84210" EquivalentBasePrice="PKR84210" Taxes="PKR11832" ApproximateTaxes="PKR11832" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="GF" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAms0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKAns0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAms0nCAAAAA==" SegmentRef="VPUkUL4R2BKAZs0nCAAAAA=="/>
+<air:BookingInfo BookingCode="K" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAns0nCAAAAA==" SegmentRef="VPUkUL4R2BKAbs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="BH" Amount="PKR308"/>
+<air:TaxInfo Category="HM" Amount="PKR47"/>
+<air:TaxInfo Category="YR" Amount="PKR1864"/>
+<air:TaxInfo Category="YQ" Amount="PKR5830"/>
+<air:FareCalc>
+DXB CX BAH 642.41YOW GF KHI 117.02KOPROBH NUC759.43END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR3330.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR5550.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAqs0nCAAAAA==" TotalPrice="PKR114426" BasePrice="SAR3641.00" ApproximateTotalPrice="PKR114426" ApproximateBasePrice="PKR107490" EquivalentBasePrice="PKR107490" Taxes="PKR6936" ApproximateTaxes="PKR6936">
+<air:Journey TravelTime="P0DT7H5M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKArs0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAwr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAts0nCAAAAA==" TotalPrice="PKR114426" BasePrice="SAR3641.00" ApproximateTotalPrice="PKR114426" ApproximateBasePrice="PKR107490" EquivalentBasePrice="PKR107490" Taxes="PKR6936" ApproximateTaxes="PKR6936" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="HR" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA0s0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKA8s0nCAAAAA=="/>
+<air:BookingInfo BookingCode="A" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA0s0nCAAAAA==" SegmentRef="VPUkUL4R2BKArs0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA8s0nCAAAAA==" SegmentRef="VPUkUL4R2BKAwr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR2689"/>
+<air:FareCalc>
+DXB XY RUH Q19.96Q26.62Q2.00 50.05AFARE SV KHI 870.60YIF NUC969.23END ROE3.756
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR4430.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR7380.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAGt0nCAAAAA==" TotalPrice="PKR114426" BasePrice="SAR3641.00" ApproximateTotalPrice="PKR114426" ApproximateBasePrice="PKR107490" EquivalentBasePrice="PKR107490" Taxes="PKR6936" ApproximateTaxes="PKR6936">
+<air:Journey TravelTime="P0DT9H45M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKA+s0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKANs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA1s0nCAAAAA==" TotalPrice="PKR114426" BasePrice="SAR3641.00" ApproximateTotalPrice="PKR114426" ApproximateBasePrice="PKR107490" EquivalentBasePrice="PKR107490" Taxes="PKR6936" ApproximateTaxes="PKR6936" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="HR" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKA0s0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKA8s0nCAAAAA=="/>
+<air:BookingInfo BookingCode="A" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA0s0nCAAAAA==" SegmentRef="VPUkUL4R2BKA+s0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA8s0nCAAAAA==" SegmentRef="VPUkUL4R2BKANs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR2689"/>
+<air:FareCalc>
+DXB XY RUH Q19.96Q26.62Q2.00 50.05AFARE SV KHI 870.60YIF NUC969.23END ROE3.756
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR4430.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR7380.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAHt0nCAAAAA==" TotalPrice="PKR134113" BasePrice="AED4070" ApproximateTotalPrice="PKR134113" ApproximateBasePrice="PKR122850" EquivalentBasePrice="PKR122850" Taxes="PKR11263" ApproximateTaxes="PKR11263">
+<air:Journey TravelTime="P0DT10H40M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAIt0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAwr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAKt0nCAAAAA==" TotalPrice="PKR134113" BasePrice="AED4070" ApproximateTotalPrice="PKR134113" ApproximateBasePrice="PKR122850" EquivalentBasePrice="PKR122850" Taxes="PKR11263" ApproximateTaxes="PKR11263" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="SV" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKATt0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKAdt0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKATt0nCAAAAA==" SegmentRef="VPUkUL4R2BKAIt0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAdt0nCAAAAA==" SegmentRef="VPUkUL4R2BKAwr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR5378"/>
+<air:TaxInfo Category="YQ" Amount="PKR788"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>
+DXB FZ RUH Q1.36Q4.00 213.68TOWBGAE1 SV KHI 870.60YIF Q DXBKHI17.09NUC1106.73END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAnt0nCAAAAA==" TotalPrice="PKR134113" BasePrice="AED4070" ApproximateTotalPrice="PKR134113" ApproximateBasePrice="PKR122850" EquivalentBasePrice="PKR122850" Taxes="PKR11263" ApproximateTaxes="PKR11263">
+<air:Journey TravelTime="P0DT13H30M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKAgt0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKANs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKAUt0nCAAAAA==" TotalPrice="PKR134113" BasePrice="AED4070" ApproximateTotalPrice="PKR134113" ApproximateBasePrice="PKR122850" EquivalentBasePrice="PKR122850" Taxes="PKR11263" ApproximateTaxes="PKR11263" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="SV" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKATt0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKAdt0nCAAAAA=="/>
+<air:BookingInfo BookingCode="T" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKATt0nCAAAAA==" SegmentRef="VPUkUL4R2BKAgt0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAdt0nCAAAAA==" SegmentRef="VPUkUL4R2BKANs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR5378"/>
+<air:TaxInfo Category="YQ" Amount="PKR788"/>
+<air:TaxInfo Category="YR" Amount="PKR850"/>
+<air:FareCalc>
+DXB FZ RUH Q1.36Q4.00 213.68TOWBGAE1 SV KHI 870.60YIF Q DXBKHI17.09NUC1106.73END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Percentage>0.00</air:Percentage>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR11020</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKAot0nCAAAAA==" TotalPrice="PKR150169" BasePrice="AED4480" ApproximateTotalPrice="PKR150169" ApproximateBasePrice="PKR135220" EquivalentBasePrice="PKR135220" Taxes="PKR14949" ApproximateTaxes="PKR14949">
+<air:Journey TravelTime="P0DT11H35M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKApt0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKAwr0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKArt0nCAAAAA==" TotalPrice="PKR150169" BasePrice="AED4480" ApproximateTotalPrice="PKR150169" ApproximateBasePrice="PKR135220" EquivalentBasePrice="PKR135220" Taxes="PKR14949" ApproximateTaxes="PKR14949" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAzt0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKA8t0nCAAAAA=="/>
+<air:BookingInfo BookingCode="M" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAzt0nCAAAAA==" SegmentRef="VPUkUL4R2BKApt0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA8t0nCAAAAA==" SegmentRef="VPUkUL4R2BKAwr0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR5378"/>
+<air:TaxInfo Category="YQ" Amount="PKR5324"/>
+<air:FareCalc>
+DXB EK RUH 348.42MSSOSAE1 SV KHI 870.60YIF NUC1219.02END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR4530.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:AirPricingSolution Key="VPUkUL4R2BKADu0nCAAAAA==" TotalPrice="PKR150169" BasePrice="AED4480" ApproximateTotalPrice="PKR150169" ApproximateBasePrice="PKR135220" EquivalentBasePrice="PKR135220" Taxes="PKR14949" ApproximateTaxes="PKR14949">
+<air:Journey TravelTime="P0DT13H55M0S">
+<air:AirSegmentRef Key="VPUkUL4R2BKA+t0nCAAAAA=="/>
+<air:AirSegmentRef Key="VPUkUL4R2BKANs0nCAAAAA=="/>
+</air:Journey>
+<air:LegRef Key="VPUkUL4R2BKAGp0nCAAAAA=="/>
+<air:AirPricingInfo Key="VPUkUL4R2BKA0t0nCAAAAA==" TotalPrice="PKR150169" BasePrice="AED4480" ApproximateTotalPrice="PKR150169" ApproximateBasePrice="PKR135220" EquivalentBasePrice="PKR135220" Taxes="PKR14949" ApproximateTaxes="PKR14949" LatestTicketingTime="2018-04-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="EK" ProviderCode="1G">
+<air:FareInfoRef Key="VPUkUL4R2BKAzt0nCAAAAA=="/>
+<air:FareInfoRef Key="VPUkUL4R2BKA8t0nCAAAAA=="/>
+<air:BookingInfo BookingCode="M" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKAzt0nCAAAAA==" SegmentRef="VPUkUL4R2BKA+t0nCAAAAA=="/>
+<air:BookingInfo BookingCode="Y" CabinClass="Economy" FareInfoRef="VPUkUL4R2BKA8t0nCAAAAA==" SegmentRef="VPUkUL4R2BKANs0nCAAAAA=="/>
+<air:TaxInfo Category="AE" Amount="PKR2364"/>
+<air:TaxInfo Category="F6" Amount="PKR1103"/>
+<air:TaxInfo Category="TP" Amount="PKR158"/>
+<air:TaxInfo Category="ZR" Amount="PKR158"/>
+<air:TaxInfo Category="E3" Amount="PKR464"/>
+<air:TaxInfo Category="IO" Amount="PKR5378"/>
+<air:TaxInfo Category="YQ" Amount="PKR5324"/>
+<air:FareCalc>
+DXB EK RUH 348.42MSSOSAE1 SV KHI 870.60YIF NUC1219.02END ROE3.673637
+</air:FareCalc>
+<air:PassengerType Code="ADT"/>
+<air:ChangePenalty>
+<air:Amount>PKR4530.0</air:Amount>
+</air:ChangePenalty>
+<air:CancelPenalty>
+<air:Amount>PKR6040.0</air:Amount>
+</air:CancelPenalty>
+</air:AirPricingInfo>
+<air:Connection SegmentIndex="0"/>
+</air:AirPricingSolution>
+<air:BrandList>
+<air:Brand Key="VPUkUL4R2BKAiu0nCAAAAA==" BrandID="88997" Name="ECONOMY CLASS - LH" BrandedDetailsAvailable="true" Carrier="CX">
+<air:Title Type="External">ECONOMY CLASS</air:Title>
+<air:Title Type="Short">ECO CLS LH</air:Title>
+<air:Text Type="MarketingAgent">
+Cathay Pacific Makes your Economy Class Experience Better than Ever • A cradle mechanism in the seat back allows for 6 inches recline • Headrest with side wings adjusts four ways to provide maximum head and neck support • Signature Chinese dishes alongside wide range of cuisines from around the world • 9-inch touch-screen personal TV with hundreds of Audio and Video on Demand selections • On-board Power Supply for laptop or other device, and a USB port * If the flight will be operated by another airline or due to operational requirements, the inflight product and service may be different.
+</air:Text>
+<air:Text Type="Strapline">ECONOMY CLASS</air:Text>
+<air:ImageLocation Type="Agent" ImageWidth="150" ImageHeight="150">
+https://cdn.travelport.com/cathaypacific/CX_general_medium_525.jpg
+</air:ImageLocation>
+</air:Brand>
+<air:Brand Key="VPUkUL4R2BKAku0nCAAAAA==" BrandID="102508" Name="Economy Flex" BrandedDetailsAvailable="true" Carrier="EK">
+<air:Title Type="External">Economy Flex</air:Title>
+<air:Title Type="Short">EF</air:Title>
+<air:Text Type="Upsell">
+Economy Flex offers FREE SEATING, additional flexibility and mileage accrual.
+</air:Text>
+<air:Text Type="MarketingAgent">
+EMIRATES PAID SEATS NOW BOOKABLE WITH TRAVELPORT Economy Flex includes: • Free seat assignment • Changes permitted at a fee • Refunds permitted at a fee • 70% flown miles earned • Mileage upgrade eligibility • Checked baggage included * • Hand luggage x 1 bag 7 KG • Complimentary Wi-Fi • Soft and Alcoholic refreshments • ICE entertainment * Please refer to fare rules for full conditions
+</air:Text>
+<air:Text Type="Strapline">Welcome to Emirates Economy Class</air:Text>
+<air:ImageLocation Type="Consumer" ImageWidth="1400" ImageHeight="800">
+https://cdn.travelport.com/emirates/EK_general_large_45859.jpg
+</air:ImageLocation>
+<air:ImageLocation Type="Agent" ImageWidth="150" ImageHeight="150">
+https://cdn.travelport.com/emirates/EK_general_medium_249.jpg
+</air:ImageLocation>
+</air:Brand>
+<air:Brand Key="VPUkUL4R2BKAmu0nCAAAAA==" BrandID="102530" Name="Economy Saver" BrandedDetailsAvailable="true" Carrier="WY">
+<air:Title Type="External">Economy Saver</air:Title>
+<air:Title Type="Short">Economy</air:Title>
+<air:Text Type="Upsell">Additional flexibility with Economy Saver</air:Text>
+<air:Text Type="MarketingAgent">
+With a spacious 34-inch pitch, Oman Air's Economy Class offers everything the modern traveller needs to stay connected, informed and entertained. Saver Economy includes: • Changes at a fee* • Refunds at a fee* • Checked baggage 2 bag x 15kg • Hand baggage 1 bag x 7kg • Standard seating complimentary • Choice seating at a fee* • Inflight dining • Inflight Entertainment • Wi-Fi available on selected aircraft for a fee • Lounge services available in Muscat and Bangkok for a fee • Earn 25% of flown miles as Sindbad miles • Upgrade eligibility with Sindbad miles *Please refer to fare rules for full conditions
+</air:Text>
+<air:Text Type="Strapline">Economy Saver</air:Text>
+<air:ImageLocation Type="Agent" ImageWidth="150" ImageHeight="150">
+https://cdn.travelport.com/omanair/WY_general_medium_59253.jpg
+</air:ImageLocation>
+<air:ImageLocation Type="Consumer" ImageWidth="926" ImageHeight="617">
+https://cdn.travelport.com/omanair/WY_general_large_59256.jpg
+</air:ImageLocation>
+</air:Brand>
+</air:BrandList>
+</air:LowFareSearchRsp>
+</SOAP:Body>
+</SOAP:Envelope>
