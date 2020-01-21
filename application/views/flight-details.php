@@ -15,7 +15,11 @@
 	<body class="front">
 	<div class="loader"></div>
 	<div id="main">
-
+		<script type="text/javascript">
+		$(window).load(function() {
+			$(".loader").fadeOut("slow");
+		})
+		</script>
 	<!-- Tobbar -->
 	<?php echo $this->PageLoadingFtns->getTopBar();?>
 
@@ -84,18 +88,6 @@
 	// print_r($BookingArray);
 	// die;
 	//if we have a direct flight
-	if(count($flights) == 1){
-		$infoArray = Array(
-
-						'Departure' => $flights[0]->attributes()['Origin'],
-						'Arrival' 	=> $flights[0]->attributes()['Destination'],
-						'Time'		=> $flights[0]->attributes()['ArrivalTime'],
-						'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
-						'TotalPrice' => $pricing->attributes()['TotalPrice']
-						);
-						$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
-
-		$this->session->set_userdata($infoArray);
 
 	?>
 
@@ -110,6 +102,24 @@
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
       <h4>Departure</h4>
+			<!--A Flight Section -->
+			<?php
+			if(count($flights) == 1){
+				$infoArray = Array(
+
+								'Departure' => $flights[0]->attributes()['Origin'],
+								'Arrival' 	=> $flights[0]->attributes()['Destination'],
+								'Time'		=> $flights[0]->attributes()['ArrivalTime'],
+								'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
+								'TotalPrice' => $pricing->attributes()['TotalPrice']
+								);
+								$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
+
+				$this->session->set_userdata($infoArray);
+
+
+
+			 ?>
       <div class="panel panel-default">
 		    <div class="panel-body">
 		    	<div class="row">
@@ -119,7 +129,7 @@
 		    		</div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Origin'].' '. date_format(date_create($flights[0]->attributes()['DepartureTime']),"h:m");?></h4>
+		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Origin'].' '. date_format(date_create($flights[0]->attributes()['DepartureTime']),"h:i");?></h4>
 		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['DepartureTime']),"D, d M")?></b></p>
 		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
 		    </div>
@@ -131,7 +141,7 @@
 		    </div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Destination'].' '. date_format(date_create($flights[0]->attributes()['ArrivalTime']),"h:m");?></h4>
+		    	    <h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Destination'].' '. date_format(date_create($flights[0]->attributes()['ArrivalTime']),"h:i");?></h4>
 		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['ArrivalTime']),"D, d M")?></b></p>
 		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
 		    </div>
@@ -144,13 +154,76 @@
 		    </div><!--panel-footer-->
 
       </div><!--panel-default-->
+			<!--End of A flihght section -->
+			<?php
+			//end of if for direct flights
+		}else if(count($flights > 1)){
 
+
+			$tempArray = array();
+				foreach ($flights as $key => $value) {
+				$infoArray = Array(
+
+								'Departure' => $value->attributes()['Origin'],
+								'Arrival' 	=> $value->attributes()['Destination'],
+								'Time'		=> $value->attributes()['ArrivalTime'],
+								'FlightNumber' => $value->attributes()['FlightNumber'],
+								'TotalPrice' => $pricing->attributes()['TotalPrice']
+								);
+								$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
+				$tempArray[]=$infoArray;
+
+			?>
+			<!--For multiple flights -->
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+
+						<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
+							<img src="<?php echo base_url('web-assets/images/saudia.jpg');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
+						</div>
+
+				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+							<h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $value->attributes()['Origin'].' '. date_format(date_create($value->attributes()['DepartureTime']),"h:i");?></h4>
+						<p class="text-center"><b><?php echo date_format(date_create($value->attributes()['DepartureTime']),"D, d M")?></b></p>
+						<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
+				</div>
+
+				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+						<b><h4 class="text-center">Aircraft: BOEING <?php echo $value->attributes()['FlightNumber']?></h4></b>
+										<b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T)</h4></b>
+										<b><h4 class="text-center">5h 30m</h4></b>
+				</div>
+
+				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+							<h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $value->attributes()['Destination'].' '. date_format(date_create($value->attributes()['ArrivalTime']),"h:i");?></h4>
+						<p class="text-center"><b><?php echo date_format(date_create($value->attributes()['ArrivalTime']),"D, d M")?></b></p>
+						<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
+				</div>
+
+				</div> <!--panel-body-->
+				<div class="panel-footer">
+					 <span class="refund"><i class="fa fa-undo"></i>Refundable</span>&nbsp;&nbsp;&nbsp;
+								 <!--<span><i class="fa fa-clock-o"></i> Transit Time 11 Hour(s) 25 Minute(s)</span>-->
+						</div>
+				</div><!--panel-footer-->
+
+			</div><!--panel-default-->
+			<!--End of A flihght section for multiple flights -->
+
+		<?php
+		//Foreach flight loop
+		}
+		//setting the session value
+		$this->session->set_userdata($tempArray);
+	 }//end of continous flights
+			 ?>
            <div class="panel panel-default" style="display:none;">
 		    <div class="panel-body">
 		    	<div class="row">
 
 		    		<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
-		    			<img src="<?php echo base_url('image/airlinelogo-SV.png');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
+		    			<img src="<?php echo base_url('web-assets/images/saudia.jpg');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
 		    		</div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
@@ -218,13 +291,13 @@
         </tr>
         <tr>
             <td>Base Fare</td>
-            <td>PKR 44,790</td>
+            <td><?=($pricing->attributes()["ApproximateBasePrice"])?></td>
             <td></td>
             <td></td>
         </tr>
         <tr>
             <td>Fee & Tax</td>
-            <td>PKR 11,886 </td>
+            <td><?=($pricing->attributes()["Taxes"])?></td>
             <td></td>
             <td></td>
         </tr>
@@ -232,7 +305,7 @@
             <td>Grand Total</td>
             <td></td>
             <td></td>
-            <td>PKR 56,676</td>
+            <td><?=($pricing->AirPricingInfo->attributes()["TotalPrice"])?></td>
         </tr>
     </table>
 </div><!-- col-xs-12 col-sm-12 col-md-6 col-lg-6-->
@@ -327,7 +400,7 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-3 col-lg-3">
-		   <h5>PKR 56,676</h5>
+		   <h5><?=($pricing->AirPricingInfo->attributes()["TotalPrice"])?></h5>
 		</div>
 
 	</div>
@@ -345,7 +418,21 @@
 
 
     </div><!-- menu1 -->
+<?php
+	$fares= $fareInfo->attributes();
 
+	$baggage = ($fareInfo->BaggageAllowance);
+	//types against strings
+	$passsengerType= array(
+		"ADT"=>"Adult",
+		"CHD"=>"Child",
+		"INF"=>"Infant without a seat",
+		"INS"=>"Infant with a seat",
+		"UNN"=>"Unaccompanied child"
+	);
+
+
+ ?>
 
     <div id="menu2" class="tab-pane fade">
 		     <h4><i class="fa fa-plane" aria-hidden="true">Departure</i></h4>
@@ -356,16 +443,16 @@
 		     	<table class="table table-bordered">
 		    <thead>
 		      <tr>
-		        <th class="bg-success">ISLAMABAD BENAZIR BHUTTO INTL <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  JEDDAH KING ABDULAZIZ INT</th>
+		        <th class="bg-success"><?=$fares->attributes()["Origin"]?> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  <?=$fares->attributes()["Destination"]?></th>
 		        <th class="bg-success">Cabin</th>
 		        <th class="bg-success">Check-in</th>
 		      </tr>
 		    </thead>
 		    <tbody>
 		      <tr>
-		        <td>Adult</td>
-		        <td>5-7 kg</td>
-		        <td>2 Pieces (20KG+20KG)</td>
+		        <td><?=($passsengerType[(string)$fares->PassengerTypeCode] )?></td>
+		        <td><?=($baggage->MaxWeight->attributes()["Value"])?> kg</td>
+		        <td><?=($baggage->NumberOfPieces)?> Pieces (20KG+20KG)</td>
 		      </tr>
 		    </tbody>
 		  </table>
@@ -423,10 +510,7 @@
 	</div>
 	</div>
 	</div>
-	<?php
-	//end of if for direct flights
-}
-	 ?>
+
 	<br><br>
 
 	<!-- Page Content Ends -->
@@ -438,10 +522,6 @@
 <!-- Footer Scripts-->
 	<?php echo $this->PageLoadingFtns->getFootScripts();?>
 	<!-- Page Related Scripts -->
-	<script type="text/javascript">
-	$(window).load(function() {
-		$(".loader").fadeOut("slow");
-	})
-	</script>
+
 </body>
 </html>

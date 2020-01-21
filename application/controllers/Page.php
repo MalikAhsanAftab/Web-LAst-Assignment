@@ -49,7 +49,7 @@ class Page extends CI_Controller {
 		//get sorted array
 		$sortedSegments = $this->getRoutesData($flightData,$_POST);
 
-		$sessionData = array('flightDetails' => $xmlRaw);
+		$sessionData = array('flightDetails' => $xmlRaw , 'origin' => $_POST['from']);
 
 		$this->session->set_userdata($sessionData);
 
@@ -75,20 +75,40 @@ class Page extends CI_Controller {
 			$flightsXml = simplexml_load_string($this->session->flightDetails);
 
 			// Grabs the tickets
+			if($flightsXml->children("SOAP" , true)->Body->count() )
+			{
 			$LowFareSearchRsp = $flightsXml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
+			//echo $LowFareSearchRsp->asXML();die;
 			$FlightDetails = $LowFareSearchRsp->AirSegmentList;
 			//segment 2 contains all the keys of all the segments
-			$pricingKey= $key;
+			$pricingKey= urldecode($key);
 
 			//find the air pricing solution against our itinerary
 			foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value) {
 				// code...
 				if($pricingKey == $value->attributes()["Key"] )
-					$AirPricingSol = $value;
+					{
+
+						$AirPricingSol = $value;
+				  }
 			}
+
 			//fill a copy to data
 			$data['pricing']=$AirPricingSol;
 
+			//calculation of fare info
+			//getting the reference key
+			$fareInfoKey = ($AirPricingSol->AirPricingInfo->FareInfoRef->attributes()["Key"]);
+			$fareInfoList = $LowFareSearchRsp->FareInfoList->children("air", true);
+
+			foreach ($fareInfoList as $key => $value) {
+				// code...
+				if((string)$fareInfoKey == (string)$value->attributes()["Key"])
+						$data['fareInfo'] = $value;
+						// var_dump($value->asXML());
+
+			}
+			//echo $AirPricingSol->asXML();die;
 			//develop a list of segment references
 			$allSegmentsRef=array();
 			$allSegmentsRefKeys=array();
@@ -100,11 +120,20 @@ class Page extends CI_Controller {
 				}
 			//we have all segments reference keys
 			$allRelatedSegments = $this->findRelatedSegments($FlightDetails->children('air' , true) , $allSegmentsRefKeys );
+			$sortedInOrder = array();
+
+			//get the starting element from the array
+			$start = $this->session->origin;
+
+			//sort the array and put it in an array let's say sortedayyarRef
+			$this->sortPathOrder($start , $allRelatedSegments , $sortedInOrder);
+
 			//now we have all segments
-			$data['flights']=$allRelatedSegments;
+			$data['flights']=$sortedInOrder;
 
 			$this->load->view("flight-details", $data);
-		}
+		}//end of inner if
+		}//end of 404 else
 	}
 
 	public function bookNow(){

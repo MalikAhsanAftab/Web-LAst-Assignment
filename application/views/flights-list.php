@@ -303,7 +303,7 @@
 																		(<?php
 																		$arrStops= array();
 																		$arrStops[]=$origin;
-																		if(is_array($details) && count($details>1))
+																		if(is_array($details) && (count($details)>1) )
 																		for ($i=1; $i < count($details) ; $i++) {
 																			// code...
 																			$arrStops[]=$details[$i]["Origin"];
@@ -333,7 +333,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12 ">
                 	<span class="price"><?php echo $price['ApproximateTotalPrice']?></span>
                     <div class="pull-right">
-                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/". $price['Key'] )  ?>" class="btn-default btn1">Details</a></div>
+                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/". urlencode($price['Key']) )  ?>" class="btn-default btn1">Details</a></div>
                     </div>
                 </div>
             </div>
