@@ -66,15 +66,44 @@ class Page extends CI_Controller {
 
 	}
 
-	public function flightDetails($key){
-
-		if(empty($key)){
+	public function flightDetails($key = ""){
+		if(empty($key) ){
 
 			show_404();
 		}
 		else{
+			$flightsXml = simplexml_load_string($this->session->flightDetails);
 
-			$this->load->view("flight-details");
+			// Grabs the tickets
+			$LowFareSearchRsp = $flightsXml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
+			$FlightDetails = $LowFareSearchRsp->AirSegmentList;
+			//segment 2 contains all the keys of all the segments
+			$pricingKey= $key;
+
+			//find the air pricing solution against our itinerary
+			foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value) {
+				// code...
+				if($pricingKey == $value->attributes()["Key"] )
+					$AirPricingSol = $value;
+			}
+			//fill a copy to data
+			$data['pricing']=$AirPricingSol;
+
+			//develop a list of segment references
+			$allSegmentsRef=array();
+			$allSegmentsRefKeys=array();
+			$this->iterate($AirPricingSol->Journey , $allSegmentsRef);
+
+			foreach($allSegmentsRef as $k=>$v)
+				{
+					$allSegmentsRefKeys[]=(string)$v->attributes()["Key"] ;
+				}
+			//we have all segments reference keys
+			$allRelatedSegments = $this->findRelatedSegments($FlightDetails->children('air' , true) , $allSegmentsRefKeys );
+			//now we have all segments
+			$data['flights']=$allRelatedSegments;
+
+			$this->load->view("flight-details", $data);
 		}
 	}
 

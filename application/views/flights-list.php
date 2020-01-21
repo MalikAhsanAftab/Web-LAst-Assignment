@@ -249,7 +249,9 @@
 			$arrivalTime = is_array($details) ? $details[count($details)-1]["ArrivalTime"] : $details["ArrivalTime"];
 
 			$origin = is_array($details) ? $details[0]["Origin"] :$details["Origin"];
-			$destination = is_array($details) ? $details[count($details)-1]["Destination"] : $details["Destinaion"];
+			// // var_dump($f["segment"][0]->attributes());
+			 // var_dump(is_array($details)? $details[count($details)-1]["Destination"]:$details["Destination"] );
+			$destination = is_array($details) && count($details) > 0 ? $details[count($details)-1]["Destination"] : $details["Destination"];
 			//print_r($searchData);
 			// echo (($details['Origin'] ."||". $details['Destination'])."--     <br>");
 			// continue ;
@@ -301,6 +303,7 @@
 																		(<?php
 																		$arrStops= array();
 																		$arrStops[]=$origin;
+																		if(is_array($details) && count($details>1))
 																		for ($i=1; $i < count($details) ; $i++) {
 																			// code...
 																			$arrStops[]=$details[$i]["Origin"];
@@ -330,7 +333,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12 ">
                 	<span class="price"><?php echo $price['ApproximateTotalPrice']?></span>
                     <div class="pull-right">
-                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/".(is_array($details) ? $details[0]["Key"]:$details['Key'])."/".$price['Key'])?>" class="btn-default btn1">Details</a></div>
+                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/". $price['Key'] )  ?>" class="btn-default btn1">Details</a></div>
                     </div>
                 </div>
             </div>

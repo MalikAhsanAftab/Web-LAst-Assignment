@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <title><?php echo $this->PageLoadingFtns->getPageTitle(__FILE__);?></title>
 
 	<meta charset="utf-8">
@@ -25,53 +26,76 @@
 
 	<?php
 
-	$flightsXml = simplexml_load_string($this->session->flightDetails);
-		
-	// Grabs the tickets
-	$LowFareSearchRsp = $flightsXml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
-	$FlightDetails = $LowFareSearchRsp->AirSegmentList;
-	$AirPricingSol = $LowFareSearchRsp->AirPricingSolution;
-	$BookingInfo = $AirPricingSol->AirPricingInfo->BookingInfo;
+
+	//develop a list of segment references
+
+	//develop a list of segments
+	// foreach($flights->children('air',true) as $eachFlight){
+	//
+	// 		$eachFlightAttributes = $eachFlight->attributes();
+	//
+	// 		if(in_array($eachFlightAttributes['Key'] , $segmentKeys ) ){
+	//
+	// 			$flights[0]->attributes()[] = $eachFlightAttributes;
+	// 		}
+	//
+	// 		if( in_array($eachFlightPriceAttributes['Key'] , $segmentKeys)){
+	//
+	// 			$PricingArray[] = $eachFlightPriceAttributes;
+	// 			$BookingArray[] = $eachFlightBookingAttributes;
+	//
+	// 		}
+	//
+	// }
+	//$BookingInfo = $AirPricingSol->AirPricingInfo->BookingInfo;
 
 	$DetailsArray  = Array();
 	$PricingArray = Array();
 	$BookingArray = Array();
 
-	$matchFound = 0;
+	//getting an array of segment keys
+	// $segmentKeys = explode("&",$segmentKeys );
+	// foreach($FlightDetails->children('air',true) as $eachFlight){
+	//
+	// 		$eachFlightAttributes = $eachFlight->attributes();
+	//
+	// 		$eachFlightPriceAttributes = $AirPricingSol->attributes();
+	//
+	// 		$eachFlightBookingAttributes = $BookingInfo->attributes();
+	//
+	// 		if(in_array($eachFlightAttributes['Key'] , $segmentKeys ) ){
+	//
+	// 			$flights[0]->attributes()[] = $eachFlightAttributes;
+	// 		}
+	//
+	// 		if( in_array($eachFlightPriceAttributes['Key'] , $segmentKeys)){
+	//
+	// 			$PricingArray[] = $eachFlightPriceAttributes;
+	// 			$BookingArray[] = $eachFlightBookingAttributes;
+	//
+	// 		}
+	//
+	// }
+	//we have details of all flights so far
+	// print_r($DetailsArray);
+	// echo "------";
+	// print_r($PricingArray);
+	// echo "======";
+	// print_r($BookingArray);
+	// die;
+	//if we have a direct flight
+	if(count($flights) == 1){
+		$infoArray = Array(
 
+						'Departure' => $flights[0]->attributes()['Origin'],
+						'Arrival' 	=> $flights[0]->attributes()['Destination'],
+						'Time'		=> $flights[0]->attributes()['ArrivalTime'],
+						'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
+						'TotalPrice' => $pricing->attributes()['TotalPrice']
+						);
+						$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
 
-	foreach($FlightDetails->children('air',true) as $eachFlight){
-
-			$eachFlightAttributes = $eachFlight->attributes();
-
-			$eachFlightPriceAttributes = $AirPricingSol->attributes();
-
-			$eachFlightBookingAttributes = $BookingInfo->attributes();
-
-			if($eachFlightAttributes['Key'] == $this->uri->segment(3)){
-
-				$DetailsArray = $eachFlightAttributes;
-			}
-
-			if($eachFlightPriceAttributes['Key'] == $this->uri->segment(4)){
-
-				$PricingArray = $eachFlightPriceAttributes;
-				$BookingArray = $eachFlightBookingAttributes;
-
-			}
-
-	}
-
-	$infoArray = Array(
-
-					'Departure' => $DetailsArray['Origin'],
-					'Arrival' 	=> $DetailsArray['Destination'],
-					'Time'		=> $DetailsArray['ArrivalTime'],
-					'FlightNumber' => $DetailsArray['FlightNumber'],
-					'TotalPrice' => $PricingArray['TotalPrice']
-					);
-
-	$this->session->set_userdata($infoArray);
+		$this->session->set_userdata($infoArray);
 
 	?>
 
@@ -95,20 +119,20 @@
 		    		</div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $DetailsArray['Origin'].' '. date_format(date_create($DetailsArray['DepartureTime']),"h:m");?></h4>
-		    		<p class="text-center"><b><?php echo date_format(date_create($DetailsArray['DepartureTime']),"D, d M")?></b></p>
+		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Origin'].' '. date_format(date_create($flights[0]->attributes()['DepartureTime']),"h:m");?></h4>
+		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['DepartureTime']),"D, d M")?></b></p>
 		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
 		    </div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    		<b><h4 class="text-center">Aircraft: BOEING <?php echo $DetailsArray['FlightNumber']?></h4></b>
+		    		<b><h4 class="text-center">Aircraft: BOEING <?php echo $flights[0]->attributes()['FlightNumber']?></h4></b>
                     <b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T)</h4></b>
                     <b><h4 class="text-center">5h 30m</h4></b>
 		    </div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $DetailsArray['Destination'].' '. date_format(date_create($DetailsArray['ArrivalTime']),"h:m");?></h4>
-		    		<p class="text-center"><b><?php echo date_format(date_create($DetailsArray['ArrivalTime']),"D, d M")?></b></p>
+		    	    <h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Destination'].' '. date_format(date_create($flights[0]->attributes()['ArrivalTime']),"h:m");?></h4>
+		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['ArrivalTime']),"D, d M")?></b></p>
 		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
 		    </div>
 
@@ -121,7 +145,7 @@
 
       </div><!--panel-default-->
 
-           <div class="panel panel-default">
+           <div class="panel panel-default" style="display:none;">
 		    <div class="panel-body">
 		    	<div class="row">
 
@@ -163,7 +187,7 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-3 col-lg-3">
-		   <h5><?php echo $PricingArray['TotalPrice']?></h5>
+		   <h5><?php echo $pricing->attributes()['TotalPrice']?></h5>
 		</div>
 
 	</div>
@@ -213,7 +237,7 @@
     </table>
 </div><!-- col-xs-12 col-sm-12 col-md-6 col-lg-6-->
 
-     	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+     	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 " style="display:none;">
 
         <table class="table table-bordered">
           <thead>
@@ -399,6 +423,10 @@
 	</div>
 	</div>
 	</div>
+	<?php
+	//end of if for direct flights
+}
+	 ?>
 	<br><br>
 
 	<!-- Page Content Ends -->
