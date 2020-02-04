@@ -34,27 +34,59 @@ class Page extends CI_Controller {
 	{
 		redirect("admin/Login");
 	}
-
+	public static function validateDate($date , $format = 'm/d/Y'){
+		$d = DateTime::createFromFormat($format , $date);
+		//The Y ( 4 digits year) returns TRUE for any integer with any number of digits
+		//so changing the comparison from == to === fixes the issue
+		return $d && $d->format($format) === $date;
+	}
 	public function flightsList(){
 
-		if($_POST){
+		//sanitize / validate  posted data
+		if($_POST && isset($_POST['adult']) && isset($_POST['child']) && isset($_POST['infant'])
+		&& is_numeric($_POST['adult']) && is_numeric($_POST['child']) && is_numeric($_POST['infant'])
+		&& ($_POST['adult']>0 ||
+		 ($_POST['child']>0 && count($_POST['child_']) == $_POST['child']) ||
+		($_POST['infant']>0 && count($_POST['infant_']) == $_POST['infant']) ) &&
+		Page::validateDate($_POST['departOn'])
+	){
+
+
+
+		//validate departure of returning flight if available
+		if(isset($_POST['returnOn']) )
+		{
+			 if(empty($_POST['returnOn']) || !Page::validateDate($_POST['returnOn']))
+			 		unset($_POST['returnOn']);
+		}
+
+		$list = $this->uApi->getCarriers();
+		$carriers =array();
+		if($list)
+		foreach ($list as $key => $value) {
+			$carriers[$value['Code']] = $value['Name'];
+		}
 
 		$xmlRaw = $this->uApi->searchFlights($_POST,true);
 
+
 		$xml = simplexml_load_string($xmlRaw);
+
+		//in case of fault no backup plans
 		// Grabs the tickets
 
 		$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 
+		// echo ($flightData->asXML() );die ;
 		//get sorted array
 		$sortedSegments = $this->getRoutesData($flightData,$_POST);
-
+		// print_r($sortedSegments);die;
 		$sessionData = array('flightDetails' => $xmlRaw , 'origin' => $_POST['from']);
 
 		$this->session->set_userdata($sessionData);
-
+		// echo $xml->asXML();die;
 		$data['flights'] = $sortedSegments;
-
+		$data['carriers'] = $carriers;
 		$data['searchData'] = $_POST;
 		$this->load->view("flights-list",$data);
 
@@ -66,6 +98,21 @@ class Page extends CI_Controller {
 
 	}
 
+
+	public static function customeMapper($listArr){
+		//this method is intended for fair info list
+		//in this way we have an array where theier key is actually a key to an array
+		//the purpose is to use this method witha array map function for the purpose of ease
+		$arrTemp = array();
+
+		foreach ($listArr as $key => $value) {
+			// code...
+
+			$arrTemp[(string)$value->attributes()["Key"]] = $value;
+		}
+
+		return $arrTemp;
+	}
 	public function flightDetails($key = ""){
 		if(empty($key) ){
 
@@ -74,44 +121,123 @@ class Page extends CI_Controller {
 		else{
 			$flightsXml = simplexml_load_string($this->session->flightDetails);
 
-			// Grabs the tickets
-			if($flightsXml->children("SOAP" , true)->Body->count() )
+
+			// Grabs the info
+			if(!($flightsXml===false) && $flightsXml->children("SOAP" , true)->Body->count() )
 			{
 			$LowFareSearchRsp = $flightsXml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 			//echo $LowFareSearchRsp->asXML();die;
-			$FlightDetails = $LowFareSearchRsp->AirSegmentList;
-			//segment 2 contains all the keys of all the segments
-			$pricingKey= urldecode($key);
 
-			//find the air pricing solution against our itinerary
-			foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value) {
-				// code...
+			// echo $LowFareSearchRsp->asXML();die;
+			$FlightDetails = $LowFareSearchRsp->AirSegmentList;
+
+			//fare info list
+			$fareInfoList = Page::customeMapper($LowFareSearchRsp->FareInfoList->children("air", true) ) ;
+			 //($fareInfoList);die;
+			//echo $AirPricingSol->asXML();die;
+
+			//segment 2 contains all the keys of all the segments
+			$pricingKey= str_replace("__" ,"/" ,urldecode($key) );
+			//echo "Key Posted : ".$pricingKey;
+			//Air pricing array which will be grand array
+			//[pricingsol_key_1]->|
+			//										|[Air_pricing_info_key_1]->|
+			//																							 |[PASSENGER_TYPE_CODE]
+			//																							 |[PASSENGER_AGE(optional)]
+			//																							 |[FareInfoRef] (direct flight)
+
+			//										|[Air_pricing_info_key_2]->|
+			//																							 |[PASSENGER_TYPE_CODE]
+			//																							 |[FareInfoRef] -
+			//																							 |[FareInfoRef]  |
+			//																							 |[FareInfoRef]  | Connecting flights
+			//																							 |[FareInfoRef]  |
+			//																							 |[FareInfoRef]  |
+			//																							 |[FareInfoRef] -
+
+			//										|[Air_pricing_info_key_3]
+			//[pricingsol_key_2]->|
+			//										|
+			//[pricingsol_key_3]->|
+			//										|
+
+			//get all the bookings
+			//the key will be the segment reference
+			$bookings = array();
+
+			// var_dump($LowFareSearchRsp->asXML());die;
+			//find all the air pricing solutions against our itinerary
+			foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value)
 				if($pricingKey == $value->attributes()["Key"] )
 					{
 
-						$AirPricingSol = $value;
-				  }
-			}
+					//for all the pricing info tags nested in airpricingsolution
+					//GRoup Huge
+					//**Air Pricing SOlutions **Fare INFO LIST
+					//GROUP LArge in AIR PRICING SOLUTIONS
+					//**AIR PRICING INFO  has fare info references
+					//get all the references
+					//find fares having these keys
+					$tempArr= array();
+					$airPricingArrayLevel1 = array();
+					//air pricing info could be between 1-3
+					//for either one /any/all infants , childeren , adults
+
+					foreach($value->AirPricingInfo as $k => $v)
+					{
+						$airPricingArrayLevel2 = array("Passenger"=>array() , "FareInfoSets"=>array() );
+
+						//for all passengers of this type
+						foreach ($v->PassengerType as $pk => $passsengerType) {
+							$airPricingArrayLevel2["Passenger"][]=$passsengerType->attributes() ;
+						}
+						$taxes = array();
+						//get a sum of taxes
+						foreach ($v->TaxInfo as $TaxInfo) {
+							$taxes[]= $TaxInfo->attributes();
+						}
+						foreach($v->BookingInfo as $booking){
+							// var_dump($booking->attributes());
+							$bookings[(string)$booking->attributes()["SegmentRef"]] = $booking->attributes();
+						}
+
+						$pricingKey = (string) $v->attributes()["Key"];
+						//forall the fare info reference tags nested inside airpricinginfo
+						foreach ($v->FareInfoRef as $key => $val) {
+							// Now we have fare info referenece key
+							//we just have to find fare info which has key we have here
+							// var_dump($val->asXML());die;
+
+							//check if the key is in fare info list
+							$fareInfoKeyTemp = (string)$val->attributes()["Key"];
+								if( array_key_exists( $fareInfoKeyTemp , $fareInfoList ) )
+										{
+											$airPricingArrayLevel2["FareInfoSets"][$fareInfoKeyTemp]['FareInfo'] =$fareInfoList[$fareInfoKeyTemp] ->attributes();
+											$airPricingArrayLevel2["FareInfoSets"][$fareInfoKeyTemp]['NoOfPieces'] =$fareInfoList[$fareInfoKeyTemp] ->BaggageAllowance ->NumberOfPieces;
+											$airPricingArrayLevel2["FareInfoSets"][$fareInfoKeyTemp]['MaxWeight'] =$fareInfoList[$fareInfoKeyTemp]->BaggageAllowance ->MaxWeight->attributes();
+										}
+
+
+						}
+						$airPricingArrayLevel2["FareInfoSets"][$fareInfoKeyTemp]['Taxes'] =$taxes;
+						// $airPricingArrayLevel2["FareInfoSets"][$fareInfoKeyTemp]['Bookings'] =$taxes;
+
+						$airPricingArrayLevel1[(string)$v->attributes()["Key"]] = $airPricingArrayLevel2;
+					} //end of airpricinginfo foreach loop
+
+				$airPricingArrayLevel0= $airPricingArrayLevel1;
+				break;
+			}//end of airpricing solution if
 
 			//fill a copy to data
-			$data['pricing']=$AirPricingSol;
-
-			//calculation of fare info
-			//getting the reference key
-			$fareInfoKey = ($AirPricingSol->AirPricingInfo->FareInfoRef->attributes()["Key"]);
-			$fareInfoList = $LowFareSearchRsp->FareInfoList->children("air", true);
-
-			foreach ($fareInfoList as $key => $value) {
-				// code...
-				if((string)$fareInfoKey == (string)$value->attributes()["Key"])
-						$data['fareInfo'] = $value;
-						// var_dump($value->asXML());
-
-			}
-			//echo $AirPricingSol->asXML();die;
+			$data['pricing']=$AirPricingSol = $value;
+			$data['fares'] = $airPricingArrayLevel0;
+			$data['bookings'] = $bookings;
+			// print_r( $data);die;
 			//develop a list of segment references
 			$allSegmentsRef=array();
 			$allSegmentsRefKeys=array();
+
 			$this->iterate($AirPricingSol->Journey , $allSegmentsRef);
 
 			foreach($allSegmentsRef as $k=>$v)
@@ -133,6 +259,10 @@ class Page extends CI_Controller {
 
 			$this->load->view("flight-details", $data);
 		}//end of inner if
+		else{
+			$data['error'] = "Something went wrong while processing your request";
+			$this->load->view('home');
+		}
 		}//end of 404 else
 	}
 
@@ -276,11 +406,12 @@ class Page extends CI_Controller {
 		$grandSortedSegments=array();
 		$pricingSolutions = $xmlObj->AirPricingSolution ;
 
-
+		// echo $pricingSolutions->asXML();die;
 		//all segments
 		$allSegmentsList = $xmlObj->AirSegmentList;
 		//will be used for keys
 		$index=0;
+
 		if($allSegmentsList && $allSegmentsList->count() > 0)
 			{
 
@@ -294,7 +425,7 @@ class Page extends CI_Controller {
 
 			  //recursively iterate to get segment refereneces and fill $allSegmentsRef
 			  $this->iterate($value->Journey, $allSegmentsRef );
-
+				// var_dump ($allSegmentsRef );die;
 				//we have all segment references in $allSegmentsRef
 
 				//array of all reference keys
@@ -325,6 +456,7 @@ class Page extends CI_Controller {
 			    //iterate over $allSegments
 					$grandSortedSegments[$index]["segment"] = $sortedInOrder;
 					$grandSortedSegments[$index]["pricing"] = $value;
+					$grandSortedSegments[$index]["TravelTime"] = $value->Journey->attributes()["TravelTime"];
 					//$this->showFlights($sortedInOrder);
 				}//end of if
 				++$index;
@@ -373,6 +505,9 @@ class Page extends CI_Controller {
 	private function iterate($children , &$all )
 	{
 		//in case of arrau has some elements
+		// var_dump($children->attributes());echo " Is Array :".is_array($children->attributes()) ;die;
+		//if($children->count()  )
+		if($children)
 			foreach ($children as $key => $child) {
 
 				//check if a node has key

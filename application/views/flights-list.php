@@ -228,21 +228,36 @@
 		// echo "<pre>";
 		// print_r($flights);
 		// echo "</pre>";
-
+		//I will be using this last code so that
+		//i will be able to make group of airlines
+		$lastCode = '';
 		foreach($flights as $k=>$f){
 			// var_dump($f);die;
 			//in case we have a direct flight
 			$details = array();
+
+			//lets say we need total transit time i.e total flight time
+			$transitTime= 0;
+			//getting the carrier details
 			if(count($f["segment"]) ==1)
 			{
 				$details = $f["segment"][0]->attributes();
+				$carrierCode = (string)$details['Carrier'];
+				$transitTime+=(int)$details['FlightTime'];
 
 			}elseif(count($f["segment"]) > 1)
 			{
 							foreach ($f["segment"] as $key => $value) {
 								$details[] = $value->attributes();
+								$transitTime+=(int)$value->attributes()["FlightTime"];
 							}
+							$carrierCode = (string)$details[0]['Carrier'];
 			}
+			//for same airline grouping
+			$sameAirLine =false;
+			if($lastCode == $carrierCode)
+				$sameAirLine = true;
+
 			$price = $f["pricing"]->attributes();
 
 			$departureTime = is_array($details) ? $details[0]["DepartureTime"] :$details["DepartureTime"];
@@ -262,15 +277,32 @@
 			// continue;
 
 			//Handling case 2
+			// Manipulating the travel time string
+			$travelTime = str_replace("T","", str_replace("P" ,"" , (string)$f["TravelTime"]) );
+			$travelTimeArr = preg_split("/[DHMS]+/" , $travelTime);
+
+			//calculating transit time we have so far is total amount of mionutes
+			//so we have to u know that calculat days , hour s , minutes
+			$transitTimeStr="";
+			$transitDays = floor($transitTime/2400);
+			$transitTime-=floor($transitDays * 2400);
+			$transitHours = floor($transitTime /60);
+			$transitTime-=floor($transitHours * 60);
+			$transitMinutes = floor($transitTime);
+
+			//making the str which has to be shown
+			$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
 		?>
 
 
 
-			<div class="flight-list-view fadeInUp animated">
+			<div class="flight-list-view fadeInUp animated" <?=($sameAirLine ? 'style="margin-top:0px;"': '')?> >
         <div class="col-md-12 col-sm-12 col-xs-12 text-center clear-padding flight-desc">
             <div class="col-md-12 pd main_col col-xs-12">
-                <div class="outbound"><img src="https://www.checkin.pk/frontend/images/AirLineImages/airlinelogo-WY.png" alt="PK"> Outbound
+							<?php if(!$sameAirLine){ ?>
+                <div class="outbound"><img src="https://www.checkin.pk/frontend/images/AirLineImages/airlinelogo-WY.png" alt="<?=($carrierCode)?>"><?=($carriers[(string)$carrierCode])?>
                 </div>
+							<?php } ?>
                 <table class="table table-condensed outbound">
                     <thead>
                     <tr class="list_heading">
@@ -295,7 +327,7 @@
                                 <?php echo $destination;?>
                             </td>
 
-                            <td class="">0d 08h 20m
+                            <td class=""><?=($travelTimeArr[0] ."d ". $travelTimeArr[1]."h " . $travelTimeArr[2]."m")?>
                                 <br>
                                 <small><?php
 																		echo (is_array($details) ? (count($details)-1)." Stop".(count($details)>2 ?"s":"") :"Direct" );
@@ -315,7 +347,7 @@
                             </td>
                         </tr>
  							<tr class="trnsit">
-                                <td colspan="3">Transit Time : 04h 15m
+                                <td colspan="3">Transit Time : <?=$transitTimeStr?>
                                 </td>
                             </tr>
                     </tbody>
@@ -333,7 +365,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12 ">
                 	<span class="price"><?php echo $price['ApproximateTotalPrice']?></span>
                     <div class="pull-right">
-                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/". urlencode($price['Key']) )  ?>" class="btn-default btn1">Details</a></div>
+                       <div class="right_side"><a href="<?php echo base_url("Page/flightDetails/". urlencode(str_replace("/","__",$price['Key']) ) )  ?>" class="btn-default btn1">Details</a></div>
                     </div>
                 </div>
             </div>
@@ -343,7 +375,7 @@
     </div>
 
 			<?php
-
+				$lastCode = $carrierCode;
 		} //end of foreach
 		// die ;
 

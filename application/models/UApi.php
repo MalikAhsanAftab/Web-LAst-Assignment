@@ -40,9 +40,51 @@ class uApi extends CI_MODEL {
 
 	public function searchFlights($dataArray = array(),$rawXml = false){
 
+		//Minimum Requirements
 		$from = $dataArray['from'];
 		$to = $dataArray['to'];
-		$departOn = date_format(date_create($dataArray['departOn']),'Y-m-d');
+
+
+		//getting the information from array
+		$adultsCount= $dataArray["adult"];
+		$childCoun= $dataArray["child"];
+		$infantCount = $dataArray["infant"] ;
+
+		//getting the age of each child
+		$children = isset($dataArray["child_"]) ? $dataArray["child_"] : array();
+
+		//getting the infant array
+		$infants = isset($dataArray["infant_"]) ? $dataArray["infant_"] : array();
+
+		//infant xml
+		$infXML="";
+		//child XML
+		$childXML="";
+		//adultXML
+		$adtXML = "";
+		//calculating the ages
+		$childrenAge = array();
+		$infantAge = array();
+
+		//print
+		$index=1;
+		foreach ($children as $key => $value) {
+			$tmp='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="CNN" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
+			$childXML.=$tmp;
+		}
+		foreach ($infants as $key => $value) {
+			$infXML.='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="INF" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
+		}
+		for ( $i=0 ; $i<$dataArray['adult']; $i++) {
+			$adtXML.='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="ADT" />';
+		}
+		//initial data that is from , to and departure time xml is developed
+		// var_dump($departOn);die;
+		$Route = $this->getTemplateXML($from , $to ,  $dataArray['departOn']);
+
+		//incase we have a return flight
+		if(isset($dataArray['returnOn']) )
+			$Route .= $this->getTemplateXML($to , $from , $dataArray['returnOn']);
 
 		$message = '
 		<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -50,26 +92,21 @@ class uApi extends CI_MODEL {
 		   <soap:Body>
 			  <air:LowFareSearchReq TraceId="trace" AuthorizedBy="user" SolutionResult="true" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" xmlns:air="http://www.travelport.com/schema/air_v42_0" xmlns:com="http://www.travelport.com/schema/common_v42_0">
 				 <com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
-				 <air:SearchAirLeg>
-					<air:SearchOrigin>
-					   <com:Airport Code="'.$from.'"/>
-					</air:SearchOrigin>
-					<air:SearchDestination>
-					   <com:Airport Code="'.$to.'"/>
-					</air:SearchDestination>
-					<air:SearchDepTime PreferredTime="'.$departOn.'">
-					</air:SearchDepTime>
-				 </air:SearchAirLeg>
+				 '.$Route.'
 				 <air:AirSearchModifiers>
 					<air:PreferredProviders>
 					   <com:Provider Code="'.$this->uApi->getApiDetails('PROVIDER').'"/>
 					</air:PreferredProviders>
 				 </air:AirSearchModifiers>
-				 <com:SearchPassenger BookingTravelerRef="1" Code="ADT" xmlns:com="http://www.travelport.com/schema/common_v42_0"/>
+				 	'
+				 .$adtXML.$childXML.$infXML.
+				 '
 			  </air:LowFareSearchReq>
 		   </soap:Body>
 		</soap:Envelope>
 		';
+		// die($message);
+		//<com:SearchPassenger BookingTravelerRef="1" Code="ADT" xmlns:com="http://www.travelport.com/schema/common_v42_0"/>
 		$msg=`<LowFareSearchReq xmlns="http://www.travelport.com/schema/air_v42_0" TraceId="5362d11b-7c79-4b34-923d-a2633e300e95" TargetBranch="P3088249" ReturnUpsellFare="true">
   <BillingPointOfSaleInfo xmlns="http://www.travelport.com/schema/common_v42_0" OriginApplication="uAPI" />
   <SearchAirLeg>
@@ -131,7 +168,22 @@ class uApi extends CI_MODEL {
 		}
 
 	}
+	//its just a function which alters the xml string as per arguments
+	//and then returns the string
+	public function getTemplateXML($from , $to , $departOn){
+		$departureOn = date_format(date_create($departOn),'Y-m-d');
 
+		return '<air:SearchAirLeg>
+		 <air:SearchOrigin>
+				<com:Airport Code="'.$from.'"/>
+		 </air:SearchOrigin>
+		 <air:SearchDestination>
+				<com:Airport Code="'.$to.'"/>
+		 </air:SearchDestination>
+		 <air:SearchDepTime PreferredTime="'.$departureOn.'">
+		 </air:SearchDepTime>
+		</air:SearchAirLeg>';
+	}
 	public function bookTicket(){
 
 		$message = '
@@ -280,7 +332,15 @@ class uApi extends CI_MODEL {
 		return $xml;
 	}
 
+	//get the list of carriers
+	public function getCarriers(){
 
+			$this->db->select('*')->from('carriers');
+
+			$query = $this->db->get();
+
+			return $query->result_array();
+	}
 
 }
 ?>

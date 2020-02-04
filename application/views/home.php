@@ -19,7 +19,7 @@
 	<?php echo $this->PageLoadingFtns->getTopBar();?>
 
 	<!-- Navigation -->
-	<?php echo $this->PageLoadingFtns->getNavBar();?> 
+	<?php echo $this->PageLoadingFtns->getNavBar();?>
 
 
 	<div id="slider_wrapper">
@@ -44,7 +44,7 @@
             		<div class="txt3"><span>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod.</span></div>
             	</div>
             </div>-->
-        </div>  
+        </div>
         <div class="item">
         	<img src="<?php echo base_url();?>web-assets/images/brooklyn1.jpg" class="img-responsive" alt="slider">
             <!--<div class="slider">
@@ -54,7 +54,7 @@
             		<div class="txt3"><span>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod.</span></div>
             	</div>
             </div>-->
-        </div>  
+        </div>
          <div class="item">
         	<img src="<?php echo base_url();?>web-assets/images/london.jpg" class="img-responsive" alt="slider">
             <!--<div class="slider">
@@ -64,7 +64,7 @@
             		<div class="txt3"><span>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod.</span></div>
             	</div>-->
             </div>
-        </div>                     
+        </div>
     </div>
      <!-- Controls -->
             <a class="left carousel-control" href="#bg_slider" data-slide="prev">
@@ -90,40 +90,40 @@
 
         </div>
         <div class="tabs_content tabs1_content">
-		
+
             <div id="tabs-1">
               <form method="POST" class="form1" action="<?php echo base_url("Page/flightsList")?>">
                 <div class="row">
                   <div class="col-sm-4 col-md-2">
                       <label>Flying from:</label>
-                        <input type="text" class="form-control" name="from" id="from" list="allCountries1"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying From" required />
+                        <input type="text" class="form-control" name="from" id="from" list="allCountries1"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying From" value="KHI" required />
 						<datalist id="allCountries1" class="allCountries">
 						</datalist>
 					</div>
                   <div class="col-sm-4 col-md-2">
 
                       <label>To:</label>
-				
-                     <input type="text" class="form-control" id="to" name="to" list="allCountries2"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying To" required  />
+
+                     <input type="text" class="form-control" id="to" name="to" list="allCountries2"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying To" required  value="LHE" />
 						<datalist id="allCountries2" class="allCountries">
-							
+
 						</datalist>
-						
+
                     </div>
-					
+
 					 <script>
 						function fetchCountries(value){
-				
+
 						if(value.length >= 3){
-						
+
 						$.post("<?php echo base_url("admin/Ajax/Ajax")?>",{action:"fetchCountries", keyword:value},function(data){
-							
+
 							$(".allCountries").html(data);
 
 							//$("#load").hide();
-							
+
 						});
-						
+
 						}
 					}
 			  </script>
@@ -139,7 +139,7 @@
                     <div class="input1_wrapper">
                       <label>Returning:</label>
                       <div class="input1_inner">
-                        <input type="text" class="input datepicker" value="Mm/Dd/Yy">
+                        <input type="text" class="input datepicker" value="Mm/Dd/Yy" name="returnOn">
                       </div>
                     </div>
                   </div>
@@ -147,7 +147,8 @@
                     <div class="select1_wrapper">
                       <label>Adult:</label>
                       <div class="select1_inner">
-                        <select class="select2 select select3" style="width: 100%">
+                        <select class="select2 select select3" style="width: 100%" name="adult">
+													<option value="0">0</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -160,11 +161,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-4 col-md-1">
+									<div class="col-sm-4 col-md-1">
                     <div class="select1_wrapper">
                       <label>Child:</label>
                       <div class="select1_inner">
-                        <select class="select2 select select3" style="width: 100%">
+                        <select class="select2 select select3" style="width: 100%" name="child" onchange="preferncesChanged(this)">
+													<option value="0">0</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -177,15 +179,98 @@
                       </div>
                     </div>
                   </div>
+									<div class="col-sm-4 col-md-1">
+                    <div class="select1_wrapper">
+                      <label>Infant:</label>
+                      <div class="select1_inner">
+                        <select class="select2 select select3" style="width: 100%" name="infant" onchange="preferncesChanged(this)">
+													<option value="0">0</option>
+													<option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+								</div>
+									<div class="row" id="children"></div>
+									<div class="row" id="infants"></div>
+
                   <div class="col-sm-4 col-md-2">
                     <div class="button1_wrapper">
                       <button type="submit" class="btn-default btn-form1-submit">Search <i class="fa fa-search"></i></button>
                     </div>
                   </div>
                 </div>
+
               </form>
-			  
-			 
+							<script type="text/javascript">
+							var child,infant = 0;
+								function preferncesChanged(obj){
+									console.log(obj.value);
+									var label="child";
+									if(obj.name=="infant")
+									{
+										label="infant";
+									}
+									var htm="";
+									for(var i=0;  i< obj.value ;i++)
+									{
+										flag= obj.name=='infant' ? false: true;
+										htm+=getHtml( obj.name+" "+(i+1), obj.name+"_" , flag) ;
+									}
+									if(obj.name == "infant")
+									{
+										//infants
+										document.getElementById("infants").innerHTML =htm;
+									}else {
+										//children
+										document.getElementById("children").innerHTML = htm;
+									}
+
+								}
+								function getHtml(label , type , flag){
+									if(flag)
+									return `<div class="col-sm-4 col-md-1">
+                    <div class="select1_wrapper ml-20">
+                      <label>Age of ${label}</label>
+                      <div class="select1_inner">
+                        <select class="select2 select select3 " style="width: 100%" name="${type}[]" tabindex="-1" aria-hidden="true">
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11" selected>11</option>
+
+												</select>
+                      </div>
+                    </div>
+                  </div>`;
+									return `<div class="col-sm-4 col-md-1">
+                    <div class="select1_wrapper ml-20">
+                      <label>Age of ${label}</label>
+                      <div class="select1_inner">
+                        <select class="select2 select select3 " style="width: 100%" name="${type}[]" tabindex="-1" aria-hidden="true">
+                          <option value="0">0</option>
+                          <option value="1" selected>1</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>`;
+
+								}
+							</script>
+
             </div>
 			</form>
             <div id="tabs-2">
@@ -500,12 +585,12 @@
   <h2 class="animated" data-animation="fadeInUp" data-animation-delay="100">Umra Packages</h2>
   <div class="title1 animated" data-animation="slideInLeft" data-animation-delay="200">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod <br>tincidunt ut laoreet dolore magna aliquam erat volutpat.</div>
   <br/>
- 
+
   <div id="popular_wrapper1">
      <div id="popular_inner">
           <div id="popular1">
-          	<div class="inner">  
-          		    <div class="row">  
+          	<div class="inner">
+          		    <div class="row">
                       <div class="col-md-4 col-sm-4 col-lg-4 animated" data-animation="slideInLeft" data-animation-delay="200">
                         <div class="popular">
                           <div class="popular_inner">
@@ -536,7 +621,7 @@
                           </div>
                         </div>
                         </div>
-                        
+
                      <div class="col-md-4 col-sm-4 col-lg-4 animated" data-animation="slideInDown" data-animation-delay="200">
                       <div class="popular">
                           <div class="popular_inner">
@@ -688,14 +773,14 @@
                             </div>
                           </div>
                          </div>
-                        </div>     
+                        </div>
                         </div>
   					  </div>
 					</div>
 				</div>
 			</div>
 		</div>-->
-       
+
 <div class="container">
 	 <h2 class="animated" data-animation="fadeInUp" data-animation-delay="100">Top Destinations</h2>
     <div class="row">
@@ -719,10 +804,10 @@
                 <div class="v1">London</div>
                 <div class="v2"></div>
               </div>
-             </figure>   
+             </figure>
             </div>
             <!--</div>
-            
+
             <div class="row">-->
 			<div class="col-md-4 padding-0 animated" data-animation="zoomIn" data-animation-delay="1000">
             	<figure class="item2">
@@ -731,9 +816,9 @@
                 <div class="v1">Paris</div>
                 <div class="v2"></div>
               </div>
-             </figure> 
+             </figure>
             </div>
-          
+
             <div class="col-md-4 padding-0 animated" data-animation="zoomIn" data-animation-delay="1200">
             	<figure class="item2">
             	<img src="<?php echo base_url();?>web-assets/images/amsterdam.jpg" alt="locations" class="img-responsive">
@@ -741,9 +826,9 @@
                 <div class="v1">Amsterdam</div>
                 <div class="v2"></div>
               </div>
-             </figure> 
+             </figure>
             </div>
-            
+
             <div class="col-md-4 padding-0 animated" data-animation="zoomIn" data-animation-delay="1400">
             	<figure class="item2">
             	<img src="<?php echo base_url();?>web-assets/images/rome.jpg" alt="locations" class="img-responsive">
@@ -751,9 +836,9 @@
                 <div class="v1">Rome</div>
                 <div class="v2"></div>
               </div>
-             </figure> 
+             </figure>
             </div>
-            
+
             <div class="col-md-8 padding-0 animated" data-animation="zoomIn" data-animation-delay="1500">
             	<figure class="item2">
             	<img src="<?php echo base_url();?>web-assets/images/prague.jpg" alt="locations" class="img-responsive">
@@ -761,7 +846,7 @@
                 <div class="v1">Prague</div>
                 <div class="v2"></div>
               </div>
-             </figure> 
+             </figure>
             </div>
             </div>
         </div>
@@ -788,7 +873,7 @@
         <div class="col-sm-2 animated" data-animation="fadeInRight" data-animation-delay="400">
           <a href="#" class="btn-default btn0">Search</a>
         </div>
-        
+
         <!--<div class="col-sm-2 animated" data-animation="slideInLeft" data-animation-delay="600" data-animation-speed="10">
           <img src="<?php echo base_url();?>web-assets/images/etihad.png" alt="etihad" class="img-responsive">
         </div>-->
@@ -1017,7 +1102,7 @@
         <div class="popular animated" data-animation="slideInRight" data-animation-delay="200">
           <div class="popular_inner">
             <figure>
-              <img src="<?php echo base_url();?>web-assets/images/hotel1.jpg" alt="" class="img-responsive"> 
+              <img src="<?php echo base_url();?>web-assets/images/hotel1.jpg" alt="" class="img-responsive">
             </figure>
             <div class="caption2">
               <div class="txt1"><span>Rome</span> 6 Night Tour</div>
@@ -1039,7 +1124,7 @@
             </div>
            </div>
           </div>-->
-        </div>   
+        </div>
     <div class="row">
         <!--<div class="col-md-4 col-centered">
         <div class="popular animated" data-animation="slideInLeft" data-animation-delay="400">
@@ -1069,11 +1154,11 @@
     </div>-->
     </div>
     <div class="row">
-     <!--<div class="col-md-4"> 	
+     <!--<div class="col-md-4">
     	<div class="popular animated" data-animation="slideInRight" data-animation-delay="600">
           <div class="popular_inner">
             <figure>
-              <img src="<?php echo base_url();?>web-assets/images/hotel1.jpg" alt="" class="img-responsive">   
+              <img src="<?php echo base_url();?>web-assets/images/hotel1.jpg" alt="" class="img-responsive">
             </figure>
             <div class="caption2">
               <div class="txt1"><span>London</span> 6 Night Tour</div>
@@ -1096,7 +1181,7 @@
            </div>
           </div>-->
          </div>
-  	
+
     <div class="popular">
       <div class="popular_inner animated" data-animation="rotateInDownRight" data-animation-delay="200">
     		<div class="col-md-4">
@@ -1119,7 +1204,7 @@
             </figure>
     </div>
    </div>
-  </div> 
+  </div>
     <div class="popular">
     <div class="popular_inner animated" data-animation="rotateInDownLeft" data-animation-delay="200">
      <div class="col-md-8">
@@ -1197,21 +1282,21 @@
                                 <p class="description">Brilliant serivces provided by Max International Travels during Hajj days.</p>
                             </div>
              			</div>
-                           
+
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
           </div>
     </div>
 </div>
 <div id="partners">
-  <div class="container"> 
+  <div class="container">
     <div class="row">
     <div id="partner_slide">
           <div class="item">
             <a href="#">
-              <figure>          
+              <figure>
                 <img src="<?php echo base_url();?>web-assets/images/airlines/emirates.png" alt="" class="img-responsive">
               </figure>
             </a>
@@ -1239,7 +1324,7 @@
           </div>
           <div class="item">
             <a href="#">
-              <figure> 
+              <figure>
                 <img src="<?php echo base_url();?>web-assets/images/airlines/shaheen.png" alt="" class="img-responsive">
               </figure>
             </a>
@@ -1269,7 +1354,7 @@
     </div>
   </div>
  </div>
- 
+
  <!-- Footer -->
  <?php echo $this->PageLoadingFtns->getFooter();?>
 
@@ -1281,14 +1366,14 @@
     $('.carousel').carousel({
       interval: 3000
     })
-  });    
+  });
 </script>
 <script type="text/javascript">
 $(window).load(function() {
 	$(".loader").fadeOut("slow");
 })
 </script>
-<script type="text/javascript">	
+<script type="text/javascript">
 $(document).ready(function(){
   $('#partner_slide').slick({
 	  slidesToShow: 5,
@@ -1300,7 +1385,7 @@ $(document).ready(function(){
   });
 });
 </script>
-<script>		
+<script>
 			$(document).ready(function(){
 			$("#testimonial-slider").owlCarousel({
 				items:1,
@@ -1313,7 +1398,7 @@ $(document).ready(function(){
                 autoplayHoverPause: false
     		});
 		});
-		
+
 		$(document).ready(function(){
 			$("#testimonial-slider1").owlCarousel({
 				items:1,
@@ -1327,7 +1412,7 @@ $(document).ready(function(){
     		});
 		});
 </script>
-          
+
 
 </body>
 </html>

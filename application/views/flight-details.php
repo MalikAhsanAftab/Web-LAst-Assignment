@@ -116,7 +116,18 @@
 								$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
 
 				$this->session->set_userdata($infoArray);
+				//calculating transit time we have so far is total amount of mionutes
+				//so we have to u know that calculat days , hour s , minutes
+				$transitTime = (int)$value->attributes()["FlightTime"];
+				$transitTimeStr="";
+				$transitDays = floor($transitTime/2400);
+				$transitTime-=floor($transitDays * 2400);
+				$transitHours = floor($transitTime /60);
+				$transitTime-=floor($transitHours * 60);
+				$transitMinutes = floor($transitTime);
 
+				//making the str which has to be shown
+				$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
 
 
 			 ?>
@@ -136,8 +147,8 @@
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
 		    		<b><h4 class="text-center">Aircraft: BOEING <?php echo $flights[0]->attributes()['FlightNumber']?></h4></b>
-                    <b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T)</h4></b>
-                    <b><h4 class="text-center">5h 30m</h4></b>
+                    <b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T-)</h4></b>
+                    <b><h4 class="text-center"><?=$transitTimeStr?></h4></b>
 		    </div>
 
 		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
@@ -157,7 +168,7 @@
 			<!--End of A flihght section -->
 			<?php
 			//end of if for direct flights
-		}else if(count($flights > 1)){
+		}else if(count($flights) > 1){
 
 
 			$tempArray = array();
@@ -170,9 +181,23 @@
 								'FlightNumber' => $value->attributes()['FlightNumber'],
 								'TotalPrice' => $pricing->attributes()['TotalPrice']
 								);
-								$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
-				$tempArray[]=$infoArray;
 
+				$bookingInfo = $bookings[(string)$value->attributes()["Key"]];
+				$tempArray[]=$infoArray;
+								// print_r($value->attributes());
+
+				//calculating transit time we have so far is total amount of mionutes
+				//so we have to u know that calculat days , hour s , minutes
+				$transitTime = (int)$value->attributes()["FlightTime"];
+				$transitTimeStr="";
+				$transitDays = floor($transitTime/2400);
+				$transitTime-=floor($transitDays * 2400);
+				$transitHours = floor($transitTime /60);
+				$transitTime-=floor($transitHours * 60);
+				$transitMinutes = floor($transitTime);
+
+				//making the str which has to be shown
+				$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
 			?>
 			<!--For multiple flights -->
 			<div class="panel panel-default">
@@ -191,8 +216,8 @@
 
 				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
 						<b><h4 class="text-center">Aircraft: BOEING <?php echo $value->attributes()['FlightNumber']?></h4></b>
-										<b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T)</h4></b>
-										<b><h4 class="text-center">5h 30m</h4></b>
+										<b><h4 class="text-center"><?php echo $bookingInfo['CabinClass']?></h4></b>
+										<b><h4 class="text-center"><?=$transitTimeStr?></h4></b>
 				</div>
 
 				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
@@ -218,40 +243,7 @@
 		$this->session->set_userdata($tempArray);
 	 }//end of continous flights
 			 ?>
-           <div class="panel panel-default" style="display:none;">
-		    <div class="panel-body">
-		    	<div class="row">
 
-		    		<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
-		    			<img src="<?php echo base_url('web-assets/images/saudia.jpg');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
-		    		</div>
-
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;ISB 22:15</h4>
-		    		<p class="text-center"><b>Sat, 05 May</b></p>
-		    		<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>
-		    </div>
-
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    		<b><h4 class="text-center">Aircraft: BOEING 777-300</h4></b>
-                    <b><h4 class="text-center">Economy(T)</h4></b>
-                    <b><h4 class="text-center">5h 30m</h4></b>
-		    </div>
-
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    			<h4 class="text-center"><i class="fa fa-plane fa-rotate-90"></i>&nbsp; RUH 02:15</h4>
-		    			<p class="text-center"><b>Sat, 05 May</b></p>
-		    			<p class="text-center"><b>RUH KING KHALID INTL</b></p>
-		    </div>
-
-		    </div> <!--panel-body-->
-		    <div class="panel-footer">
-		    	 <span class="refund"><i class="fa fa-undo"></i>Refundable</span>&nbsp;&nbsp;&nbsp;
-                 <span><i class="fa fa-clock-o"></i> Transit Time 11 Hour(s) 25 Minute(s)</span>
-            </div>
-		    </div><!--panel-footer-->
-
-      </div><!--panel-default-->
 
        <div class="well well-sm">
 		 	<div class="row">
@@ -305,12 +297,12 @@
             <td>Grand Total</td>
             <td></td>
             <td></td>
-            <td><?=($pricing->AirPricingInfo->attributes()["TotalPrice"])?></td>
+            <td><?=($pricing->attributes()["TotalPrice"])?></td>
         </tr>
     </table>
 </div><!-- col-xs-12 col-sm-12 col-md-6 col-lg-6-->
 
-     	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 " style="display:none;">
+     	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 " style="display:none">
 
         <table class="table table-bordered">
           <thead>
@@ -400,7 +392,7 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-3 col-lg-3">
-		   <h5><?=($pricing->AirPricingInfo->attributes()["TotalPrice"])?></h5>
+		   <h5><?=($pricing->attributes()["TotalPrice"])?></h5>
 		</div>
 
 	</div>
@@ -418,93 +410,115 @@
 
 
     </div><!-- menu1 -->
+<div id="menu2" class="tab-pane fade" style="">
+<!--Start of fair info and baggage info -->
 <?php
-	$fares= $fareInfo->attributes();
-
-	$baggage = ($fareInfo->BaggageAllowance);
 	//types against strings
-	$passsengerType= array(
+	$passengerTypes = array(
 		"ADT"=>"Adult",
-		"CHD"=>"Child",
-		"INF"=>"Infant without a seat",
-		"INS"=>"Infant with a seat",
+		"CNN"=>"Child",
+		"INF"=>"Infant",
+		"INS"=>"Infant",
 		"UNN"=>"Unaccompanied child"
 	);
 
+	foreach ($fares as $k => $fare) {
+		$passenger = ($fare['Passenger'][0]);
 
- ?>
 
-    <div id="menu2" class="tab-pane fade">
-		     <h4><i class="fa fa-plane" aria-hidden="true">Departure</i></h4>
 
+		//fare information set
+		$fareInfoSets = $fare['FareInfoSets'];
+		$iteration =0 ;
+
+
+		foreach ($fareInfoSets as $singleFare) {
+			$fareInfo = $singleFare["FareInfo"] ;
+
+				?>
+
+<!--End of baggage info -->
+
+				 <?php
+				 $countOfPassengers = count($fare['Passenger'] );
+				 $extraStr = "";
+				 $iconStr = "male";
+				 //handling singular / plurals
+				 switch ((string)$passenger['Code'] ) {
+					 case 'INF':
+					 $extraStr = ($countOfPassengers > 1 ? "s ": "" )." without a seat";
+					 $iconStr ="wheelchair";
+				 	 		break;
+					case 'CNN':
+					 $extraStr = ($countOfPassengers > 1 ? "ren ": "" )." ";
+					 $iconStr = "child";
+							break;
+					case 'ADT':
+					 $extraStr = ($countOfPassengers > 1 ? "s ": "" );
+						 		break;
+					case 'INS':
+					 $extraStr = ($countOfPassengers > 1 ? "s ": "" )." with a seat";
+							 		break;
+					case 'UNN':
+					 $extraStr = ($countOfPassengers > 1 ? "ren ": "" )." without a seat";
+								 		break;
+				 }
+				 $passType = $passengerTypes[(string)$passenger['Code'] ].$extraStr;
+
+				 $age = (isset($passenger['Age']) ? " of Age " . $passenger['Age'] : '' ) ;
+				 if($iteration == 0)
+				 {?>
+		     <h4><i class="fa fa-<?=$iconStr?>" aria-hidden="true"><?=($countOfPassengers." ".$passType.$age)?> </i></h4>
+			 <?php } ?>
 		     <div class="row">
 		     	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 		     	<table class="table table-bordered">
 		    <thead>
 		      <tr>
-		        <th class="bg-success"><?=$fares->attributes()["Origin"]?> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  <?=$fares->attributes()["Destination"]?></th>
+		        <th class="bg-success">
+							<?=$fareInfo["Origin"]?> <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+							<?=$fareInfo["Destination"]?></th>
 		        <th class="bg-success">Cabin</th>
 		        <th class="bg-success">Check-in</th>
+						<th class="bg-success">Charges </th>
+						<th class="bg-success">Tax Amount</th>
 		      </tr>
 		    </thead>
 		    <tbody>
 		      <tr>
-		        <td><?=($passsengerType[(string)$fares->PassengerTypeCode] )?></td>
-		        <td><?=($baggage->MaxWeight->attributes()["Value"])?> kg</td>
-		        <td><?=($baggage->NumberOfPieces)?> Pieces (20KG+20KG)</td>
-		      </tr>
+		        <td></td>
+		        <td><?=($singleFare['MaxWeight']["Value"]."  ".$singleFare['MaxWeight']["Unit"])?></td>
+		        <td><?=((strlen((string)$singleFare["NoOfPieces"][0])>0 ) ? ((string)$singleFare["NoOfPieces"][0].' Pieces (20KG+20KG)' ): '' )?> </td>
+						<td > <?=$fareInfo["Amount"]?><b>  x<?=$countOfPassengers?></b></td>
+						<td><?php
+						$totalTaxes = 0;
+						if(isset($singleFare['Taxes']) )
+						foreach ($singleFare['Taxes'] as $value) {
+								$totalTaxes+=( (int)(str_replace("PKR" ,"" ,$value["Amount"])));
+						}
+
+							echo $totalTaxes;
+						?><b>  x<?=$countOfPassengers?></b></td>
+					</tr>
 		    </tbody>
 		  </table>
-
-		  <h4><i class="fa fa-plane" aria-hidden="true">Departure</i></h4>
-
-		     <div class="row">
-		     	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-		     	<table class="table table-bordered">
-		    <thead>
-		      <tr>
-		        <th class="bg-success">ISLAMABAD BENAZIR BHUTTO INTL <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  JEDDAH KING ABDULAZIZ INT</th>
-		        <th class="bg-success">Cabin</th>
-		        <th class="bg-success">Check-in</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <tr>
-		        <td>Adult</td>
-		        <td>5-7 kg</td>
-		        <td>2 Pieces (20KG+20KG)</td>
-		      </tr>
-		    </tbody>
-		  </table>
-		   </div>
-<br><br><br>
-     </div><!-- row end-->
-		 <div class="well well-sm">
-		 	<div class="row">
-		 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-2 col-lg-4">
-		  <h5><i class="fas fa-bookmark"></i>Total Price (Inclusive All Taxes)</h5>
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-3 col-lg-3">
-		   <h5>PKR 56,676</h5>
-		</div>
-
+    </div>
 	</div>
-		 </div><!--well end-->
+		<?php
+						$iteration++;
+	}
 
-		 <div class="row">
-		 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-4 col-lg-1">
-    <button type="button" class="btn btn-success btn-lg"><i class="fas fa-pencil-alt"></i>CHANGE FLIGHT</button>
-    		</div>
+	?>
 
-    		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-1 col-lg-5">
-    <a href="" class="btn btn-success btn-lg"><i class="fa fa-arrow-alt-circle-right"></i>CONTINUE</a>
-    		</div>
-    	</div>
-    </div><!-- menu2 -->
-  </div>
+<?php
+}
+
+?>
+
+
+<!-- menu2 -->
+
 		</div>
 	</div>
 	</div>
