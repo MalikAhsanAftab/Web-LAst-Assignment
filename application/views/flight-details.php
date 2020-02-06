@@ -24,11 +24,72 @@
 	<?php echo $this->PageLoadingFtns->getTopBar();?>
 
 	<!-- Navigation -->
-	<?php echo $this->PageLoadingFtns->getNavBar();?>
+	<?php echo $this->PageLoadingFtns->getNavBar();
 
-	<!-- Page Content -->
 
-	<?php
+	//<!-- Page Content -->
+	//this function defines a template for each flight section so that
+	//for each section we dont uhave to write the html
+	//thus this method will return the htmlas per requirements
+	function makeFlightHtml($origin , $destination ,$departureTime  , $arrivalTime , $transitTime ,  $flightNumber , $cabinClass , $carrierCode){
+		$time =array();
+		$time[] =date_format(date_create($arrivalTime),"h:i");
+		$time[] =date_format(date_create($arrivalTime),"D, d M");
+
+		$time[] =date_format(date_create($departureTime),"h:i");
+		$time[] =date_format(date_create($departureTime),"D, d M");
+		return <<<HTML
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
+						<img src="<?php echo base_url('image/airlinelogo-SV.png');?>" class="img-rounded"  width="100" height="60" alt='{$carrierCode}'>
+					</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+						<h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;$origin $time[2]</h4>
+					<p class="text-center"><b>$time[3]</b></p>
+					<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+					<b><h4 class="text-center">Aircraft: BOEING $flightNumber</h4></b>
+									<b><h4 class="text-center">$cabinClass(T-)</h4></b>
+									<b><h4 class="text-center">$transitTime</h4></b>
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+						<h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;$destination $time[0]</h4>
+					<p class="text-center"><b>$time[1]</b></p>
+					<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
+			</div>
+
+			</div> <!--panel-body-->
+			<div class="panel-footer">
+				 <span class="refund"><i class="fa fa-undo"></i>Refundable</span>&nbsp;&nbsp;&nbsp;
+							 <!--<span><i class="fa fa-clock-o"></i> Transit Time 11 Hour(s) 25 Minute(s)</span>-->
+					</div>
+			</div><!--panel-footer-->
+
+		</div><!--panel-default-->
+HTML;
+	}
+function makeTimeString($time){
+	//calculating transit time we have so far is total amount of mionutes
+	//so we have to u know that calculat days , hour s , minutes
+	$transitTime = (int)$time;
+	$transitTimeStr="";
+	$transitDays = floor($transitTime/2400);
+	$transitTime-=floor($transitDays * 2400);
+	$transitHours = floor($transitTime /60);
+	$transitTime-=floor($transitHours * 60);
+	$transitMinutes = floor($transitTime);
+
+	//making the str which has to be shown
+	return $transitDays."d ".$transitHours."h ".$transitMinutes."m ";
+}
+
 
 
 	//develop a list of segment references
@@ -104,141 +165,107 @@
       <h4>Departure</h4>
 			<!--A Flight Section -->
 			<?php
-			if(count($flights) == 1){
-				$infoArray = Array(
-
-								'Departure' => $flights[0]->attributes()['Origin'],
-								'Arrival' 	=> $flights[0]->attributes()['Destination'],
-								'Time'		=> $flights[0]->attributes()['ArrivalTime'],
-								'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
-								'TotalPrice' => $pricing->attributes()['TotalPrice']
-								);
-								$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
-
-				$this->session->set_userdata($infoArray);
-				//calculating transit time we have so far is total amount of mionutes
-				//so we have to u know that calculat days , hour s , minutes
-				$transitTime = (int)$value->attributes()["FlightTime"];
-				$transitTimeStr="";
-				$transitDays = floor($transitTime/2400);
-				$transitTime-=floor($transitDays * 2400);
-				$transitHours = floor($transitTime /60);
-				$transitTime-=floor($transitHours * 60);
-				$transitMinutes = floor($transitTime);
-
-				//making the str which has to be shown
-				$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
+			$html = "";
+			if(is_array($flights) && count($flights) == 1){
 
 
-			 ?>
-      <div class="panel panel-default">
-		    <div class="panel-body">
-		    	<div class="row">
+			//It's a one way flight not return nor multicity
+			//It means we have
+			//Now check if it's a direct OR connecting flight
+			if(is_array($flights[0]))
+				if(count($flights[0]) == 1)
+				{
+					$flights = $flights[0];
+					//its a direct flight
+					$infoArray = Array(
+							'Departure' => $flights[0]->attributes()['Origin'],
+							'Arrival' 	=> $flights[0]->attributes()['Destination'],
+							'Time'		=> $flights[0]->attributes()['ArrivalTime'],
+							'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
+							'TotalPrice' => $pricing->attributes()['TotalPrice']
+							);
+					$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
 
-		    		<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
-		    			<img src="<?php echo base_url('image/airlinelogo-SV.png');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
-		    		</div>
+			$this->session->set_userdata($infoArray);
+			//calculating transit time we have so far is total amount of mionutes
+			//so we have to u know that calculat days , hour s , minutes
+			//making the str which has to be shown
+			$transitTimeStr =makeTimeString($flights[0]->attributes()["FlightTime"]);
+			$carrierCode = $flights[0]->attributes()["Carrier"];
+			$html .= makeFlightHtml($flights[0]->attributes()['Origin'], $flights[0]->attributes()['Destination'] ,
+			$flights[0]->attributes()['DepartureTime']  , $flights[0]->attributes()['ArrivalTime'] ,
+			$transitTimeStr , $flights[0]->attributes()['FlightNumber'] , $BookingArray['CabinClass'] , $carriers[(string)$carrierCode]);
 
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Origin'].' '. date_format(date_create($flights[0]->attributes()['DepartureTime']),"h:i");?></h4>
-		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['DepartureTime']),"D, d M")?></b></p>
-		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
-		    </div>
+		}//End of direct flight if
+		else if(count($flights[0]) > 1)
+			{
+				//we are here beacuse our journey is one way not return nor multicity
+				//Also it is a connecting flight
+				foreach ($flights[0] as $key => $value) {
 
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    		<b><h4 class="text-center">Aircraft: BOEING <?php echo $flights[0]->attributes()['FlightNumber']?></h4></b>
-                    <b><h4 class="text-center"><?php echo $BookingArray['CabinClass']?>(T-)</h4></b>
-                    <b><h4 class="text-center"><?=$transitTimeStr?></h4></b>
-		    </div>
+										$infoArray = Array(
 
-		    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-		    	    <h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $flights[0]->attributes()['Destination'].' '. date_format(date_create($flights[0]->attributes()['ArrivalTime']),"h:i");?></h4>
-		    		<p class="text-center"><b><?php echo date_format(date_create($flights[0]->attributes()['ArrivalTime']),"D, d M")?></b></p>
-		    		<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
-		    </div>
+														'Departure' => $value->attributes()['Origin'],
+														'Arrival' 	=> $value->attributes()['Destination'],
+														'Time'		=> $value->attributes()['ArrivalTime'],
+														'FlightNumber' => $value->attributes()['FlightNumber'],
+														'TotalPrice' => $pricing->attributes()['TotalPrice']
+														);
 
-		    </div> <!--panel-body-->
-		    <div class="panel-footer">
-		    	 <span class="refund"><i class="fa fa-undo"></i>Refundable</span>&nbsp;&nbsp;&nbsp;
-                 <!--<span><i class="fa fa-clock-o"></i> Transit Time 11 Hour(s) 25 Minute(s)</span>-->
-            </div>
-		    </div><!--panel-footer-->
+										$bookingInfo = $bookings[(string)$value->attributes()["Key"]];
+										$tempArray[]=$infoArray;
+														// print_r($value->attributes());
 
-      </div><!--panel-default-->
-			<!--End of A flihght section -->
-			<?php
-			//end of if for direct flights
+										//calculating transit time we have so far is total amount of mionutes
+										//so we have to u know that calculat days , hour s , minutes
+										//making the str which has to be shown
+										$transitTimeStr =makeTimeString($value->attributes()["FlightTime"]);
+
+										$attributeArr= $value->attributes();
+										$carrierCode = $attributeArr["Carrier"];
+										$html.=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
+																				 $attributeArr["DepartureTime"] , $attributeArr["ArrivalTime"] ,
+																				 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
+
+							}
+			}//end of if for connecting flights
+			echo $html;
 		}else if(count($flights) > 1){
-
-
+			//Now we have multi Journeys Either return or Multicity so
+			print_r($flights);die;
+			foreach($flights as $key => $group)
+			{	// var_dump($flights);die;
 			$tempArray = array();
-				foreach ($flights as $key => $value) {
+				foreach ($group as $key => $singleFlight) {
 				$infoArray = Array(
 
-								'Departure' => $value->attributes()['Origin'],
-								'Arrival' 	=> $value->attributes()['Destination'],
-								'Time'		=> $value->attributes()['ArrivalTime'],
-								'FlightNumber' => $value->attributes()['FlightNumber'],
-								'TotalPrice' => $pricing->attributes()['TotalPrice']
+								'Departure' => $singleFlight->attributes()['Origin'],
+								'Arrival' 	=> $singleFlight->attributes()['Destination'],
+								'Time'		=> $singleFlight->attributes()['ArrivalTime'],
+								'FlightNumber' => $singleFlight->attributes()['FlightNumber'],
+								'TotalPrice' => $singleFlight->attributes()['TotalPrice']
 								);
 
-				$bookingInfo = $bookings[(string)$value->attributes()["Key"]];
+				$bookingInfo = $bookings[(string)$singleFlight->attributes()["Key"]];
 				$tempArray[]=$infoArray;
 								// print_r($value->attributes());
 
 				//calculating transit time we have so far is total amount of mionutes
 				//so we have to u know that calculat days , hour s , minutes
-				$transitTime = (int)$value->attributes()["FlightTime"];
-				$transitTimeStr="";
-				$transitDays = floor($transitTime/2400);
-				$transitTime-=floor($transitDays * 2400);
-				$transitHours = floor($transitTime /60);
-				$transitTime-=floor($transitHours * 60);
-				$transitMinutes = floor($transitTime);
 
 				//making the str which has to be shown
-				$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
-			?>
-			<!--For multiple flights -->
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div class="row">
+				$transitTimeStr =makeTimeString($singleFlight->attributes()["FlightTime"]);
+				$attributeArr= $singleFlight->attributes();
+				$carrierCode = $attributeArr["Carrier"];
+				$html.=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
+														 $attributeArr["DepartureTime"] , $attributeArr["ArrivalTime"] ,
+														 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
 
-						<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
-							<img src="<?php echo base_url('web-assets/images/saudia.jpg');?>" class="img-rounded" alt="Saudi-Airline" width="100" height="60">
-						</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-							<h4 class="text-center"><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;<?php echo $value->attributes()['Origin'].' '. date_format(date_create($value->attributes()['DepartureTime']),"h:i");?></h4>
-						<p class="text-center"><b><?php echo date_format(date_create($value->attributes()['DepartureTime']),"D, d M")?></b></p>
-						<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-						<b><h4 class="text-center">Aircraft: BOEING <?php echo $value->attributes()['FlightNumber']?></h4></b>
-										<b><h4 class="text-center"><?php echo $bookingInfo['CabinClass']?></h4></b>
-										<b><h4 class="text-center"><?=$transitTimeStr?></h4></b>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-							<h4 class="text-center"><i class="fa fa-plane fa-rotate-90" aria-hidden="true"></i>&nbsp;<?php echo $value->attributes()['Destination'].' '. date_format(date_create($value->attributes()['ArrivalTime']),"h:i");?></h4>
-						<p class="text-center"><b><?php echo date_format(date_create($value->attributes()['ArrivalTime']),"D, d M")?></b></p>
-						<!--<p class="text-center"><b>ISLAMABAD BENAZIR BHUTTO INTL</b></p>-->
-				</div>
-
-				</div> <!--panel-body-->
-				<div class="panel-footer">
-					 <span class="refund"><i class="fa fa-undo"></i>Refundable</span>&nbsp;&nbsp;&nbsp;
-								 <!--<span><i class="fa fa-clock-o"></i> Transit Time 11 Hour(s) 25 Minute(s)</span>-->
-						</div>
-				</div><!--panel-footer-->
-
-			</div><!--panel-default-->
-			<!--End of A flihght section for multiple flights -->
-
-		<?php
+			}//foreach group
 		//Foreach flight loop
 		}
+		print_r($flights);
+		echo $html."=-=98-9=====";
 		//setting the session value
 		$this->session->set_userdata($tempArray);
 	 }//end of continous flights
@@ -260,7 +287,7 @@
 
  <div class="row">
 		 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-4 col-lg-1">
-    <button type="button" class="btn btn-success btn-lg"><i class="fa fa-arrow-left"></i> CHANGE FLIGHT</button>
+    <button type="button" class="btn btn-success btn-lg" ><a href="<?php echo base_url('Page/changeFlight')?>" style="text-decoration:none;color:white;"><i class="fa fa-arrow-left"></i> CHANGE FLIGHT</a></button>
     		</div>
 
     		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-1 col-lg-5">
@@ -400,7 +427,7 @@
 
 		 <div class="row">
 		 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-4 col-lg-1">
-    <button type="button" class="btn btn-success btn-lg"><i class="fas fa-pencil-alt"></i>CHANGE FLIGHT</button>
+    <button type="button" class="btn btn-success btn-lg"><a href="<?php echo base_url('Page/changeFlight')?>" style="text-decoration:none;color:white;"><i class="fas fa-pencil-alt"></i>CHANGE FLIGHT</a></button>
     		</div>
 
     		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-1 col-lg-5">

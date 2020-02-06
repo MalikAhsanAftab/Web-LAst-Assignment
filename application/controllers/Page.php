@@ -81,15 +81,19 @@ class Page extends CI_Controller {
 		//get sorted array
 		$sortedSegments = $this->getRoutesData($flightData,$_POST);
 		// print_r($sortedSegments);die;
-		$sessionData = array('flightDetails' => $xmlRaw , 'origin' => $_POST['from']);
+		$journey = array();
+		$journey[] = array("origin"=>$_POST['from'] , "destination"=>$_POST['to']);
+		if(isset($_POST['returnOn']))
+			$journey[] = array('origin' => $_POST['to'], "destination"=>$_POST['from'] );
+
+		$sessionData = array('flightDetails' => $xmlRaw , 'journeys' => $journey);
 
 		$this->session->set_userdata($sessionData);
 		// echo $xml->asXML();die;
 		$data['flights'] = $sortedSegments;
 		$data['carriers'] = $carriers;
-		$data['searchData'] = $_POST;
+		$data['searchData'] = $journey;
 		$this->load->view("flights-list",$data);
-
 		}
 		else
 		{
@@ -98,7 +102,47 @@ class Page extends CI_Controller {
 
 	}
 
+	//the purpose of this method is to
+	//allow the user to view the flights that
+	//were loaded before
+	public function changeFlight(){
+			//we might have raw xml data in session
+			//we can use it
+			$sessData = 		$this->session->userdata();
+			$xmlRaw = $sessData["flightDetails"];
+			$origin = $sessData["origin"];
+			$destination = $sessData["destination"];
+			if(empty($sessData["flightDetails"])  || empty($sessData["flightDetails"]) )
+			{
+				$data["error"] = "Either invalid request or request timed out.Error Code :mo23iu4#";
+				$this->load->view('home' , $data);
+			}else{
+				//develop a list of flights with basic information
+				$list = $this->uApi->getCarriers();
+				$carriers =array();
+				if($list)
+				foreach ($list as $key => $value) {
+					$carriers[$value['Code']] = $value['Name'];
+				}
 
+				$xml = simplexml_load_string($xmlRaw);
+
+				//in case of fault no backup plans
+				// Grabs the tickets
+
+				$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
+
+				// echo ($flightData->asXML() );die ;
+				//get sorted array
+				//we need origin to sort the segments provided in the API
+				$sortedSegments = $this->getRoutesData($flightData,array("from"=> $origin, "to"=>$destination));
+
+				$data['flights'] = $sortedSegments;
+				$data['carriers'] = $carriers;
+				$data['searchData'] = $_POST;
+				$this->load->view("flights-list",$data);
+			}
+	}
 	public static function customeMapper($listArr){
 		//this method is intended for fair info list
 		//in this way we have an array where theier key is actually a key to an array
@@ -120,7 +164,7 @@ class Page extends CI_Controller {
 		}
 		else{
 			$flightsXml = simplexml_load_string($this->session->flightDetails);
-
+			$allJourney = $this->session->journeys;
 
 			// Grabs the info
 			if(!($flightsXml===false) && $flightsXml->children("SOAP" , true)->Body->count() )
@@ -134,8 +178,7 @@ class Page extends CI_Controller {
 			//fare info list
 			$fareInfoList = Page::customeMapper($LowFareSearchRsp->FareInfoList->children("air", true) ) ;
 			 //($fareInfoList);die;
-			//echo $AirPricingSol->asXML();die;
-
+			
 			//segment 2 contains all the keys of all the segments
 			$pricingKey= str_replace("__" ,"/" ,urldecode($key) );
 			//echo "Key Posted : ".$pricingKey;
@@ -235,27 +278,62 @@ class Page extends CI_Controller {
 			$data['bookings'] = $bookings;
 			// print_r( $data);die;
 			//develop a list of segment references
+			//**Grouped by journey
+
+
 			$allSegmentsRef=array();
 			$allSegmentsRefKeys=array();
 
-			$this->iterate($AirPricingSol->Journey , $allSegmentsRef);
+			foreach ($AirPricingSol->Journey as $singleJourney) {
+				//Foreach journey the loop runs
+				//Sub Groups on the basis of the journey
+				$tempSegmentsRef = array();
+				$this->iterate($singleJourney , $tempSegmentsRef);
+				$allSegmentsRef[] = $tempSegmentsRef;
+			}
 
-			foreach($allSegmentsRef as $k=>$v)
+			foreach($allSegmentsRef as $key=>$group)
 				{
-					$allSegmentsRefKeys[]=(string)$v->attributes()["Key"] ;
+					foreach ($group as $segment) {
+						$allSegmentsRefKeys[$key][]=(string)$segment->attributes()["Key"] ;
+					}
+
 				}
+
 			//we have all segments reference keys
-			$allRelatedSegments = $this->findRelatedSegments($FlightDetails->children('air' , true) , $allSegmentsRefKeys );
+			//now we have to develop groups of related segments
+			foreach ($allSegmentsRefKeys as $key => $keysGroup) {
+				// for each group of segment referenece keys
+								$allRelatedSegments[] = $this->findRelatedSegments($FlightDetails->children('air' , true) , $keysGroup);
+			}
+
+
 			$sortedInOrder = array();
 
 			//get the starting element from the array
 			$start = $this->session->origin;
 
 			//sort the array and put it in an array let's say sortedayyarRef
-			$this->sortPathOrder($start , $allRelatedSegments , $sortedInOrder);
+			// var_dump($allRelatedSegments->asXML());die;
+
+			foreach ($allRelatedSegments as $key=> $group)
+				{
+					$sortedInOrder[$key] = array( );
+					$this->sortPathOrder($start , $group , $sortedInOrder[$key]);
+
+				}
+				die;
+				//develop a list of flights with basic information
+				$list = $this->uApi->getCarriers();
+				$carriers =array();
+				if($list)
+				foreach ($list as $key => $value) {
+					$carriers[$value['Code']] = $value['Name'];
+				}
 
 			//now we have all segments
 			$data['flights']=$sortedInOrder;
+			$data['carriers']=$carriers;
 
 			$this->load->view("flight-details", $data);
 		}//end of inner if
@@ -420,10 +498,8 @@ class Page extends CI_Controller {
 		  	//find all segments related /children to this journey
 			  $allSegmentsRef = array ();
 
-			  //find all air segment references string $query
-			  $queryX = "./air:airsegmentref";
-
 			  //recursively iterate to get segment refereneces and fill $allSegmentsRef
+				// var_dump($value->Journey);die;
 			  $this->iterate($value->Journey, $allSegmentsRef );
 				// var_dump ($allSegmentsRef );die;
 				//we have all segment references in $allSegmentsRef
@@ -487,6 +563,11 @@ class Page extends CI_Controller {
 	private function sortPathOrder( $end , &$arr , &$sorted)
 	{
 
+			// echo "0-0-0-0";
+			// var_dump($arr);
+			// echo "[======]";
+			// var_dump($sorted);
+
 			foreach ($arr as $key => $elem) {
 				if($end ==(string) $elem->attributes()["Origin"] )
 				{
@@ -502,6 +583,7 @@ class Page extends CI_Controller {
 			}
 	}
 	//iterate in depth
+	//to develop the array of all children
 	private function iterate($children , &$all )
 	{
 		//in case of arrau has some elements
