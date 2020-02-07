@@ -232,9 +232,9 @@ function makeTimeString($time){
 			echo $html;
 		}else if(count($flights) > 1){
 			//Now we have multi Journeys Either return or Multicity so
-			print_r($flights);die;
+
 			foreach($flights as $key => $group)
-			{	// var_dump($flights);die;
+			{	 var_dump($flights);die;
 			$tempArray = array();
 				foreach ($group as $key => $singleFlight) {
 				$infoArray = Array(
@@ -264,8 +264,7 @@ function makeTimeString($time){
 			}//foreach group
 		//Foreach flight loop
 		}
-		print_r($flights);
-		echo $html."=-=98-9=====";
+		echo $html;
 		//setting the session value
 		$this->session->set_userdata($tempArray);
 	 }//end of continous flights
