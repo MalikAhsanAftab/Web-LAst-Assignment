@@ -550,24 +550,22 @@ class Page extends CI_Controller {
 			    //get the starting element from the array
 			   	//sort the array and put it in an array let's say sortedayyarRef
 					//do to get groupd of degments
-					echo "Outer Loop is running for :".(++$ch)." count :".count($allRelatedSegments)."=====";
+					// echo "Outer Loop is running for :".(++$ch)." count :".count($allRelatedSegments)."=====";
 					foreach ($allRelatedSegments as $key => $group)
 						{
 							if(is_array($group) && count($group) == 1)
 								{
 									$tempAttr = $group[0]->attributes();
 									$temp = array($group[0]);
-									$journeyArr = array($tempAttr["Origin"],$tempAttr["Destination"]);
+									$journeyArr = array("departure" => (string)$tempAttr["Origin"], "arrival" => (string)$tempAttr["Destination"]);
 								}else{
 									$temp = array( );
 									$journeyArr = $this->sortPathOrder($group , $temp);
 								}
 
 								$sortedInOrder[$key]["Segments"] = $temp;
+
 								$sortedInOrder[$key]["Journey"] = $journeyArr;
-								print_r($sortedInOrder);
-								echo "<br>Counter is running for  :".(++$check).":----:".$journeyArr[0]." ".$journeyArr[1];
-								die ;
 						}
 
 					//get the first and the last $allSegments
@@ -576,14 +574,14 @@ class Page extends CI_Controller {
 			    //iterate over $allSegments
 					$grandSortedSegments[$index]["segment"] = $sortedInOrder;
 					$grandSortedSegments[$index]["pricing"] = $solution;
-					$grandSortedSegments[$index]["TravelTime"] = $solution->Journey->attributes()["TravelTime"];
-						//$this->showFlights($sortedInOrder);
+					$grandSortedSegments[$index]["TravelTime"] = array();
+					foreach($solution->Journey as $singleJourney)
+						 $grandSortedSegments[$index]["TravelTime"] = $singleJourney->attributes()["TravelTime"];
+
+					//$this->showFlights($sortedInOrder);
 				}//end of if
 				++$index;
-
-
-				echo $index;
-		  }//Foreach pricing solution
+  		}//Foreach pricing solution
 		}
 		echo "gonna print";
 		print_r($grandSortedSegments);die;
@@ -620,7 +618,7 @@ class Page extends CI_Controller {
 	private function sortPathOrder( &$arr , &$sorted)
 	{
 
-			 echo "<br>0-Going In-0";
+
 			// foreach($arr as $a)
 			// 	echo $a->asXML();
 			// echo "[======]";
@@ -723,7 +721,7 @@ class Page extends CI_Controller {
 
 
 			//return an array of origin/journey where in this group we have journey info
-			return array($origin , $destination );
+			return array("departure"=>$origin ,"arrival"=> $destination );
 	}
 	//iterate in depth
 	//to develop the array of all children
