@@ -198,9 +198,9 @@
         <?php
 		//$flightDetails = $flights->AirSegmentList;
 		//$airPricingSol = $flights->AirPricingSolution;
-		// echo ($flights -> asXML() );
-		// print_r($flights);
-		// die ;
+		echo ($flights -> asXML() );
+		print_r($flights);
+		die ;
 		// echo ($airPricingSol ? $airPricingSol : "<h2>No data</h2>")->asXML();
 		// die ;
 			//$arr = $flightDetails -> children("air", true);

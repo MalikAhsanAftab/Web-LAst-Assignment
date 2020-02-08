@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-ini_set('max_execution_time', 60);
+ini_set('max_execution_time', 300);
 
 class Page extends CI_Controller {
 
@@ -41,7 +41,7 @@ class Page extends CI_Controller {
 		return $d && $d->format($format) === $date;
 	}
 	public function flightsList(){
-
+		//die(ini_get('max_execution_time'));
 		//sanitize / validate  posted data
 		if($_POST && isset($_POST['adult']) && isset($_POST['child']) && isset($_POST['infant'])
 		&& is_numeric($_POST['adult']) && is_numeric($_POST['child']) && is_numeric($_POST['infant'])
@@ -77,9 +77,11 @@ class Page extends CI_Controller {
 
 		$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 
-		// echo ($flightData->asXML() );die ;
+		// ech00o ($flightData->asXML() );die ;
 		//get sorted array
-		$sortedSegments = $this->getRoutesData($flightData,$_POST);
+		echo "going in";
+		$sortedSegments = $this->getRoutesData($flightData);
+		die("I am here finally");
 		// print_r($sortedSegments);die;
 		$journey = array();
 		$journey[] = array("origin"=>$_POST['from'] , "destination"=>$_POST['to']);
@@ -135,7 +137,7 @@ class Page extends CI_Controller {
 				// echo ($flightData->asXML() );die ;
 				//get sorted array
 				//we need origin to sort the segments provided in the API
-				$sortedSegments = $this->getRoutesData($flightData,array("from"=> $origin, "to"=>$destination));
+				$sortedSegments = $this->getRoutesData($flightData);
 
 				$data['flights'] = $sortedSegments;
 				$data['carriers'] = $carriers;
@@ -164,7 +166,6 @@ class Page extends CI_Controller {
 		}
 		else{
 			$flightsXml = simplexml_load_string($this->session->flightDetails);
-			$allJourney = $this->session->journeys;
 
 			// Grabs the info
 			if(!($flightsXml===false) && $flightsXml->children("SOAP" , true)->Body->count() )
@@ -480,58 +481,66 @@ class Page extends CI_Controller {
 		$this->load->view("contact");
 	}
 
-	public function getRoutesData($xmlObj ,$search)
+	public function getRoutesData($xmlObj )
 	{
 		//echo gettype($xmlObj);
 		//all pricing solutions
 		//Al journeys are in pricing solutions array
-		//var_dump($xmlObj->asXML());
+							$check= 0;
+
+
+
+
+
+
 		$grandSortedSegments=array();
 		$pricingSolutions = $xmlObj->AirPricingSolution ;
+		$count =$ch =0;
 
 		// echo $pricingSolutions->asXML();die;
 		//all segments
 		$allSegmentsList = $xmlObj->AirSegmentList;
+		$allSegments =  $allSegmentsList->children("air" , true);
+		$allSegments = $this->getAllSegementsArray($allSegments);
+
 		//will be used for keys
 		$index=0;
-
 		if($allSegmentsList && $allSegmentsList->count() > 0)
 			{
 
-				$allSegments =  $allSegmentsList->children("air" , true);
-				foreach ($pricingSolutions as $key => $value) {
+
+				foreach ($pricingSolutions as $key => $solution) {
+
 		  	//find all segments related /children to this journey
 			  $allSegmentsRef = array ();
 				$allSegmentsRefKeys=array();
+				$allRelatedSegments = array();
 
 				//recursively iterate to get segment refereneces and fill $allSegmentsRef
 				//in the form of groups
-			  foreach ($value->Journey as $singleJourney) {
+			  foreach ($solution->Journey as $singleJourney) {
 					//Foreach journey the loop runs
 					//Sub Groups on the basis of the journey
 					$tempSegmentsRef = array();
 					$this->iterate($singleJourney , $tempSegmentsRef);
 					$allSegmentsRef[] = $tempSegmentsRef;
+
 				}
+
 				//we have all segment references in $allSegmentsRef
 				//in the form of the groups
 
 				//array of all reference keys
 			 	foreach ($allSegmentsRef as $k => $segGroup) {
 			    //All segments references will be iterated
+					$keysGroup = array();
 					foreach ($segGroup as $segRef) {
 						// code...
-				  	$allSegmentsRefKeys[$k][] = ((string)$segRef->attributes()["Key"] )  ;
+				  	$keysGroup[] = ((string)$segRef->attributes()["Key"] )  ;
 					}
+					$allRelatedSegments[] = $this->findRelatedSegments($allSegments , $keysGroup);
 				}
 
-			  //All segments for this itinerary
-			  //we have all segments reference keys
-				//now we have to develop groups of related segments
-				foreach ($allSegmentsRefKeys as $key => $keysGroup) {
-					// for each group of segment referenece keys
-									$allRelatedSegments[] = $this->findRelatedSegments($allSegments , $keysGroup);
-				}
 
 			  //if we have a segments array
 			  if(is_array($allRelatedSegments) && count($allRelatedSegments ) >0  )
@@ -539,32 +548,54 @@ class Page extends CI_Controller {
 			    $sortedInOrder = array();
 
 			    //get the starting element from the array
-			    $start = $search["from"];
-			    $end = $search["to"];
-
-					//sort the array and put it in an array let's say sortedayyarRef
+			   	//sort the array and put it in an array let's say sortedayyarRef
 					//do to get groupd of degments
+					echo "Outer Loop is running for :".(++$ch)." count :".count($allRelatedSegments)."=====";
 					foreach ($allRelatedSegments as $key => $group)
 						{
-							$temp = array( );
-							$journeyArr = $this->sortPathOrder($group , $temp);
-							$sortedInOrder[$key]["Segments"] = $temp;
-							$sortedInOrder[$key]["Journey"] = $journeyArr;
+							if(is_array($group) && count($group) == 1)
+								{
+									$tempAttr = $group[0]->attributes();
+									$temp = array($group[0]);
+									$journeyArr = array($tempAttr["Origin"],$tempAttr["Destination"]);
+								}else{
+									$temp = array( );
+									$journeyArr = $this->sortPathOrder($group , $temp);
+								}
+
+								$sortedInOrder[$key]["Segments"] = $temp;
+								$sortedInOrder[$key]["Journey"] = $journeyArr;
+								print_r($sortedInOrder);
+								echo "<br>Counter is running for  :".(++$check).":----:".$journeyArr[0]." ".$journeyArr[1];
+								die ;
 						}
+
 					//get the first and the last $allSegments
 			    //we already have first and last
 
 			    //iterate over $allSegments
 					$grandSortedSegments[$index]["segment"] = $sortedInOrder;
-					$grandSortedSegments[$index]["pricing"] = $value;
-					$grandSortedSegments[$index]["TravelTime"] = $value->Journey->attributes()["TravelTime"];
+					$grandSortedSegments[$index]["pricing"] = $solution;
+					$grandSortedSegments[$index]["TravelTime"] = $solution->Journey->attributes()["TravelTime"];
 						//$this->showFlights($sortedInOrder);
 				}//end of if
 				++$index;
+
+
+				echo $index;
 		  }//Foreach pricing solution
 		}
+		echo "gonna print";
 		print_r($grandSortedSegments);die;
 		return $grandSortedSegments;
+	}
+	private function getAllSegementsArray($segList)
+	{
+		$temp = array();
+		foreach ($segList as $key => $seg) {
+			$temp[(string)$seg->attributes()["Key"]] = $seg;
+		}
+		return $temp;
 	}
 	private function showFlights($arr =  array())
 	{
@@ -589,7 +620,7 @@ class Page extends CI_Controller {
 	private function sortPathOrder( &$arr , &$sorted)
 	{
 
-			// echo "0-0-0-0";
+			 echo "<br>0-Going In-0";
 			// foreach($arr as $a)
 			// 	echo $a->asXML();
 			// echo "[======]";
@@ -618,6 +649,7 @@ class Page extends CI_Controller {
 					$pathArr[(string)$attr["Destination"]]['type']  = "Destination";
 					$pathArr[(string)$attr["Destination"]]['index']= $key;
 					$origin = $attr["Origin"];
+					$destination = $attr["Destination"];
 					continue ;
 				}
 
@@ -656,20 +688,22 @@ class Page extends CI_Controller {
 				{
 					$sorted[]= $arr[$value['index']];
 					$indices[] =$value['index'];
+					$origin = (string) $arr[$value['index']]->attributes()["Origin"];
 				}
 				if( $value['Occurence'] == 1 && $value['type'] == "Destination")
 				{
 					if(!in_array($value['index'] , $indices))
 						{
-							$sorted[]= $arr[$value['index']];
-							$indices[] =$value['index'];
+							$destination = (string) $arr[$value['index']]->attributes()["Destination"];
 						}
 				}
 			}
+			//unsetting the first segment
 			foreach ($indices as $index) {
 				// code...
 				unset($arr[$index]);
 			}
+
 
 			while(count($arr) >0)
 			foreach ($arr as $key => $elem) {
@@ -683,11 +717,13 @@ class Page extends CI_Controller {
 
 					//remove element from source array
 					unset($arr[$key]);
+
 				}
 			}
 
+
 			//return an array of origin/journey where in this group we have journey info
-			return array($origin , (string)$sorted[count($sorted)-1]->attributes()["Destination"]);
+			return array($origin , $destination );
 	}
 	//iterate in depth
 	//to develop the array of all children
@@ -712,9 +748,8 @@ class Page extends CI_Controller {
 			//each segment is actually qa flight from one point to another
 			$arrTemp=array();
 
-			foreach ($allSegments as $key => $segment) {
-				if( in_array($segment->attributes()["Key"],$refArrays)  )
-					$arrTemp[]=$segment;
+			foreach ($refArrays as $key => $ref) {
+					$arrTemp[]=$allSegments[(string)$ref];
 			}
 			return $arrTemp;
 	}
