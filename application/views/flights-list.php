@@ -1,3 +1,158 @@
+<?php
+function makeTimeString($time){
+	//calculating transit time we have so far is total amount of mionutes
+	//so we have to u know that calculat days , hour s , minutes
+	$transitTime = (int)$time;
+	$transitTimeStr="";
+	$transitDays = floor($transitTime/2400);
+	$transitTime-=floor($transitDays * 2400);
+	$transitHours = floor($transitTime /60);
+	$transitTime-=floor($transitHours * 60);
+	$transitMinutes = floor($transitTime);
+
+	//making the str which has to be shown
+	return $transitDays."d ".$transitHours."h ".$transitMinutes."m ";
+}
+//Using last carrier code global variable to store the last carrier code
+//So to identify if it's a chanin of the smae a9ir airlines
+//or it's different
+$lastCarrierCode ="";
+
+function makeFlightCardHtm($carriers , $journeyArr , $pricing ){
+	//url for details
+	$price = $pricing->attributes();
+	$url = base_url("Page/flightDetails/". urlencode(str_replace("/","__",$price['Key']) ) );
+
+	$htmlPathInfo = '';
+
+
+	$transitTimeTotal= 0;
+	foreach ($journeyArr as $key => $journey) {
+		//developping time strings
+		//**Departure
+		$timeStrings = array();
+		$timeStrings["departure"][] = date_format(date_create($journey["Journey"]["departureTime"]),'h:i');
+		$timeStrings["departure"][] = date_format(date_create($journey["Journey"]["departureTime"]),'d M');
+
+		//**Arrival
+		$timeStrings["arrival"][] = date_format(date_create($journey["Journey"]["arrivalTime"]),'h:i');
+		$timeStrings["arrival"][] = date_format(date_create($journey["Journey"]["arrivalTime"]),'d M');
+
+		//**Travel Time
+		//Handling case 2
+		// Manipulating the travel time string
+		$travelTime = str_replace("T","", str_replace("P" ,"" , $journey["TravelTime"]) );
+		$travelTimeArr = preg_split("/[DHMS]+/" , $travelTime);
+
+		//calculating transit time we have so far is total amount of mionutes
+		//so we have to u know that calculat days , hour s , minutes
+		$transitTime = makeTimeString( $journey["Journey"]["transitTime"] );
+		$transitTimeTotal +=(int)$journey["Journey"]["transitTime"];
+
+		$timeStrings["travelTime"] = ($travelTimeArr[0] ."d ". $travelTimeArr[1]."h " . $travelTimeArr[2]."m");
+		//**Transit Time
+		$timeStrings["transitTime"] = $transitTime;
+
+		//finding out if we have a nested direct or connecting flight
+		$path= "";
+		foreach ($journey["Segments"] as $segment) {
+			$path.=$segment->attributes()["Origin"].",";
+		}
+		$dest= $segment->attributes()["Destination"];
+		$path.=$dest;
+
+			$returnHtml =($journeyArr[0]["Journey"]["departure"]==$dest ) ? '<span style="margin-left:-30px;background:red;border-radius:5px;color:white;padding:3px;"> Return</span>' : '';
+
+		if(is_array($journey["Segments"]) && count($journey["Segments"])> 1   )
+				$stopsHtm = 	(count($journey["Segments"])-1)." Stop".(count($journey["Segments"]) > 2 ?"s":"") ;
+		else
+				$stopsHtm ="Direct" ;
+
+		$htmlPathInfo .='<tr ">
+
+								<td>
+										'.$returnHtml.'
+										<input value="pk" name="oPK_31568" class="nw_check" checked="" type="radio">
+										<strong>'.$timeStrings["departure"][0].'</strong>
+										<br>
+										<sup>'.$timeStrings["departure"][1].'</sup><br>
+		'.$journey["Journey"]["departure"].'
+								</td>
+								<td><strong>'.$timeStrings["arrival"][0].'</strong><br>
+										<sup>'.$timeStrings["arrival"][1].'</sup><br>
+										'.$journey["Journey"]["arrival"].'
+								</td>
+
+								<td class="">'.$timeStrings["travelTime"].'
+										<br>
+										<small>'.$stopsHtm.'
+										<br>
+											'.$path.'
+										</small>
+								</td>
+								<td>
+								'.$timeStrings["transitTime"].'
+								</td>
+						</tr>';
+		}
+		//making the transit time string such that it is readable
+		$transitTimeTotal = makeTimeString($transitTimeTotal);
+
+		//verrify if its the same fligh t or not
+		global $lastCarrierCode;
+		$carrierCode = (string)$segment->attributes()["Carrier"] ;
+		$sameAirLine = $lastCarrierCode==$carrierCode ;
+
+		$carrierHtml = $sameAirLine ? '' : '<div class="outbound"><img src="https://www.checkin.pk/frontend/images/AirLineImages/airlinelogo-WY.png" alt="'.$carrierCode.'">'
+					.(string)$carriers[$carrierCode].'</div>';
+		$lastCarrierCode = $carrierCode;
+
+		return <<<HTML
+
+	<div class="flight-list-view fadeInUp animated" ".($sameAirLine ? 'style="margin-top:0px;"': '')." >
+		<div class="col-md-12 col-sm-12 col-xs-12 text-center clear-padding flight-desc">
+				<div class="col-md-12 pd main_col col-xs-12">
+						$carrierHtml
+						<table class="table table-condensed outbound">
+								<thead>
+								<tr class="list_heading">
+										<th class="green">Depart</th>
+										<th class="green">Arrive</th>
+										<th class="">Duration</th>
+										<th class="" >Transit Time </th>
+								</tr>
+								</thead>
+
+								<tbody>
+								$htmlPathInfo
+					<tr class="trnsit">
+														<td colspan="4">Total Transit Time : {$transitTimeTotal}
+														</td>
+												</tr>
+								</tbody>
+						</table>
+				</div>
+				<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-md-12  clear-padding">
+				<div class="flight-list-footer">
+						<div class="col-md-8 col-sm-6 col-xs-12">
+						</div>
+						<div class="col-md-4 col-sm-6 col-xs-12 ">
+							<span class="price">{$price['ApproximateTotalPrice']}</span>
+								<div class="pull-right">
+									 <div class="right_side"><a href="{$url}" class="btn-default btn1">Details</a></div>
+								</div>
+						</div>
+				</div>
+		</div>
+		<div class="clearfix"></div>
+		<span style="display:none" class="totalPriceInfo">31568</span>
+	</div>
+HTML;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,11 +353,11 @@
         <?php
 		//$flightDetails = $flights->AirSegmentList;
 		//$airPricingSol = $flights->AirPricingSolution;
-		echo ($flights -> asXML() );
-		print_r($flights);
-		die ;
-		// echo ($airPricingSol ? $airPricingSol : "<h2>No data</h2>")->asXML();
+		// echo ($flights -> asXML() );
+		// print_r($flights);
 		// die ;
+		// echo ($airPricingSol ? $airPricingSol : "<h2>No data</h2>")->asXML();
+		// die ;+
 			//$arr = $flightDetails -> children("air", true);
 			//echo $flightDetails->asXML()."::".$arr[0]->asXML()."-----".$arr[1]->asXML()."======count :".count($arr );
 			//		echo "total :".count($flightDetails -> children("air", true) );
@@ -214,6 +369,7 @@
 			//*****3. Indirect Flights
 
 		//handling case 1
+		$html = "";
 		if(count($flights ) ==0){
 
 			echo $this->Functions->msg("Sorry, Flights for the required criteria were not found, please <button title='CLICK THIS BUTTON TO CHANGE DETAILS' onclick='javascript:history.go(-1)' class='btn' style='background:#ffae42; color:white'>CHANGE DETAILS</button>","error");
@@ -238,35 +394,35 @@
 
 			//lets say we need total transit time i.e total flight time
 			$transitTime= 0;
-			//getting the carrier details
-			if(count($f["segment"]) ==1)
+			//If we have one journey not return nor multicity
+			if(count($f["segment"]) > 0 )
 			{
-				$details = $f["segment"][0]->attributes();
-				$carrierCode = (string)$details['Carrier'];
-				$transitTime+=(int)$details['FlightTime'];
+					$journeyInfo = $f["segment"][0];
+					$html .= makeFlightCardHtm($carriers , $f["segment"] , $f["pricing"] ,$f["TravelTime"]);
 
-			}elseif(count($f["segment"]) > 1)
-			{
-							foreach ($f["segment"] as $key => $value) {
-								$details[] = $value->attributes();
-								$transitTime+=(int)$value->attributes()["FlightTime"];
-							}
-							$carrierCode = (string)$details[0]['Carrier'];
 			}
-			//for same airline grouping
-			$sameAirLine =false;
-			if($lastCode == $carrierCode)
-				$sameAirLine = true;
+			// }elseif(count($f["segment"]) > 1)
+			// {
+			// 				foreach ($f["segment"] as $key => $value) {
+			// 					$details[] = $value->attributes();
+			// 					$transitTime+=(int)$value->attributes()["FlightTime"];
+			// 				}
+			// 				$carrierCode = (string)$details[0]['Carrier'];
+			// }
+			// //for same airline grouping
+			// $sameAirLine =false;
+			// if($lastCode == $carrierCode)
+			// 	$sameAirLine = true;
 
-			$price = $f["pricing"]->attributes();
+			// $price = $f["pricing"]->attributes();
+			//
+			// $departureTime = is_array($details) ? $details[0]["DepartureTime"] :$details["DepartureTime"];
+			// $arrivalTime = is_array($details) ? $details[count($details)-1]["ArrivalTime"] : $details["ArrivalTime"];
 
-			$departureTime = is_array($details) ? $details[0]["DepartureTime"] :$details["DepartureTime"];
-			$arrivalTime = is_array($details) ? $details[count($details)-1]["ArrivalTime"] : $details["ArrivalTime"];
-
-			$origin = is_array($details) ? $details[0]["Origin"] :$details["Origin"];
+			// $origin = is_array($details) ? $details[0]["Origin"] :$details["Origin"];
 			// // var_dump($f["segment"][0]->attributes());
 			 // var_dump(is_array($details)? $details[count($details)-1]["Destination"]:$details["Destination"] );
-			$destination = is_array($details) && count($details) > 0 ? $details[count($details)-1]["Destination"] : $details["Destination"];
+			// $destination = is_array($details) && count($details) > 0 ? $details[count($details)-1]["Destination"] : $details["Destination"];
 			//print_r($searchData);
 			// echo (($details['Origin'] ."||". $details['Destination'])."--     <br>");
 			// continue ;
@@ -278,22 +434,70 @@
 
 			//Handling case 2
 			// Manipulating the travel time string
-			$travelTime = str_replace("T","", str_replace("P" ,"" , (string)$f["TravelTime"]) );
-			$travelTimeArr = preg_split("/[DHMS]+/" , $travelTime);
+			// $travelTime = str_replace("T","", str_replace("P" ,"" , (string)$f["TravelTime"]) );
+			// $travelTimeArr = preg_split("/[DHMS]+/" , $travelTime);
 
 			//calculating transit time we have so far is total amount of mionutes
 			//so we have to u know that calculat days , hour s , minutes
-			$transitTimeStr="";
-			$transitDays = floor($transitTime/2400);
-			$transitTime-=floor($transitDays * 2400);
-			$transitHours = floor($transitTime /60);
-			$transitTime-=floor($transitHours * 60);
-			$transitMinutes = floor($transitTime);
+			// $transitTimeStr="";
+			// $transitDays = floor($transitTime/2400);
+			// $transitTime-=floor($transitDays * 2400);
+			// $transitHours = floor($transitTime /60);
+			// $transitTime-=floor($transitHours * 60);
+			// $transitMinutes = floor($transitTime);
 
 			//making the str which has to be shown
-			$transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
+			// $transitTimeStr =$transitDays."d ".$transitHours."h ".$transitMinutes."m ";
+
+		} //end of foreach
+		// die ;
+		echo $html;
+	}	//end of else
 		?>
 
+
+    	<!--
+                    <div class="pager_wrapper">
+                        <ul class="pager clearfix">
+                            <li class="prev"><a href="#">Previous</a></li>
+                            <li class="li"><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li class="li"><a href="#">3</a></li>
+                            <li class="li"><a href="#">4</a></li>
+                            <li class="li"><a href="#">5</a></li>
+                            <li class="li"><a href="#">6</a></li>
+                            <li class="li"><a href="#">7</a></li>
+                            <li class="li"><a href="#">8</a></li>
+                            <li class="li"><a href="#">9</a></li>
+                            <li class="li"><a href="#">10</a></li>
+                            <li class="next"><a href="#">Next</a></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>-->
+
+        </div>
+				<!--End of booking details-->
+    </div>
+
+	<!-- Page Content Ends -->
+
+ <!-- Footer -->
+ <?php echo $this->PageLoadingFtns->getFooter();?>
+
+<!-- Footer Scripts-->
+	<?php echo $this->PageLoadingFtns->getFootScripts();?>
+	<!-- Page Related Scripts -->
+	<script type="text/javascript">
+	$(window).load(function() {
+		$(".loader").fadeOut("slow");
+	})
+	</script>
+</body>
+</html>
+<!--
 
 
 			<div class="flight-list-view fadeInUp animated" <?=($sameAirLine ? 'style="margin-top:0px;"': '')?> >
@@ -373,54 +577,4 @@
         <div class="clearfix"></div>
         <span style="display:none" class="totalPriceInfo">31568</span>
     </div>
-
-			<?php
-				$lastCode = $carrierCode;
-		} //end of foreach
-		// die ;
-
-	}	//end of else
-		?>
-
-
-    	<!--
-                    <div class="pager_wrapper">
-                        <ul class="pager clearfix">
-                            <li class="prev"><a href="#">Previous</a></li>
-                            <li class="li"><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li class="li"><a href="#">3</a></li>
-                            <li class="li"><a href="#">4</a></li>
-                            <li class="li"><a href="#">5</a></li>
-                            <li class="li"><a href="#">6</a></li>
-                            <li class="li"><a href="#">7</a></li>
-                            <li class="li"><a href="#">8</a></li>
-                            <li class="li"><a href="#">9</a></li>
-                            <li class="li"><a href="#">10</a></li>
-                            <li class="next"><a href="#">Next</a></li>
-                        </ul>
-                    </div>
-
-
-                </div>
-            </div>-->
-
-        </div>
-				<!--End of booking details-->
-    </div>
-
-	<!-- Page Content Ends -->
-
- <!-- Footer -->
- <?php echo $this->PageLoadingFtns->getFooter();?>
-
-<!-- Footer Scripts-->
-	<?php echo $this->PageLoadingFtns->getFootScripts();?>
-	<!-- Page Related Scripts -->
-	<script type="text/javascript">
-	$(window).load(function() {
-		$(".loader").fadeOut("slow");
-	})
-	</script>
-</body>
-</html>
+		!-->

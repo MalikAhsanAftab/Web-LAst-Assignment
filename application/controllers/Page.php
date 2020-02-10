@@ -77,11 +77,10 @@ class Page extends CI_Controller {
 
 		$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 
-		// ech00o ($flightData->asXML() );die ;
+		// echo ($flightData->asXML() );die ;
 		//get sorted array
-		echo "going in";
 		$sortedSegments = $this->getRoutesData($flightData);
-		die("I am here finally");
+
 		// print_r($sortedSegments);die;
 		$journey = array();
 		$journey[] = array("origin"=>$_POST['from'] , "destination"=>$_POST['to']);
@@ -212,7 +211,7 @@ class Page extends CI_Controller {
 			// var_dump($LowFareSearchRsp->asXML());die;
 			//find all the air pricing solutions against our itinerary
 			foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value)
-				if($pricingKey == $value->attributes()["Key"] )
+				if($pricingKey == (string)$value->attributes()["Key"] )
 					{
 
 					//for all the pricing info tags nested in airpricingsolution
@@ -486,7 +485,6 @@ class Page extends CI_Controller {
 		//echo gettype($xmlObj);
 		//all pricing solutions
 		//Al journeys are in pricing solutions array
-							$check= 0;
 
 
 
@@ -518,13 +516,15 @@ class Page extends CI_Controller {
 
 				//recursively iterate to get segment refereneces and fill $allSegmentsRef
 				//in the form of groups
+				$allJourney=array();
+
 			  foreach ($solution->Journey as $singleJourney) {
 					//Foreach journey the loop runs
 					//Sub Groups on the basis of the journey
 					$tempSegmentsRef = array();
 					$this->iterate($singleJourney , $tempSegmentsRef);
 					$allSegmentsRef[] = $tempSegmentsRef;
-
+					$allJourney[]=$singleJourney->attributes()["TravelTime"];
 				}
 
 				//we have all segment references in $allSegmentsRef
@@ -553,19 +553,26 @@ class Page extends CI_Controller {
 					// echo "Outer Loop is running for :".(++$ch)." count :".count($allRelatedSegments)."=====";
 					foreach ($allRelatedSegments as $key => $group)
 						{
+
 							if(is_array($group) && count($group) == 1)
 								{
 									$tempAttr = $group[0]->attributes();
+
 									$temp = array($group[0]);
-									$journeyArr = array("departure" => (string)$tempAttr["Origin"], "arrival" => (string)$tempAttr["Destination"]);
+									$journeyArr = array("departure" => (string)$tempAttr["Origin"], "arrival" => (string)$tempAttr["Destination"] ,
+									  "departureTime"=>(string)$tempAttr["DepartureTime"] ,
+									  "arrivalTime"=>(string)$tempAttr["ArrivalTime"] ,
+										"transitTime"=>(string)$tempAttr["FlightTime"] );
 								}else{
 									$temp = array( );
 									$journeyArr = $this->sortPathOrder($group , $temp);
+
 								}
 
 								$sortedInOrder[$key]["Segments"] = $temp;
-
 								$sortedInOrder[$key]["Journey"] = $journeyArr;
+								$sortedInOrder[$key]["TravelTime"] = (string)$allJourney[$key];
+
 						}
 
 					//get the first and the last $allSegments
@@ -583,8 +590,8 @@ class Page extends CI_Controller {
 				++$index;
   		}//Foreach pricing solution
 		}
-		echo "gonna print";
-		print_r($grandSortedSegments);die;
+		// echo "gonna print";
+		// print_r($grandSortedSegments);die;
 		return $grandSortedSegments;
 	}
 	private function getAllSegementsArray($segList)
@@ -618,7 +625,7 @@ class Page extends CI_Controller {
 	private function sortPathOrder( &$arr , &$sorted)
 	{
 
-
+			$transitTime = 0;
 			// foreach($arr as $a)
 			// 	echo $a->asXML();
 			// echo "[======]";
@@ -632,7 +639,7 @@ class Page extends CI_Controller {
 			foreach ($arr as $key => $segment) {
 				// code...
 				$attr=$segment->attributes();
-
+				$transitTime +=(int)$attr["FlightTime"];
 				//check for first $iteration
 				if($key == 0)
 				{
@@ -648,6 +655,9 @@ class Page extends CI_Controller {
 					$pathArr[(string)$attr["Destination"]]['index']= $key;
 					$origin = $attr["Origin"];
 					$destination = $attr["Destination"];
+					$departureTime=$attr["DepartureTime"];
+					$arrivalTime=(string)$attr["ArrivalTime"];
+
 					continue ;
 				}
 
@@ -687,12 +697,15 @@ class Page extends CI_Controller {
 					$sorted[]= $arr[$value['index']];
 					$indices[] =$value['index'];
 					$origin = (string) $arr[$value['index']]->attributes()["Origin"];
+					$departureTime =(string) $arr[$value['index']]->attributes()["DepartureTime"];
+
 				}
 				if( $value['Occurence'] == 1 && $value['type'] == "Destination")
 				{
 					if(!in_array($value['index'] , $indices))
 						{
 							$destination = (string) $arr[$value['index']]->attributes()["Destination"];
+							$arrivalTime = (string) $arr[$value['index']]->attributes()["ArrivalTime"];
 						}
 				}
 			}
@@ -721,7 +734,8 @@ class Page extends CI_Controller {
 
 
 			//return an array of origin/journey where in this group we have journey info
-			return array("departure"=>$origin ,"arrival"=> $destination );
+			return array("departure"=>$origin ,"arrival"=> $destination , "departureTime" =>$departureTime ,
+			 "arrivalTime"=>$arrivalTime , "transitTime" => $transitTime );
 	}
 	//iterate in depth
 	//to develop the array of all children
