@@ -94,20 +94,21 @@
             <div id="tabs-1">
               <form method="POST" class="form1" action="<?php echo base_url("Page/flightsList")?>">
                 <div class="row">
-                  <div class="col-sm-4 col-md-2">
+									<!--Start of From to departure section Section -->
+									<div class="col-sm-12 col-md-6">
+                  <div class="col-sm-4 col-md-4 tempJourney_1">
                       <label>Flying from:</label>
-                        <input type="text" class="form-control" name="from" id="from" list="allCountries1"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying From" value="KHI" required />
-						<datalist id="allCountries1" class="allCountries">
-						</datalist>
-					</div>
-                  <div class="col-sm-4 col-md-2">
+                        <input type="text" class="form-control" name="from[]" id="from" list="allCountries1"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying From" value="KHI" required />
+												<datalist id="allCountries1" class="allCountries">
+												</datalist>
+								  </div>
+                  <div class="col-sm-4 col-md-4 tempJourney_1">
 
                       <label>To:</label>
 
-                     <input type="text" class="form-control" id="to" name="to" list="allCountries2"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying To" required  value="LHE" />
-						<datalist id="allCountries2" class="allCountries">
-
-						</datalist>
+                     <input type="text" class="form-control" id="to" name="to[]" list="allCountries2"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying To" required  value="LHE" />
+										 <datalist id="allCountries2" class="allCountries">
+										 </datalist>
 
                     </div>
 
@@ -127,15 +128,22 @@
 						}
 					}
 			  </script>
-                  <div class="col-sm-4 col-md-2">
+                  <div class="col-sm-4 col-md-3 tempJourney_1">
                     <div class="input1_wrapper">
                       <label>Departing:</label>
                       <div class="input1_inner">
-                        <input type="text" class="input datepicker" name="departOn" value="Mm/Dd/Yy" required>
-                      </div>
+                        <input type="date" class="input datepicker" name="departOn[]" value="" required>
+
+											</div>
                     </div>
                   </div>
-                  <div class="col-sm-4 col-md-2">
+                    		<button type="button" id="btnInitial_1" style="margin-top:30px;" onclick="addRemoveRow(this)">+</button>
+
+								</div>
+								<!--End of from to departure section !-->
+								<!--Start of other info section  -->
+								<div class="col-sm-12 col-md-6" >
+                  <div class="col-sm-4 col-md-12">
                     <div class="input1_wrapper">
                       <label>Returning:</label>
                       <div class="input1_inner">
@@ -143,7 +151,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-4 col-md-1">
+                  <div class="col-sm-4 col-md-4">
                     <div class="select1_wrapper">
                       <label>Adult:</label>
                       <div class="select1_inner">
@@ -161,7 +169,7 @@
                       </div>
                     </div>
                   </div>
-									<div class="col-sm-4 col-md-1">
+									<div class="col-sm-4 col-md-4">
                     <div class="select1_wrapper">
                       <label>Child:</label>
                       <div class="select1_inner">
@@ -179,7 +187,7 @@
                       </div>
                     </div>
                   </div>
-									<div class="col-sm-4 col-md-1">
+									<div class="col-sm-4 col-md-4">
                     <div class="select1_wrapper">
                       <label>Infant:</label>
                       <div class="select1_inner">
@@ -197,6 +205,8 @@
                       </div>
                     </div>
                   </div>
+								</div>
+								<!--End of othjer info section -->
 								</div>
 									<div class="row" id="children"></div>
 									<div class="row" id="infants"></div>
@@ -1411,6 +1421,51 @@ $(document).ready(function(){
                 autoplayHoverPause: false
     		});
 		});
+		//id to track
+		var inputId = 2;
+		function addRemoveRow(btnObj){
+			if(btnObj.innerText == "+")
+			{
+				//add a row
+				btnObj.parentNode.innerHTML += developHTML();
+				console.log(btnObj);
+				document.getElementById(btnObj.id).innerText = "-";
+				btnObj.style.display ="none";
+				btnObj.remove();
+			}else{
+				//remove a row
+				$(".tempJourney_"+btnObj.id.split("_")[1]).remove();
+				document.getElementById(btnObj.id).remove();
+			}
+		}
+		function developHTML(){
+			++inputId;
+
+			return `				<div class="col-sm-4 col-md-4 tempJourney_`+inputId+`">
+			                      <label>Flying from:</label>
+			                        <input type="text" class="form-control" name="from[]" list="allCountries`+inputId+`"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying From" required />
+															<datalist id="allCountries`+inputId+`" class="allCountries">
+															</datalist>
+											  </div>
+			                  <div class="col-sm-4 col-md-4 tempJourney_`+inputId+`">
+
+			                      <label>To:</label>
+
+			                     <input type="text" class="form-control"  name="to[]" list="allCountries`+inputId+`"  onkeyup="javascript:fetchCountries(this.value);" placeholder="Flying To" required  />
+													 <datalist id="allCountries`+inputId+`" class="allCountries">
+													 </datalist>
+			                  </div>
+			                  <div class="col-sm-4 col-md-3 tempJourney_`+inputId+`">
+			                    <div class="input1_wrapper">
+			                      <label>Departing:</label>
+			                      <div class="input1_inner">
+			                        <input type="date" class="input datepicker" name="departOn[]" value="Mm/Dd/Yy" required>
+														</div>
+			                    </div>
+			                  </div>
+												<button type="button" style="margin-top:30px;" id="btn_`+inputId+`" onclick="addRemoveRow(this)">+</button>
+											`;
+		}
 </script>
 
 

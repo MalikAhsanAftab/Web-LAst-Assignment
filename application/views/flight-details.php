@@ -38,13 +38,14 @@
 
 		$time[] =date_format(date_create($departureTime),"h:i");
 		$time[] =date_format(date_create($departureTime),"D, d M");
+		$baseUrl = base_url('web-assets/images/saudia.jpg');
 		return <<<HTML
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="row">
 
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-offset-1 col-lg-1">
-						<img src="<?php echo base_url('image/airlinelogo-SV.png');?>" class="img-rounded"  width="100" height="60" alt='{$carrierCode}'>
+						<img src="{$baseUrl}" class="img-rounded"  width="100" height="60" alt='{$carrierCode}'>
 					</div>
 
 			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
@@ -162,7 +163,6 @@ function makeTimeString($time){
 
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-      <h4>Departure</h4>
 			<!--A Flight Section -->
 			<?php
 			$html = "";
@@ -175,6 +175,7 @@ function makeTimeString($time){
 			if(is_array($flights[0]))
 				if(count($flights[0]) == 1)
 				{
+					$html=`<h4>Departure `.$flights[0]->attributes()['Origin']."->".$flights[0]->attributes()['Destination']."</h4>";
 					$flights = $flights[0];
 					//its a direct flight
 					$infoArray = Array(
@@ -199,9 +200,12 @@ function makeTimeString($time){
 		}//End of direct flight if
 		else if(count($flights[0]) > 1)
 			{
+
+				$headerHtm='<h4>Departure ';
 				//we are here beacuse our journey is one way not return nor multicity
 				//Also it is a connecting flight
 				foreach ($flights[0] as $key => $value) {
+										$headerHtm.=$value->attributes()['Origin']."->";
 
 										$infoArray = Array(
 
@@ -228,15 +232,27 @@ function makeTimeString($time){
 																				 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
 
 							}
+						$headerHtm.="".$value->attributes()['Destination']."</h4>";
+						$html = $headerHtm.$html;
 			}//end of if for connecting flights
 			echo $html;
 		}else if(count($flights) > 1){
 			//Now we have multi Journeys Either return or Multicity so
+			// print_r($flights);
+			// die;
+			//here group means journey
+			//to know if its a return flight
+			$stops = array();
 
-			foreach($flights as $key => $group)
-			{	 var_dump($flights);die;
-			$tempArray = array();
-				foreach ($group as $key => $singleFlight) {
+			foreach($flights as $key => $Journey)
+			{
+				$tempHTML = '';
+				$headerHtm = '';
+				foreach ($Journey["Segments"] as $key => $singleFlight) {
+					 $origin =((string)$singleFlight->attributes()['Origin']);
+					 array_push($stops ,(string)$singleFlight->attributes()['Origin']);
+
+					 $headerHtm.=	 $origin."->";
 				$infoArray = Array(
 
 								'Departure' => $singleFlight->attributes()['Origin'],
@@ -257,11 +273,18 @@ function makeTimeString($time){
 				$transitTimeStr =makeTimeString($singleFlight->attributes()["FlightTime"]);
 				$attributeArr= $singleFlight->attributes();
 				$carrierCode = $attributeArr["Carrier"];
-				$html.=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
+				$tempHTML .=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
 														 $attributeArr["DepartureTime"] , $attributeArr["ArrivalTime"] ,
 														 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
 
 			}//foreach group
+			$stops[] = ((string)$singleFlight->attributes()['Destination']);
+			if($stops[0] == $stops[count($stops)-1])
+				$headerHtm = "<h4>RETURN ".$headerHtm;
+			else
+				$headerHtm = "<h4>DEPARTURE ".$headerHtm;
+			$headerHtm .= $singleFlight->attributes()['Destination']."</h4>";
+			$html.=$headerHtm.$tempHTML;
 		//Foreach flight loop
 		}
 		echo $html;

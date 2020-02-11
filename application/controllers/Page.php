@@ -43,13 +43,14 @@ class Page extends CI_Controller {
 	public function flightsList(){
 		//die(ini_get('max_execution_time'));
 		//sanitize / validate  posted data
+
 		if($_POST && isset($_POST['adult']) && isset($_POST['child']) && isset($_POST['infant'])
 		&& is_numeric($_POST['adult']) && is_numeric($_POST['child']) && is_numeric($_POST['infant'])
 		&& ($_POST['adult']>0 ||
 		 ($_POST['child']>0 && count($_POST['child_']) == $_POST['child']) ||
-		($_POST['infant']>0 && count($_POST['infant_']) == $_POST['infant']) ) &&
-		Page::validateDate($_POST['departOn'])
-	){
+		($_POST['infant']>0 && count($_POST['infant_']) == $_POST['infant']) )
+		)
+	{
 
 
 
@@ -77,24 +78,31 @@ class Page extends CI_Controller {
 
 		$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 
-		// echo ($flightData->asXML() );die ;
-		//get sorted array
-		$sortedSegments = $this->getRoutesData($flightData);
+		if($flightData->asXML() )
+		{		//get sorted array
+				$sortedSegments = $this->getRoutesData($flightData);
 
-		// print_r($sortedSegments);die;
-		$journey = array();
-		$journey[] = array("origin"=>$_POST['from'] , "destination"=>$_POST['to']);
-		if(isset($_POST['returnOn']))
-			$journey[] = array('origin' => $_POST['to'], "destination"=>$_POST['from'] );
+				// print_r($sortedSegments);die;
+				$journey = array();
+				$journey[] = array("origin"=>$_POST['from'] , "destination"=>$_POST['to']);
+				if(isset($_POST['returnOn']))
+					$journey[] = array('origin' => $_POST['to'], "destination"=>$_POST['from'] );
 
-		$sessionData = array('flightDetails' => $xmlRaw , 'journeys' => $journey);
+				$sessionData = array('flightDetails' => $xmlRaw , 'journeys' => $journey);
 
-		$this->session->set_userdata($sessionData);
-		// echo $xml->asXML();die;
-		$data['flights'] = $sortedSegments;
-		$data['carriers'] = $carriers;
-		$data['searchData'] = $journey;
-		$this->load->view("flights-list",$data);
+				$this->session->set_userdata($sessionData);
+				// echo $xml->asXML();die;
+				$data['flights'] = $sortedSegments;
+				$data['carriers'] = $carriers;
+				$data['searchData'] = $journey;
+				$this->load->view("flights-list",$data);
+		} else{
+			$data['flights'] = array();
+			$data['carriers'] = array();
+			$data['searchData'] = array();
+
+			$this->load->view("flights-list",$data);
+			}
 		}
 		else
 		{
@@ -280,6 +288,11 @@ class Page extends CI_Controller {
 			//develop a list of segment references
 			//**Grouped by journey
 
+			//fetching all segments
+			$allSegments = $FlightDetails->children('air' , true);
+			$allSegments = $this->getAllSegementsArray($allSegments);
+
+
 
 			$allSegmentsRef=array();
 			$allSegmentsRefKeys=array();
@@ -288,12 +301,9 @@ class Page extends CI_Controller {
 				//Foreach journey the loop runs
 				//Sub Groups on the basis of the journey
 				$tempSegmentsRef = array();
-				die("before");
 				$this->iterate($singleJourney , $tempSegmentsRef);
-				die("oh no");
 				$allSegmentsRef[] = $tempSegmentsRef;
 			}
-			die("ok");
 			foreach($allSegmentsRef as $key=>$group)
 				{
 					foreach ($group as $segment) {
@@ -301,17 +311,15 @@ class Page extends CI_Controller {
 					}
 
 				}
-				die("yes here");
 			//we have all segments reference keys
 			//now we have to develop groups of related segments
 			foreach ($allSegmentsRefKeys as $key => $keysGroup) {
 				// for each group of segment referenece keys
-								$allRelatedSegments[] = $this->findRelatedSegments($FlightDetails->children('air' , true) , $keysGroup);
+								$allRelatedSegments[] = $this->findRelatedSegments($allSegments , $keysGroup);
 			}
 
 
 			$sortedInOrder = array();
-			die("i am here");
 			//get the starting element from the array
 
 			//sort the array and put it in an array let's say sortedayyarRef
@@ -319,15 +327,11 @@ class Page extends CI_Controller {
 			foreach ($allRelatedSegments as $key => $group)
 				{
  					$temp = array( );
-					var_dump($group);
-					var_dump($temp);die;
 					$journey = $this->sortPathOrder($group , $temp);
 					$sortedInOrder[$key]["Segments"] = $temp;
 					$sortedInOrder[$key]["Journey"] = $journey;
-					print_r($journey);die;
 				}
 				//Now sorted In order is an array of groups of segments which are interrelated
-				print_r($sortedInOrder);die;
 				//develop a list of flights with basic information
 				$list = $this->uApi->getCarriers();
 				$carriers =array();
@@ -637,6 +641,11 @@ class Page extends CI_Controller {
 			$pathArr = array();
 			$origin  = "";
 			foreach ($arr as $key => $segment) {
+				if(!$segment)
+					{
+						unset($arr[$key]);
+						continue ;
+					}
 				// code...
 				$attr=$segment->attributes();
 				$transitTime +=(int)$attr["FlightTime"];

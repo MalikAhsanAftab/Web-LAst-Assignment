@@ -66,7 +66,7 @@ class uApi extends CI_MODEL {
 		$childrenAge = array();
 		$infantAge = array();
 
-		//print
+		//print;
 		$index=1;
 		foreach ($children as $key => $value) {
 			$tmp='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="CNN" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
@@ -80,11 +80,20 @@ class uApi extends CI_MODEL {
 		}
 		//initial data that is from , to and departure time xml is developed
 		// var_dump($departOn);die;
-		$Route = $this->getTemplateXML($from , $to ,  $dataArray['departOn']);
+
+		$Route= '';
+		$key=0;
+		if(is_array($from))
+		foreach ($from as $key => $value) {
+			$Route.= $this->getTemplateXML($from[$key] , $to[$key] ,  $dataArray['departOn'][$key]);
+		}
+		else
+			$Route.= $this->getTemplateXML($from , $to ,  $dataArray['departOn'][$key]);
 
 		//incase we have a return flight
+		//print_r($dataArray);
 		if(isset($dataArray['returnOn']) )
-			$Route .= $this->getTemplateXML($to , $from , $dataArray['returnOn']);
+			$Route .= $this->getTemplateXML($to[$key] , $from[0] , $dataArray['returnOn']);
 
 		$message = '
 		<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -105,7 +114,8 @@ class uApi extends CI_MODEL {
 		   </soap:Body>
 		</soap:Envelope>
 		';
-		// die($message);
+
+// die($message);
 		//<com:SearchPassenger BookingTravelerRef="1" Code="ADT" xmlns:com="http://www.travelport.com/schema/common_v42_0"/>
 		$msg=`<LowFareSearchReq xmlns="http://www.travelport.com/schema/air_v42_0" TraceId="5362d11b-7c79-4b34-923d-a2633e300e95" TargetBranch="P3088249" ReturnUpsellFare="true">
   <BillingPointOfSaleInfo xmlns="http://www.travelport.com/schema/common_v42_0" OriginApplication="uAPI" />
