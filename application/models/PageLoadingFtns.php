@@ -1,42 +1,44 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
- 
+
+
 class PageLoadingFtns extends CI_MODEL {
-	
+
 	public function index(){
-		
+
 		parent :: __construct();
-		
+
 	}
 
-	
+
 	public function getPageTitle($page){
-		
+
 		$page = basename($page,".php");
-		
+
 		$page = ucwords(str_replace("-"," ",$page));
-		
+
 		return $this->getConstants('site_title')." | ".$page;
-		
+
 	}
-	
+
 	public function getHeadScripts(){
-		
+
 		return '
-		
+
 		<!-------------------------------------------------------------------*
-		* '.$this->PageLoadingFtns->getConstants('site_title').' 			
+		* '.$this->PageLoadingFtns->getConstants('site_title').'
 		*====================================================================*
-		* '.$this->PageLoadingFtns->getConstants('version').'			
+		* '.$this->PageLoadingFtns->getConstants('version').'
 		*====================================================================*
-		* Developer : Muhammad Nouman - https://www.facebook.com/cracker.py 
+		* Developer : Muhammad Nouman - https://www.facebook.com/cracker.py
+    * Updated By: Muhammad Ahsan Aftab -- https://www.malkikahsan.info
 		*====================================================================*
-		* Contact : +92 346 5024709											
+		* Contact : +92 346 5024709
+    * Contact : +92 345 0345644
 		*====================================================================*
-		* Email : nomi922411@gmail.com										
+		* Email : nomi922411@gmail.com
 		--------------------------------------------------------------------->
-		
+
 		<!-- Owl Carosuel Style Sheets -->
 		<link href="'.base_url("web-assets/css/owl.carousel.css").'" rel="stylesheet">
 		<link href="'.base_url("web-assets/css/owl.carousel.min.css").'" rel="stylesheet">
@@ -47,7 +49,7 @@ class PageLoadingFtns extends CI_MODEL {
 
 		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">-->
-		 
+
 		<!--Slick slider -->
 		<link rel="stylesheet" href="'.base_url("web-assets/libs/slick-slider/slick.css").'">
 		<link rel="stylesheet" href="'.base_url("web-assets/libs/slick-slider/slick-theme.css").'">
@@ -189,8 +191,8 @@ class PageLoadingFtns extends CI_MODEL {
 			}
 		}
 		@media only screen and (max-width: 480px){
-			.testimonial{ 
-				padding: 70px 30px 30px; 
+			.testimonial{
+				padding: 70px 30px 30px;
 				margin: 90px auto;
 				border-radius:60px;
 			}
@@ -228,7 +230,7 @@ class PageLoadingFtns extends CI_MODEL {
 		}*/
 
 		.item1 {
-		  position: relative; 
+		  position: relative;
 		  border: 0px solid;
 		  overflow: hidden;
 		}
@@ -245,7 +247,7 @@ class PageLoadingFtns extends CI_MODEL {
 		}
 
 		.item2 {
-		  position: relative; 
+		  position: relative;
 		  border: 0px solid;
 		  overflow: hidden;
 		}
@@ -276,7 +278,7 @@ class PageLoadingFtns extends CI_MODEL {
 
 		<!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>-->
-		 
+
 
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesnt work if you view the page via file:// -->
@@ -285,14 +287,14 @@ class PageLoadingFtns extends CI_MODEL {
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		</head>
-		
-		
+
+
 		';
-		
+
 	}
-	
+
 	public function getTopBar(){
-		
+
 		return '<div class="top1_wrapper container-fluid">
 			  <div class="container">
 				<div class="top1 clearfix">
@@ -320,13 +322,13 @@ class PageLoadingFtns extends CI_MODEL {
 			</div>
 		';
 	}
-	
+
 	public function getNavBar(){
-		
+
 		$nav = "";
-		
+
 			$nav .='
-			
+
 			<div class="top2_wrapper" data-spy="affix" data-offset-top="197">
 				<div class="container">
 				<div class="top2 clearfix">
@@ -353,18 +355,18 @@ class PageLoadingFtns extends CI_MODEL {
 							<li><a href="'.base_url("Page/umrahPackages").'">Umra Packages</a></li>
 							<li><a href="'.base_url("Page/umrahGallery").'">Umra 2017</a></li>
 						</ul>
-					 </li>   
-					
+					 </li>
+
 					<li class="sub-menu sub-menu-1"><a href="'.base_url("Page/hajj").'">Hajj<em></em></a>
 					<ul>
 							<li><a href="'.base_url("Page/hajj").'">Hajj Packages</a></li>
 							<li><a href="'.base_url("Page/hajjGallery").'">Hajj 2017</a></li>
 						</ul>
 					</li>
-					
-					
+
+
 					<li><a href="'.base_url("Page/gallery").'">Gallery</a></li>
-				   
+
 					<!--<li class="sub-menu sub-menu-1"><a href="#">Pages<em></em></a>
 					  <ul>
 						<li><a href="flights.html">Flights</a>
@@ -400,7 +402,7 @@ class PageLoadingFtns extends CI_MODEL {
 						</li>
 					  </ul>
 					</li>
-				   
+
 					<li class="sub-menu sub-menu-1"><a href="#">Blog<em></em></a>
 					  <ul>
 						<li><a href="blog.html">Right Blog</a></li>
@@ -417,14 +419,14 @@ class PageLoadingFtns extends CI_MODEL {
 			</div>
 		  </div>
 		</div>';
-		
+
 		return $nav;
 	}
-	
+
 	public function getFooter(){
-		
+
 		return '
-			
+
 			<div class="bot1_wrapper">
   <div class="container">
     <div class="row">
@@ -448,7 +450,7 @@ class PageLoadingFtns extends CI_MODEL {
           <li><a href="#"><img src="'. base_url().'web-assets/images/twitter.png" alt="twitter">&nbsp;&nbsp;Twitter</a></li>
         </ul>
       </div>
-      
+
       <div class="col-sm-3">
         <div class="bot1_title">Payments</div>
         <div class="img-responsive">
@@ -458,13 +460,13 @@ class PageLoadingFtns extends CI_MODEL {
         </div>
      	<hr>
        <div class="bot1_title">Affiliations</div>
-        <div class="img-responsive"> 
-        <img src="'. base_url().'web-assets/images/iata.png" alt="iata" width="51" height="32">&nbsp;&nbsp;    
+        <div class="img-responsive">
+        <img src="'. base_url().'web-assets/images/iata.png" alt="iata" width="51" height="32">&nbsp;&nbsp;
          <img src="'. base_url().'web-assets/images/taap.png" alt="taap" width="51" height="32">&nbsp;&nbsp;
          <img src="'. base_url().'web-assets/images/ssl.png" alt="ssl" width="51" height="32">
         </div>
       </div>
-      
+
       <div class="col-sm-3">
         <div class="bot1_title">Contact Us</div>
         <div class="newsletter_block">
@@ -491,14 +493,14 @@ class PageLoadingFtns extends CI_MODEL {
   </div>
 </div>
 
-		
+
 		';
-		
+
 	}
-	
+
 	public function getFootScripts(){
-		
-		
+
+
 		return '
 			<script src="'.base_url("web-assets/js/bootstrap.min.js").'"></script>
 			<script src="'.base_url("web-assets/js/jquery.parallax-1.1.3.resize.js").'"></script>
@@ -511,32 +513,32 @@ class PageLoadingFtns extends CI_MODEL {
 			<script src="'.base_url("web-assets/js/script.js").'"></script>
 		';
 	}
-	
+
 	public static function getConstants($name){
-		
+
 		switch($name){
-			
+
 			case 'site_title':
 				return "TRAVEL SYSTEM";
 			break;
-			
+
 			case 'version':
 				return "1.0";
 			break;
-			
+
 			case 'company_name':
 				return "CREATER SOL";
 			break;
-			
+
 			case 'year':
 				return "2017-2018";
 			break;
-			
+
 			default: return "CONSTANT NOT FOUND";
 		}
 	}
-		
-		
+
+
 }
 
 ?>

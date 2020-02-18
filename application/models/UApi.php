@@ -196,6 +196,104 @@ class uApi extends CI_MODEL {
 	}
 	public function bookTicket(){
 
+		$dateOfBirth = "1981-12-24";
+		$gender = "M";
+		$travelerInfo = array(
+			"gender" => "M",
+			"dateOfBirth" => "1981-12-24" ,
+			"travelerType" => "ADT" ,
+			"nationality" => "IN" ,
+			"first" => "Malik" ,
+			"last" =>  "Ahsan" ,
+			"prefix" => "Mr" ,
+			"email" => "malikahsan@gmail.com" ,
+			"phone" => "+923450345645" ,
+			"areaCode" => "91" ,
+			"countryCode" => "35" ,
+			"location" => "CCU" ,
+			"type" => "Home"
+
+		);
+		$travelerInfo["shipping"] = array(
+	"addressName"
+	,"street"
+	 , "city"
+	  , "state"
+		 ,"postalCode"
+		  , "country"
+
+		);
+
+		$message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<univ:AirCreateReservationReq	xmlns:air="http://www.travelport.com/schema/air_v33_0"
+			xmlns:common_v33_0="http://www.travelport.com/schema/common_v33_0" xmlns:univ="http://www.travelport.com/schema/universal_v33_0"
+			AuthorizedBy="user" RetainReservation="Both" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+			<com:BillingPointOfSaleInfo	xmlns:com="http://www.travelport.com/schema/common_v33_0" OriginApplication="UAPI"/>
+
+				<com:BookingTraveler xmlns:com="http://www.travelport.com/schema/common_v33_0" DOB="'.$dateOfBirth.'" Gender="'.$gender.'"
+				Key="gr8AVWGCR064r57Jt0+8bA==" Nationality="IN" TravelerType="ADT">
+					<com:BookingTravelerName First="Arkajyoti" Last="Mallick" Prefix="Mr"/>
+					<com:DeliveryInfo>
+						<com:ShippingAddress>
+							<com:AddressName>Home</com:AddressName>
+							<com:Street>Hillkart Road</com:Street>
+							<com:City>Darjeeling</com:City>
+							<com:State>WB</com:State>
+							<com:PostalCode>721124</com:PostalCode>
+							<com:Country>IN</com:Country>
+						</com:ShippingAddress>
+					</com:DeliveryInfo>
+					<com:PhoneNumber AreaCode="91" CountryCode="35" Location="CCU" Number="25867123" Type="Home"/>
+					<com:Email EmailID="test@travelport.com" Type="Home"/>
+					<com:Address>
+						<com:AddressName>Home</com:AddressName>
+						<com:Street>Hillkart Road</com:Street>
+						<com:City>Darjeeling</com:City>
+						<com:State>WB</com:State>
+						<com:PostalCode>721124</com:PostalCode>
+						<com:Country>IN</com:Country>
+					</com:Address>
+				</com:BookingTraveler>
+				<air:AirPricingSolution ApproximateBasePrice="CAD2052.00" ApproximateFees="CAD23.00" ApproximateTaxes="CAD347.67"
+				ApproximateTotalPrice="CAD2422.67" BasePrice="CAD2052.00" Fees="CAD23.00" Key="zgJazBx9QkyaT21JDpQfpg==" Taxes="CAD347.67"
+				TotalPrice="CAD2422.67">
+					<air:AirSegment ArrivalTime="2015-08-31T11:01:00.000-06:00" Carrier="AC" ChangeOfPlane="false" ClassOfService="D"
+					DepartureTime="2015-08-31T08:20:00.000-04:00" Destination="YYC" ETicketability="Yes" Equipment="320" FlightNumber="165"
+					FlightTime="281" Group="0" HostTokenRef="TTy5Fg1iR16AMlhMpHEetg==" Key="9t0+seCIRJGomz2A4GBdSw==" OptionalServicesIndicator="true"
+					Origin="YUL" ProviderCode="ACH" Status="KK" SupplierCode="AC" TravelTime="281">
+						<air:CodeshareInfo OperatingCarrier="AC" OperatingFlightNumber="165"/>
+					</air:AirSegment>
+					<air:AirPricingInfo ApproximateBasePrice="CAD2052.00" ApproximateFees="CAD23.00" ApproximateTaxes="CAD347.67"
+					ApproximateTotalPrice="CAD2422.67" BasePrice="CAD2052.00" Fees="CAD23.00" Key="i52kDIokT3KdKo0QBcVTkg==" PricingMethod="Auto"
+					ProviderCode="ACH" SupplierCode="AC" Taxes="CAD347.67" TotalPrice="CAD2422.67">
+						<air:FareInfo Amount="CAD2052.00" DepartureDate="2015-08-31" Destination="YYC" EffectiveDate="2015-07-27T08:44:01.735-04:00"
+						FareBasis="D7ZEXC" FareFamily="Business Class (flexible)" Key="Deil+wPQSGiDFN+0sfkq2A==" Origin="YUL" PassengerTypeCode="ADT"
+						PromotionalFare="false">
+							<air:FareRuleKey FareInfoRef="Deil+wPQSGiDFN+0sfkq2A==" ProviderCode="ACH">
+								H4sIAAAAAAAAALVXTW8bRRjetKEkapsmTRGqBNJckKhw7baiHzTiw3GSNsiFKHYliriMd8fraca725lZx+4BCYkT/4ADF878Bq7cOSAuXLjzH3je2V3vug2IDZCDY8/O+77P+7yf+8Mf
+							</air:FareRuleKey>
+						</air:FareInfo>
+						<air:BookingInfo BookingCode="D" FareInfoRef="Deil+wPQSGiDFN+0sfkq2A==" HostTokenRef="TTy5Fg1iR16AMlhMpHEetg=="
+						SegmentRef="9t0+seCIRJGomz2A4GBdSw=="/>
+						<air:TaxInfo Amount="CAD7.12" Category="CA" Key="K2Vwp0wOQEiS5yc48EGvjw=="/>
+						<air:TaxInfo Amount="CAD105.36" Category="XG" Key="POacf0uVR0efT4Z+5Zwp1w=="/>
+						<air:TaxInfo Amount="CAD210.19" Category="XQ" Key="zvuPSL75QfCtu2m19xvGBg=="/>
+						<air:TaxInfo Amount="CAD25.00" Category="SQ" Key="+B+1fxeDRGi0KRK483xX4A=="/>
+						<air:PassengerType BookingTravelerRef="gr8AVWGCR064r57Jt0+8bA==" Code="ADT"/>
+						<air:FeeInfo Amount="CAD23.00" Code="S1" Key="YHscEyvmTHCvpYyhxk/JmA==" ProviderCode="ACH" SupplierCode="AC"/>
+					</air:AirPricingInfo>
+					<common_v33_0:HostToken Key="TTy5Fg1iR16AMlhMpHEetg==">
+					H4sIAAAAAAAAAFvzloG1hIHVzcfF0RkA3pudrwwAAAA={IS@@@}H4sIAAAAAAAAAFvzloG1hIHZ2dEFAF/jpqEKAAAA{CC@@@ET}ACHSDv01LPD1:d197d801-0c99-4e58-8669-
+					d11bd31af2f4
+</common_v33_0:HostToken>
+				</air:AirPricingSolution>
+				<com:ActionStatus
+					xmlns:com="http://www.travelport.com/schema/common_v33_0" ProviderCode="ACH" TicketDate="2015-07-29T13:09:28" Type="TAW"/>
+				</univ:AirCreateReservationReq>
+			</soapenv:Body>
+		</soapenv:Envelope>';
 		$message = '
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Header/>

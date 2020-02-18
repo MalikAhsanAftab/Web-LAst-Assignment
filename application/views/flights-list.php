@@ -103,7 +103,7 @@ function makeFlightCardHtm($carriers , $journeyArr , $pricing ){
 		$carrierCode = (string)$segment->attributes()["Carrier"] ;
 		$sameAirLine = $lastCarrierCode==$carrierCode ;
 
-		$carrierHtml = $sameAirLine ? '' : '<div class="outbound"><img src="https://www.checkin.pk/frontend/images/AirLineImages/airlinelogo-WY.png" alt="'.$carrierCode.'">'
+		$carrierHtml = $sameAirLine ? '' : '<div class="outbound"><img src="https://goprivate.wspan.com/sharedservices/images/airlineimages/logoAir'.$carrierCode.'.gif" alt="'.$carrierCode.'">'
 					.(string)$carriers[$carrierCode].'</div>';
 		$lastCarrierCode = $carrierCode;
 

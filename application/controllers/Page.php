@@ -118,15 +118,14 @@ class Page extends CI_Controller {
 			//we might have raw xml data in session
 			//we can use it
 			$sessData = 		$this->session->userdata();
-			$xmlRaw = $sessData["flightDetails"];
-			$origin = $sessData["origin"];
-			$destination = $sessData["destination"];
 			if(empty($sessData["flightDetails"])  || empty($sessData["flightDetails"]) )
 			{
 				$data["error"] = "Either invalid request or request timed out.Error Code :mo23iu4#";
 				$this->load->view('home' , $data);
 			}else{
 				//develop a list of flights with basic information
+				$xmlRaw = $sessData["flightDetails"];
+
 				$list = $this->uApi->getCarriers();
 				$carriers =array();
 				if($list)
@@ -354,7 +353,8 @@ class Page extends CI_Controller {
 	}
 
 	public function bookNow(){
-
+		$this->uApi->bookTicket();
+		die;
 		if(!$_POST){
 			$this->load->view("booking");
 		}
@@ -378,7 +378,7 @@ class Page extends CI_Controller {
 
     		$this->db->insert('customers',$dataArray);
 
-			$time = explode("T",$_GET['Time'][0]);
+			  $time = explode("T",$_GET['Time'][0]);
 
     		$bookingArray = array(
 

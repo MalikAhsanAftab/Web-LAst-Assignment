@@ -1,40 +1,42 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
- 
+
+
 class AdminPageLoadingFtns extends CI_MODEL {
-	
+
 	public function index(){
-		
+
 		parent :: __construct();
-		
+
 	}
 
-	
+
 	public function getPageTitle($page){
-		
+
 		$page = ucwords(str_replace("-"," ",$page));
-		
+
 		return $this->getConstants('site_title')." / ".$page;
-		
+
 	}
-	
+
 	public function getHeadScripts(){
-		
+
 		return '
-		
+
 		<!-------------------------------------------------------------------
 		* TRAVEL     														*
 		*===================================================================*
 		* Version 1.0														*
 		*===================================================================*
 		* Developer : Muhammad Nouman - https://www.facebook.com/cracker.py *
+    * Updated By: Muhammad Ahsan Aftab - https://www.malikahsan.info
 		*===================================================================*
 		* Contact : +92 346 5024709											*
+    * Contact : +92 345 0345644
 		*===================================================================*
 		* Email : nomi922411@gmail.com										*
 		--------------------------------------------------------------------->
-		
+
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/bootstrap.css").'"/>
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/font-awesome.css").'" />
@@ -44,10 +46,10 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 		<!-- ace styles -->
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/ace.css").'" />
-		
+
 		<!-- Date Picker-->
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/datepicker.css").'" />
-	
+
 		<!-- page specific plugin styles -->
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/jquery-ui.custom.css").'" />
 		<link rel="stylesheet" href="'.base_url("admin-assets/css/jquery.gritter.css").'" />
@@ -68,18 +70,18 @@ class AdminPageLoadingFtns extends CI_MODEL {
 		<script src="'.base_url("admin-assets/js/html5shiv.js").'"></script>
 		<script src="'.base_url("admin-assets/js/respond.js").'"></script>
 		<![endif]-->
-		
-		
+
+
 		';
-		
+
 	}
-	
+
 	public function getNavBar(){
-		
+
 		$nav = "";
-		
+
 			$nav .='
-			
+
 			<div id="navbar" class="navbar navbar-default">
 
 			<div class="navbar-container" id="navbar-container">
@@ -106,7 +108,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 						<a href="http://faiz.solutions" target="_BLANK" style="display:inline-block; margin-top:10px;font-size:15px; color:white;">(Powered By FAIZ SOLUTIONS)</a>
 						</small>
 					</a>
-					
+
 
 					<!-- /section:basics/navbar.layout.brand -->
 
@@ -114,26 +116,26 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 					<!-- /section:basics/navbar.toggle -->
 				</div>
-				
+
 
 				<!-- #section:basics/navbar.dropdown -->
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-					
+
 						<!-- #section:basics/navbar.user_menu -->
-						
+
 						<li class="light-blue">';
-						
+
 						if($this->Functions->isRetailer() || $this->Functions->isFranchise()){
-						
+
 							$nav .= '
 									<div class="infobox infobox-green infobox-small infobox-dark" style="position: relative; top: -6px;">
 									<!-- #section:pages/dashboard.infobox.sparkline -->
 									<div class="infobox-icon" style="left: 7px;font-size: 21px;position: relative;top: 2px;">
 										<i class="fa fa-money" aria-hidden="true"></i>
 									</div>
-									
-										
+
+
 										<!-- /section:pages/dashboard.infobox.sparkline -->
 										<div class="infobox-data">
 											<div id="user_credit" class="infobox-content" style="position: relative;left: 0px;top:0;">
@@ -141,9 +143,9 @@ class AdminPageLoadingFtns extends CI_MODEL {
 										</div>
 									</div></div>
 						</li>';}
-										
+
 							$nav .= '
-						
+
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<i class="fa fa-user fa-2x fa-fw"></i>
@@ -164,7 +166,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 								</li>
 
 								<li class="divider"></li>
-								
+
 
 								<li>
 									<a href="'.base_url("/Logout").'">
@@ -174,7 +176,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 								</li>
 							</ul>
 						</li>
-						
+
 
 						<!-- /section:basics/navbar.user_menu -->
 					</ul>
@@ -183,17 +185,17 @@ class AdminPageLoadingFtns extends CI_MODEL {
 				<!-- /section:basics/navbar.dropdown -->
 			</div><!-- /.navbar-container -->
 		</div>';
-		
+
 		// Navigation Bar For Super
 		if($this->Functions->isSuper())
 		{
 			$nav .= '
-				
+
 				<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<!-- #section:basics/sidebar -->
 			<div id="sidebar" class="sidebar responsive">
-			
+
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<a  class="btn btn-success" href="'.base_url("super/view-profile").'">
@@ -236,7 +238,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 					<li class="">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-building"></i>
@@ -298,7 +300,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-car"></i>
@@ -329,8 +331,8 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
-					
+
+
 					<li class="">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-road"></i>
@@ -361,8 +363,8 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
-					
+
+
 					<li class="">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-calendar"></i>
@@ -393,7 +395,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="">
 						<a href="'.base_url('/Tickets/viewTickets').'">
 							<i class="menu-icon fa fa-ticket"></i>
@@ -402,8 +404,8 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
-					
+
+
 					<li class="">
 						<a href="'.base_url('/super/Backups').'">
 							<i class="menu-icon fa fa-hdd-o"></i>
@@ -412,7 +414,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 					<li class="">
 						<a href="'.base_url('/Logout').'">
 							<i class="menu-icon fa fa-sign-out"></i>
@@ -421,7 +423,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 				</ul><!-- /.nav-list -->
 				<!-- #section:basics/sidebar.layout.minimize -->
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -432,22 +434,22 @@ class AdminPageLoadingFtns extends CI_MODEL {
 			</div>
 
 			<!-- /section:basics/sidebar -->
-				
+
 			';
-			
+
 		}
-		
+
 		// Navigation Bar For Franchise
-			
+
 			else if ($this->Functions->isFranchise()){
-				
+
 				$nav .= '
-				
+
 				<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<!-- #section:basics/sidebar -->
 			<div id="sidebar" class="sidebar responsive">
-			
+
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<a  class="btn btn-success" href="'.base_url("super/view-profile").'">
@@ -490,7 +492,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 					<li class="'.(($this->uri->segment(2) == "Users")?"active":"").'">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-users"></i>
@@ -521,7 +523,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="'.(($this->uri->segment(1) == "Tickets")?"active":"").'">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-ticket"></i>
@@ -552,7 +554,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="'.(($this->uri->segment(2) == "Credits")?"active":"").'">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-money"></i>
@@ -583,7 +585,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="">
 						<a href="'.base_url('/Logout').'">
 							<i class="menu-icon fa fa-sign-out"></i>
@@ -592,7 +594,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 				</ul><!-- /.nav-list -->
 				<!-- #section:basics/sidebar.layout.minimize -->
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -603,18 +605,18 @@ class AdminPageLoadingFtns extends CI_MODEL {
 			</div>
 
 			<!-- /section:basics/sidebar -->
-				
+
 			';
 			}
 			else if ($this->Functions->isUser()){
-				
+
 				$nav .= '
-				
+
 				<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<!-- #section:basics/sidebar -->
 			<div id="sidebar" class="sidebar responsive">
-			
+
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<a  class="btn btn-success" href="'.base_url("super/view-profile").'">
@@ -657,8 +659,8 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-				
-					
+
+
 					<li class="'.(($this->uri->segment(1) == "Tickets")?"active":"").'">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-ticket"></i>
@@ -690,7 +692,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 						</ul>
 					</li>
 
-					
+
 					<li class="">
 						<a href="'.base_url('/Logout').'">
 							<i class="menu-icon fa fa-sign-out"></i>
@@ -699,7 +701,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 				</ul><!-- /.nav-list -->
 				<!-- #section:basics/sidebar.layout.minimize -->
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -710,21 +712,21 @@ class AdminPageLoadingFtns extends CI_MODEL {
 			</div>
 
 			<!-- /section:basics/sidebar -->
-				
+
 			';
 			}
-			
-			
-			
+
+
+
 			else if ($this->Functions->isRetailer()){
-				
+
 				$nav .= '
-				
+
 				<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<!-- #section:basics/sidebar -->
 			<div id="sidebar" class="sidebar responsive">
-			
+
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<a  class="btn btn-success" href="'.base_url("super/view-profile").'">
@@ -767,8 +769,8 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-				
-					
+
+
 					<li class="'.(($this->uri->segment(1) == "Tickets")?"active":"").'">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-ticket"></i>
@@ -799,7 +801,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 							</li>
 						</ul>
 					</li>
-					
+
 					<li class="">
 						<a href="'.base_url('retailer/Credits/topupHistory').'">
 							<i class="menu-icon fa fa-money"></i>
@@ -808,7 +810,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 					<li class="">
 						<a href="'.base_url('/Logout').'">
 							<i class="menu-icon fa fa-sign-out"></i>
@@ -817,7 +819,7 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 						<b class="arrow"></b>
 					</li>
-					
+
 				</ul><!-- /.nav-list -->
 				<!-- #section:basics/sidebar.layout.minimize -->
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -828,19 +830,19 @@ class AdminPageLoadingFtns extends CI_MODEL {
 			</div>
 
 			<!-- /section:basics/sidebar -->
-				
+
 			';
 			}
-		
-		
-		
+
+
+
 			return $nav;
 	}
-	
+
 	public function getFooter(){
-		
+
 		return '
-			
+
 			<div class="footer">
 				<div class="footer-inner">
 					<!-- #section:basics/footer -->
@@ -862,16 +864,16 @@ class AdminPageLoadingFtns extends CI_MODEL {
 
 					<!-- /section:basics/footer -->
 
-		
+
 		';
-		
+
 	}
-	
+
 	public function getFootScripts(){
-		
-		
+
+
 		return '
-		
+
 		<script src="'.base_url("admin-assets/js/jquery.js").'"></script>
 		<script src="'.base_url("admin-assets/js/bootstrap.js").'"></script>
 
@@ -888,30 +890,30 @@ class AdminPageLoadingFtns extends CI_MODEL {
 				})
 		</script>
 
-	
+
 		';
 	}
-	
+
 	public static function getConstants($name){
-		
+
 		switch($name){
-			
+
 			case 'site_title':
 				return "TRAVEL";
 			break;
-			
+
 			case 'version':
 				return "1.0";
 			break;
-			
+
 			case 'company_name':
 				return "ABFA GROUP";
 			break;
-			
+
 			case 'year':
 				return "2017-2018ss";
 			break;
-			
+
 			default: return "CONSTANT NOT FOUND";
 		}
 	}

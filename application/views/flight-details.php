@@ -173,16 +173,17 @@ function makeTimeString($time){
 			//It means we have
 			//Now check if it's a direct OR connecting flight
 			if(is_array($flights[0]))
-				if(count($flights[0]) == 1)
+				if(count($flights[0]["Segments"]) == 1)
 				{
-					$html=`<h4>Departure `.$flights[0]->attributes()['Origin']."->".$flights[0]->attributes()['Destination']."</h4>";
-					$flights = $flights[0];
+					$segmentTemp= $flights[0]["Segments"][0];
+					$html=`<h4>Departure `.$segmentTemp->attributes()['Origin']."->".$segmentTemp->attributes()['Destination']."</h4>";
+					$flights = $segmentTemp;
 					//its a direct flight
 					$infoArray = Array(
-							'Departure' => $flights[0]->attributes()['Origin'],
-							'Arrival' 	=> $flights[0]->attributes()['Destination'],
-							'Time'		=> $flights[0]->attributes()['ArrivalTime'],
-							'FlightNumber' => $flights[0]->attributes()['FlightNumber'],
+							'Departure' => $flights->attributes()['Origin'],
+							'Arrival' 	=> $flights->attributes()['Destination'],
+							'Time'		=> $flights->attributes()['ArrivalTime'],
+							'FlightNumber' => $flights->attributes()['FlightNumber'],
 							'TotalPrice' => $pricing->attributes()['TotalPrice']
 							);
 					$BookingArray=$pricing->AirPricingInfo->BookingInfo->attributes();
@@ -191,20 +192,19 @@ function makeTimeString($time){
 			//calculating transit time we have so far is total amount of mionutes
 			//so we have to u know that calculat days , hour s , minutes
 			//making the str which has to be shown
-			$transitTimeStr =makeTimeString($flights[0]->attributes()["FlightTime"]);
-			$carrierCode = $flights[0]->attributes()["Carrier"];
-			$html .= makeFlightHtml($flights[0]->attributes()['Origin'], $flights[0]->attributes()['Destination'] ,
-			$flights[0]->attributes()['DepartureTime']  , $flights[0]->attributes()['ArrivalTime'] ,
-			$transitTimeStr , $flights[0]->attributes()['FlightNumber'] , $BookingArray['CabinClass'] , $carriers[(string)$carrierCode]);
+			$transitTimeStr =makeTimeString($flights->attributes()["FlightTime"]);
+			$carrierCode = $flights->attributes()["Carrier"];
+			$html .= makeFlightHtml($flights->attributes()['Origin'], $flights->attributes()['Destination'] ,
+			$flights->attributes()['DepartureTime']  , $flights->attributes()['ArrivalTime'] ,
+			$transitTimeStr , $flights->attributes()['FlightNumber'] , $BookingArray['CabinClass'] , $carriers[(string)$carrierCode]);
 
 		}//End of direct flight if
-		else if(count($flights[0]) > 1)
+		else if(count($flights[0]["Segments"]) > 1)
 			{
-
 				$headerHtm='<h4>Departure ';
 				//we are here beacuse our journey is one way not return nor multicity
 				//Also it is a connecting flight
-				foreach ($flights[0] as $key => $value) {
+				foreach ($flights[0]["Segments"] as $key => $value) {
 										$headerHtm.=$value->attributes()['Origin']."->";
 
 										$infoArray = Array(
