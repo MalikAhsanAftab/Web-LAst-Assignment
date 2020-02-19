@@ -246,6 +246,8 @@ function makeTimeString($time){
 
 			foreach($flights as $key => $Journey)
 			{
+				// echo "here";
+				// var_dump($Journey);die;
 				$tempHTML = '';
 				$headerHtm = '';
 				foreach ($Journey["Segments"] as $key => $singleFlight) {
@@ -290,6 +292,7 @@ function makeTimeString($time){
 		echo $html;
 		//setting the session value
 		$this->session->set_userdata($tempArray);
+		// var_dump($tempArray);die;
 	 }//end of continous flights
 			 ?>
 
@@ -313,7 +316,7 @@ function makeTimeString($time){
     		</div>
 
     		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-1 col-lg-5">
-				<a class="btn btn-success btn-lg" href="<?php echo base_url("Page/bookNow")."?		". http_build_query($infoArray)?>">CONTINUE <i class="fa fa-arrow-right"></i></a>
+				<a class="btn btn-success btn-lg" href="<?php echo base_url("Page/getPricing/".urlencode(str_replace("/" , "__" ,$pricing->attributes()['Key'] ) ) ) ?>">CONTINUE <i class="fa fa-arrow-right"></i></a>
     		</div>
     	</div>
 </div><!--row end here-->

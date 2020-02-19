@@ -75,7 +75,13 @@ class Page extends CI_Controller {
 
 		//in case of fault no backup plans
 		// Grabs the tickets
-
+		//checking if we have a valid xml
+		// var_dump(empty($xml) );die;
+		if($xml === null)
+			{
+				echo "<h1>Something went wrong while connecting to the server redirecting...</h1><script>window.location.reload(true);</script>";
+				die ;
+			}
 		$flightData = $xml->children('SOAP',true)->Body->children('air', true)->LowFareSearchRsp;
 
 		if($flightData->asXML() )
@@ -350,6 +356,39 @@ class Page extends CI_Controller {
 			$this->load->view('home');
 		}
 		}//end of 404 else
+	}
+
+	//get the air pricinhng detail of an itenireary
+	public function getPricing($key = ""){
+		if(empty($key))
+		{
+			show_404();
+			die;
+		}
+		//sanitize the key provided
+		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
+
+		//getting the info from model
+		$xmlResp = $this->uApi->getPricing($solutionKey);
+
+		//get info of
+		$sessData = $this->session->userdata();
+		$xmlRaw = $sessData['flightDetails'];
+		$xml = simplexml_load_string($xmlRaw);
+
+		//Confirming if we have info in the session
+		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
+				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
+				$FlightDetails = $LowFareSearchRsp->AirSegmentList;
+
+
+				foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value)
+					if($solutionKey == (string)$value->attributes()["Key"] )
+						{
+							echo $value->asXML();
+						}
+				echo "Here";
+		}
 	}
 
 	public function bookNow(){
