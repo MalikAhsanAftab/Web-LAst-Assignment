@@ -263,6 +263,9 @@ class uApi extends CI_MODEL {
 						<com:Country>'.$travelerInfo['address']['country'].'</com:Country>
 					</com:Address>
 				</com:BookingTraveler>
+
+
+
 				<air:AirPricingSolution ApproximateBasePrice="CAD2052.00" ApproximateFees="CAD23.00" ApproximateTaxes="CAD347.67"
 				ApproximateTotalPrice="CAD2422.67" BasePrice="CAD2052.00" Fees="CAD23.00" Key="zgJazBx9QkyaT21JDpQfpg==" Taxes="CAD347.67"
 				TotalPrice="CAD2422.67">
@@ -295,6 +298,9 @@ class uApi extends CI_MODEL {
 						H4sIAAAAAAAAAFvzloG1hIHVzcfF0RkA3pudrwwAAAA={IS@@@}H4sIAAAAAAAAAFvzloG1hIHZ2dEFAF/jpqEKAAAA{CC@@@ET}ACHSDv01LPD1:d197d801-0c99-4e58-8669-
 						d11bd31af2f4
 					</common_v33_0:HostToken>
+
+
+
 				</air:AirPricingSolution>
 				<com:ActionStatus
 					xmlns:com="http://www.travelport.com/schema/common_v33_0" ProviderCode="ACH" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
@@ -333,13 +339,12 @@ class uApi extends CI_MODEL {
       <com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
 
 	<air:AirPricingSolution Key="a3UzhM7Q2BKAcgmOCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
-
-	<air:AirSegment Key="a3UzhM7Q2BKAdgmOCAAAAA==" Group="0" Carrier="FZ" FlightNumber="335" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
-	<air:AirAvailInfo ProviderCode="1G">
-	<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
-	</air:AirAvailInfo>
-	<air:FlightDetails Key="a3UzhM7Q2BKAegmOCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
-	</air:AirSegment>
+		<air:AirSegment Key="a3UzhM7Q2BKAdgmOCAAAAA==" Group="0" Carrier="FZ" FlightNumber="335" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
+			<air:AirAvailInfo ProviderCode="1G">
+				<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
+			</air:AirAvailInfo>
+			<air:FlightDetails Key="a3UzhM7Q2BKAegmOCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
+		</air:AirSegment>
 
 	<air:AirPricingInfo Key="a3UzhM7Q2BKAggmOCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-05-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
 	<air:FareInfo Key="a3UzhM7Q2BKAngmOCAAAAA==" FareBasis="UOWBGAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-05-04T19:08:00.000+05:00" DepartureDate="2018-05-30" Amount="PKR6950" NegotiatedFare="false">
@@ -364,7 +369,6 @@ class uApi extends CI_MODEL {
     </univ:AirCreateReservationReq>
   </soapenv:Body>
 </soapenv:Envelope>
-
 		';
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
@@ -500,52 +504,60 @@ class uApi extends CI_MODEL {
 	public function getPricing($solutionKey ){
 		$session = $this->session->userdata();
 		// print_r($session);die;
-		$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
-		$allItineraries = $this->getAllItineraries($solutionKey);
-		$message = '
-		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-			<soapenv:Header/>
-			<soapenv:Body>
-				<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v42_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
-					<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v42_0" OriginApplication="UAPI"/>
-						'.$allItineraries.$allPassengers.'
-					<air:AirPricingCommand CabinClass="Economy"/>
-				</air:AirPriceReq>
-			</soapenv:Body>
-		</soapenv:Envelope>';
+		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) )
+		{
+			$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
+			$allItineraries = $this->getAllItineraries($solutionKey);
+			$message = '
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+					<soapenv:Header/>
+					<soapenv:Body>
+						<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v42_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+							<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v42_0" OriginApplication="UAPI"/>
+								'.$allItineraries.$allPassengers.'
+							<air:AirPricingCommand CabinClass="Economy"/>
+						</air:AirPriceReq>
+					</soapenv:Body>
+				</soapenv:Envelope>';
 
-		$handle = fopen("PricingReq.txt" , 'a');
-	//	fwrite($handle , $message);
+				// $handle = fopen("PricingReq.txt" , 'a');
+				//	fwrite($handle , $message);
 
-		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
-		$header = array(
-		"Content-Type: text/xml;charset=UTF-8",
-		"Accept: gzip,deflate",
-		"Cache-Control: no-cache",
-		"Pragma: no-cache",
-		"SOAPAction: \"\"",
-		"Authorization: Basic $auth",
-		"Content-length: ".strlen($message),
-		);
+			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+			$header = array(
+			"Content-Type: text/xml;charset=UTF-8",
+			"Accept: gzip,deflate",
+			"Cache-Control: no-cache",
+			"Pragma: no-cache",
+			"SOAPAction: \"\"",
+			"Authorization: Basic $auth",
+			"Content-length: ".strlen($message),
+			);
 
-		// Sending CURL Request To Fetch Data From API
-		curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
-		curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
-		curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($soap_do, CURLOPT_POST, true );
-		curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
-		curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
-		$resp = curl_exec($soap_do);
-		curl_close($soap_do);
+			// Sending CURL Request To Fetch Data From API
+			curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($soap_do, CURLOPT_POST, true );
+			curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+			curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+			$resp = curl_exec($soap_do);
+			curl_close($soap_do);
 
-		//Loads the XML
-		fwrite($handle , "Response  :/r/n/t".$resp);
-		$xml = simplexml_load_string($resp);
-		die($resp);
-		return $xml;
+			//Loads the XML
+			// fwrite($handle , "Response  :/r/n/t".$resp);
+			$xml = simplexml_load_string($resp);
+
+			//setting the session data for the further processing and booking and so on
+			$tempArr = array('airPricingSol' => $resp);
+			$this->session->set_userdata($tempArr);
+
+			return $xml;
+		}
+		return false;
 	}
 
 	//get the list of carriers

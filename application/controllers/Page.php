@@ -373,21 +373,43 @@ class Page extends CI_Controller {
 
 		//get info of
 		$sessData = $this->session->userdata();
-		$xmlRaw = $sessData['flightDetails'];
-		$xml = simplexml_load_string($xmlRaw);
+		if(isset($sessData) && isset($sessData['airPricingSol']))
+		{
+			$xmlRaw = $sessData['airPricingSol'];
+			// die($xmlRaw);
+			$xml = simplexml_load_string($xmlRaw);
 
-		//Confirming if we have info in the session
-		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
-				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
-				$FlightDetails = $LowFareSearchRsp->AirSegmentList;
+			//Confirming if we have info in the session
+			if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
+					$AirPriceRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->AirPriceRsp;
+					$FlightDetails = $AirPriceRsp->AirItinerary;
 
+					//gettimng all segments
+					$allSegments = $this->getAllSegementsArray($FlightDetails->AirSegment);
 
-				foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value)
-					if($solutionKey == (string)$value->attributes()["Key"] )
-						{
-							echo $value->asXML();
-						}
+					//getting the main pricing details now
+					$airPricingSol = $AirPriceRsp->AirPriceResult->AirPricingSolution;
+
+					foreach($airPricingSol->AirSegmentRef as $key => $ref)
+					{
+						$dom->getElementBy
+						$dom->replaceChild($allSegments[(string)$ref->attributes()["Key"]] );
+					}
+
+					$dom= dom_import_simplexml($airPricingSol);
+					$allRef = $dom->getElementsByTagName('AirSegmentRef');
+					foreach ($allRef as $key => $value) {
+						// code...
+						var_dump($value);
+					}
+					die ;
+					$segmentSanitized = simplexml_import_dom($dom)->asXML();
+
 				echo "Here";
+			}
+		}else{
+			$error = "SEssion has invalid info ";
+			$this->load->view("home");
 		}
 	}
 
