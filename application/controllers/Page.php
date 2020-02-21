@@ -94,7 +94,7 @@ class Page extends CI_Controller {
 				if(isset($_POST['returnOn']))
 					$journey[] = array('origin' => $_POST['to'], "destination"=>$_POST['from'] );
 
-				$sessionData = array('flightDetails' => $xmlRaw , 'journeys' => $journey);
+				$sessionData = array('flightDetails' => $xmlRaw , 'journeys' => $journey , 'searchData' => $_POST);
 
 				$this->session->set_userdata($sessionData);
 				// echo $xml->asXML();die;

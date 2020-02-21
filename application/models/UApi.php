@@ -69,17 +69,21 @@ class uApi extends CI_MODEL {
 		//print;
 		$index=1;
 		foreach ($children as $key => $value) {
-			$tmp='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="CNN" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
+			$tmp='<com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="CNN" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
 			$childXML.=$tmp;
 		}
 		foreach ($infants as $key => $value) {
-			$infXML.='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="INF" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
+			$infXML.='<com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="INF" Age="'.$value.'" DOB="'.date ("Y-m-d"  ,strtotime("-".$value." years" , time($dataArray['departOn']) )  ).'" />';
 		}
 		for ( $i=0 ; $i<$dataArray['adult']; $i++) {
-			$adtXML.='<com:SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="ADT" />';
+			$adtXML.='<com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="'.($index++).'" Code="ADT" />';
 		}
 		//initial data that is from , to and departure time xml is developed
 		// var_dump($departOn);die;
+
+		//setting the session data specifically the passenger information
+		$sessArray = array('adultXML'=>$adtXML , 'childXML'=>$childXML , 'infantXML'=>$infXML);
+		$this->session->set_userdata($sessArray);
 
 		$Route= '';
 		$key=0;
@@ -445,53 +449,73 @@ class uApi extends CI_MODEL {
 	}
 	protected function getAllItineraries($solKey ){
 		//get info of
+		$template ='';
+		$template .= '<air:AirItinerary>';
+
 		$sessData = $this->session->userdata();
 		$xmlRaw = $sessData['flightDetails'];
 		$xml = simplexml_load_string($xmlRaw);
 
-		//template string to contain xml of all itineraries
-		$template = '<air:AirItinerary>
-				<air:AirSegment ArrivalTime="2015-06-17T22:39:00.000-06:00" AvailabilityDisplayType="Fare Shop/Optimal Shop" AvailabilitySource="A" Carrier="AA" ChangeOfPlane="true" ClassOfService="N" DepartureTime="2015-06-17T09:45:00.000+01:00" Destination="DEN" Distance="4683" ETicketability="Yes" Equipment="CHG" FlightNumber="57" FlightTime="1194" Group="0" Key="wCnQ3nD3TvmgnjwGXtABjQ==" LinkAvailability="true" NumberOfStops="1" OptionalServicesIndicator="false" Origin="LHR" ParticipantLevel="Secure Sell" PolledAvailabilityOption="Polled avail exists" ProviderCode="1G">
-				<air:CodeshareInfo>RPFAJDSYBHMNKLQVGIO</air:CodeshareInfo>
-				<air:AirAvailInfo ProviderCode="1G">
-				<air:BookingCodeInfo BookingCounts="R7|P7|F7|A7|J7|D7|S7|Y7|B7|H7|M7|N7|K7|L7|Q7|V7|G7|I7|O7"/>
-				</air:AirAvailInfo>
-
-		</air:AirItinerary>';
-
 		//Confirming if we have info in the session
 		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
 				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
-				$FlightDetails = $LowFareSearchRsp->AirSegmentList;
+				$FlightDetails = $LowFareSearchRsp->AirSegmentList->children('air' , true);
+				$allSegments = $this -> getAllSegementsArray($FlightDetails);
 
+				//template string to contain xml of all itineraries
 
-				foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $value)
-					if($solutionKey == (string)$value->attributes()["Key"] )
+				foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $sol)
+					if($solKey == (string)$sol->attributes()["Key"] )
 						{
+							foreach($sol->Journey as $key => $singleJourney)
+							{
+									//Foreach journey the loop runs
+									//Sub Groups on the basis of the journey
+									$tempSegmentsRef = array();
+									$this->iterate($singleJourney , $tempSegmentsRef);
+									//now we have references of all related segments
+									foreach ($tempSegmentsRef as $reference) {
 
+											$segment = $allSegments[(string)$reference->attributes()['Key']];
+											//start
+											$segment->addAttribute('ProviderCode' , "1G");
+											$dom= dom_import_simplexml($segment);
+											$this->removeChildren($dom);
+											$segmentSanitized = simplexml_import_dom($dom)->asXML();
+
+											$template.= $segmentSanitized;
+
+									}
+
+							}
 						}
-				echo "Here";
+
 		}
+		$template .= '</air:AirItinerary>';
+
+
+		return $template;
 	}
 	//Air pricing request
 	public function getPricing($solutionKey ){
-
+		$session = $this->session->userdata();
+		// print_r($session);die;
+		$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
 		$allItineraries = $this->getAllItineraries($solutionKey);
 		$message = '
 		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 			<soapenv:Header/>
 			<soapenv:Body>
-				<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v34_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
-					<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="uAPI"/>
-						'.$allItineraries.$allPassengers'
-					<com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v34_0" BookingTravelerRef="gr8AVWGCR064r57Jt0+8bA==" Code="ADT"/>
+				<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v42_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+					<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v42_0" OriginApplication="UAPI"/>
+						'.$allItineraries.$allPassengers.'
 					<air:AirPricingCommand CabinClass="Economy"/>
 				</air:AirPriceReq>
 			</soapenv:Body>
-		</soapenv:Envelope>
-		';
+		</soapenv:Envelope>';
 
-
+		$handle = fopen("PricingReq.txt" , 'a');
+	//	fwrite($handle , $message);
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
 		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
@@ -518,8 +542,9 @@ class uApi extends CI_MODEL {
 		curl_close($soap_do);
 
 		//Loads the XML
+		fwrite($handle , "Response  :/r/n/t".$resp);
 		$xml = simplexml_load_string($resp);
-
+		die($resp);
 		return $xml;
 	}
 
@@ -531,6 +556,41 @@ class uApi extends CI_MODEL {
 			$query = $this->db->get();
 
 			return $query->result_array();
+	}
+	//getting all the segments and placing the Key as key
+	private function getAllSegementsArray($segList)
+	{
+		$temp = array();
+		foreach ($segList as $key => $seg) {
+			$temp[(string)$seg->attributes()["Key"]] = $seg;
+		}
+		return $temp;
+	}
+	//iterate in depth
+	//to develop the array of all children
+	private function iterate($children , &$all )
+	{
+		//in case of arrau has some elements
+		// var_dump($children->attributes());echo " Is Array :".is_array($children->attributes()) ;die;
+		//if($children->count()  )
+		if($children)
+			foreach ($children as $key => $child) {
+
+				//check if a node has key
+				if(($child->attributes()["Key"]) != null)
+				{
+					$all[] = $child;
+					//echo "in iterate :".$child->attributes()["key"]."<br>";
+				}
+					$this->iterate($child->AirSegmentRef , $all );
+		}
+	}
+	private function removeChildren(&$node){
+		while($node->firstChild)
+		{
+			$this->removeChildren($node->firstChild);
+			$node->removeChild($node->firstChild);
+		}
 	}
 
 }
