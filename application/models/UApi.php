@@ -119,33 +119,6 @@ class uApi extends CI_MODEL {
 		</soap:Envelope>
 		';
 
-// die($message);
-		//<com:SearchPassenger BookingTravelerRef="1" Code="ADT" xmlns:com="http://www.travelport.com/schema/common_v42_0"/>
-		$msg=`<LowFareSearchReq xmlns="http://www.travelport.com/schema/air_v42_0" TraceId="5362d11b-7c79-4b34-923d-a2633e300e95" TargetBranch="P3088249" ReturnUpsellFare="true">
-  <BillingPointOfSaleInfo xmlns="http://www.travelport.com/schema/common_v42_0" OriginApplication="uAPI" />
-  <SearchAirLeg>
-    <SearchOrigin>
-      <CityOrAirport xmlns="http://www.travelport.com/schema/common_v42_0" Code="KHI" PreferCity="true" />
-    </SearchOrigin>
-    <SearchDestination>
-      <CityOrAirport xmlns="http://www.travelport.com/schema/common_v42_0" Code="LHR" PreferCity="true" />
-    </SearchDestination>
-    <SearchDepTime PreferredTime="2020-01-23" />
-  </SearchAirLeg>
-  <AirSearchModifiers>
-    <PreferredProviders>
-      <Provider xmlns="http://www.travelport.com/schema/common_v42_0" Code="1G" />
-    </PreferredProviders>
-  </AirSearchModifiers>
-  <SearchPassenger xmlns="http://www.travelport.com/schema/common_v42_0" Code="ADT" />
-  <AirPricingModifiers>
-    <AccountCodes>
-      <AccountCode xmlns="http://www.travelport.com/schema/common_v42_0" Code="-" />
-    </AccountCodes>
-  </AirPricingModifiers>
-</LowFareSearchReq>`;
-
-
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
 		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
 		$header = array(
@@ -198,7 +171,7 @@ class uApi extends CI_MODEL {
 		 </air:SearchDepTime>
 		</air:SearchAirLeg>';
 	}
-	public function bookTicket(){
+	public function bookTicket($str){
 
 		$dateOfBirth = "1981-12-24";
 		$gender = "M";
@@ -262,52 +235,14 @@ class uApi extends CI_MODEL {
 						<com:PostalCode>'.$travelerInfo['address']['postalCode'].'</com:PostalCode>
 						<com:Country>'.$travelerInfo['address']['country'].'</com:Country>
 					</com:Address>
-				</com:BookingTraveler>
+				</com:BookingTraveler>'.$str.'
 
-
-
-				<air:AirPricingSolution ApproximateBasePrice="CAD2052.00" ApproximateFees="CAD23.00" ApproximateTaxes="CAD347.67"
-				ApproximateTotalPrice="CAD2422.67" BasePrice="CAD2052.00" Fees="CAD23.00" Key="zgJazBx9QkyaT21JDpQfpg==" Taxes="CAD347.67"
-				TotalPrice="CAD2422.67">
-					<air:AirSegment ArrivalTime="2015-08-31T11:01:00.000-06:00" Carrier="AC" ChangeOfPlane="false" ClassOfService="D"
-					DepartureTime="2015-08-31T08:20:00.000-04:00" Destination="YYC" ETicketability="Yes" Equipment="320" FlightNumber="165"
-					FlightTime="281" Group="0" HostTokenRef="TTy5Fg1iR16AMlhMpHEetg==" Key="9t0+seCIRJGomz2A4GBdSw==" OptionalServicesIndicator="true"
-					Origin="YUL" ProviderCode="ACH" Status="KK" SupplierCode="AC" TravelTime="281">
-						<air:CodeshareInfo OperatingCarrier="AC" OperatingFlightNumber="165"/>
-					</air:AirSegment>
-					<air:AirPricingInfo ApproximateBasePrice="CAD2052.00" ApproximateFees="CAD23.00" ApproximateTaxes="CAD347.67"
-					ApproximateTotalPrice="CAD2422.67" BasePrice="CAD2052.00" Fees="CAD23.00" Key="i52kDIokT3KdKo0QBcVTkg==" PricingMethod="Auto"
-					ProviderCode="ACH" SupplierCode="AC" Taxes="CAD347.67" TotalPrice="CAD2422.67">
-						<air:FareInfo Amount="CAD2052.00" DepartureDate="2015-08-31" Destination="YYC" EffectiveDate="2015-07-27T08:44:01.735-04:00"
-						FareBasis="D7ZEXC" FareFamily="Business Class (flexible)" Key="Deil+wPQSGiDFN+0sfkq2A==" Origin="YUL" PassengerTypeCode="ADT"
-						PromotionalFare="false">
-							<air:FareRuleKey FareInfoRef="Deil+wPQSGiDFN+0sfkq2A==" ProviderCode="ACH">
-								H4sIAAAAAAAAALVXTW8bRRjetKEkapsmTRGqBNJckKhw7baiHzTiw3GSNsiFKHYliriMd8fraca725lZx+4BCYkT/4ADF878Bq7cOSAuXLjzH3je2V3vug2IDZCDY8/O+77P+7yf+8Mf
-							</air:FareRuleKey>
-						</air:FareInfo>
-						<air:BookingInfo BookingCode="D" FareInfoRef="Deil+wPQSGiDFN+0sfkq2A==" HostTokenRef="TTy5Fg1iR16AMlhMpHEetg=="
-						SegmentRef="9t0+seCIRJGomz2A4GBdSw=="/>
-						<air:TaxInfo Amount="CAD7.12" Category="CA" Key="K2Vwp0wOQEiS5yc48EGvjw=="/>
-						<air:TaxInfo Amount="CAD105.36" Category="XG" Key="POacf0uVR0efT4Z+5Zwp1w=="/>
-						<air:TaxInfo Amount="CAD210.19" Category="XQ" Key="zvuPSL75QfCtu2m19xvGBg=="/>
-						<air:TaxInfo Amount="CAD25.00" Category="SQ" Key="+B+1fxeDRGi0KRK483xX4A=="/>
-						<air:PassengerType BookingTravelerRef="gr8AVWGCR064r57Jt0+8bA==" Code="ADT"/>
-						<air:FeeInfo Amount="CAD23.00" Code="S1" Key="YHscEyvmTHCvpYyhxk/JmA==" ProviderCode="ACH" SupplierCode="AC"/>
-					</air:AirPricingInfo>
-					<common_v33_0:HostToken Key="TTy5Fg1iR16AMlhMpHEetg==">
-						H4sIAAAAAAAAAFvzloG1hIHVzcfF0RkA3pudrwwAAAA={IS@@@}H4sIAAAAAAAAAFvzloG1hIHZ2dEFAF/jpqEKAAAA{CC@@@ET}ACHSDv01LPD1:d197d801-0c99-4e58-8669-
-						d11bd31af2f4
-					</common_v33_0:HostToken>
-
-
-
-				</air:AirPricingSolution>
 				<com:ActionStatus
 					xmlns:com="http://www.travelport.com/schema/common_v33_0" ProviderCode="ACH" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
 				</univ:AirCreateReservationReq>
 			</soapenv:Body>
 		</soapenv:Envelope>';
-		die ($message);
+		// die ($message);
 		$message = '
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Header/>
@@ -337,34 +272,7 @@ class uApi extends CI_MODEL {
         </com:Address>
       </com:BookingTraveler>
       <com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
-
-	<air:AirPricingSolution Key="a3UzhM7Q2BKAcgmOCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894">
-		<air:AirSegment Key="a3UzhM7Q2BKAdgmOCAAAAA==" Group="0" Carrier="FZ" FlightNumber="335" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" Distance="746" ETicketability="Yes" Equipment="73H" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop">
-			<air:AirAvailInfo ProviderCode="1G">
-				<air:BookingCodeInfo BookingCounts="J4|C4|Z4|Y7|A7|I7|E7|O7|W7|T7|M7|N7|R7|B7|U7|V7|K7|Q7|L7|X4"/>
-			</air:AirAvailInfo>
-			<air:FlightDetails Key="a3UzhM7Q2BKAegmOCAAAAA==" Origin="DXB" Destination="KHI" DepartureTime="2018-05-30T10:20:00.000+04:00" ArrivalTime="2018-05-30T13:25:00.000+05:00" FlightTime="125" TravelTime="125" Equipment="73H" OriginTerminal="2" DestinationTerminal="M"/>
-		</air:AirSegment>
-
-	<air:AirPricingInfo Key="a3UzhM7Q2BKAggmOCAAAAA==" TotalPrice="PKR12844" BasePrice="AED230" ApproximateTotalPrice="PKR12844" ApproximateBasePrice="PKR6950" EquivalentBasePrice="PKR6950" Taxes="PKR5894" ApproximateTaxes="PKR5894" LatestTicketingTime="2018-05-30T23:59:00.000+05:00" PricingMethod="Guaranteed" Refundable="true" ETicketability="Yes" PlatingCarrier="FZ" ProviderCode="1G">
-	<air:FareInfo Key="a3UzhM7Q2BKAngmOCAAAAA==" FareBasis="UOWBGAE1" PassengerTypeCode="ADT" Origin="DXB" Destination="KHI" EffectiveDate="2018-05-04T19:08:00.000+05:00" DepartureDate="2018-05-30" Amount="PKR6950" NegotiatedFare="false">
-	<air:BookingInfo BookingCode="U" CabinClass="Economy" FareInfoRef="a3UzhM7Q2BKAngmOCAAAAA==" SegmentRef="a3UzhM7Q2BKAdgmOCAAAAA=="/>
-	<air:TaxInfo Category="AE" Amount="PKR2364"/>
-	<air:TaxInfo Category="F6" Amount="PKR1103"/>
-	<air:TaxInfo Category="TP" Amount="PKR158"/>
-	<air:TaxInfo Category="ZR" Amount="PKR158"/>
-	<air:TaxInfo Category="YQ" Amount="PKR1261"/>
-	<air:TaxInfo Category="YR" Amount="PKR850"/>
-	<air:FareCalc>DXB FZ KHI 61.24UOWBGAE1 NUC61.24END ROE3.673637</air:FareCalc>
-	<air:PassengerType Code="ADT"/>
-	<air:ChangePenalty>
-	<air:Percentage>0.00</air:Percentage>
-	</air:ChangePenalty>
-	<air:CancelPenalty>
-	<air:Amount>PKR11020</air:Amount>
-	</air:CancelPenalty>
-	</air:AirPricingInfo>
-        </air:AirPricingSolution>
+			'.$str.'
       <com:ActionStatus xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'" TicketDate="2018-05-29" Type="TAW"/>
     </univ:AirCreateReservationReq>
   </soapenv:Body>
@@ -397,14 +305,63 @@ class uApi extends CI_MODEL {
 		curl_close($soap_do);
 
 		echo $resp;
-
+		echo "here";
 		//Loads the XML
 		//$xml = simplexml_load_string($resp);
 
 		//return $xml;
 
 	}
+	//This function will initiate a section with traveport also
+	//that a session canot exceed 15 minutes
+	public function startReqSession(){
 
+			$message = '
+			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+			<soapenv:Header/>
+			<soapenv:Body>
+				<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8"
+				 TargetBranch="P7090934" ProviderCode="1G">
+				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+				</shar:BookingStartReq>
+			</soapenv:Body>
+			</soapenv:Envelope>
+			';
+
+
+			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
+			$header = array(
+			"Content-Type: text/xml;charset=UTF-8",
+			"Accept: gzip,deflate",
+			"Cache-Control: no-cache",
+			"Pragma: no-cache",
+			"SOAPAction: \"\"",
+			"Authorization: Basic $auth",
+			"Content-length: ".strlen($message),
+			);
+
+
+			// Sending CURL Request To Fetch Data From API
+			curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($soap_do, CURLOPT_POST, true );
+			curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+			curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+			$resp = curl_exec($soap_do);
+			curl_close($soap_do);
+			echo $resp ;
+			die ("Session Developed");
+			//Loads the XML
+			$xml = simplexml_load_string($resp);
+
+return $xml;
+	}
 	public function fetchAirportsList(){
 
 		$message = '

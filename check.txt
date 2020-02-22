@@ -1,0 +1,101 @@
+
+			<soapenv:Envelope
+			xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:util="http://www.travelport.com/schema/util_v37_0"
+			xmlns:com="http://www.travelport.com/schema/common_v37_0">
+			<soapenv:Header/>
+			<soapenv:Body>
+			<shar:BookingStartReq TraceId="trace_89789" AuthorizedBy="user"
+			TargetBranch="P7090934" ProviderCode="1G">
+				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+			</shar:BookingStartReq>
+			</soapenv:Body>
+			</soapenv:Envelope>
+			
+			<soapenv:Envelope
+			xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:util="http://www.travelport.com/schema/util_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+			<soapenv:Header/>
+			<soapenv:Body>
+			<shar:BookingStartReq TraceId="trace_89789" AuthorizedBy="user"
+			TargetBranch="P7090934" ProviderCode="1G">
+				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+			</shar:BookingStartReq>
+			</soapenv:Body>
+			</soapenv:Envelope>
+			
+			<soapenv:Envelope
+			xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:util="http://www.travelport.com/schema/util_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+			<soapenv:Header/>
+			<soapenv:Body>
+			<shar:BookingStartReq TraceId="trace_89789" AuthorizedBy="TVPT"
+			TargetBranch="P7090934" ProviderCode="1G">
+				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+			</shar:BookingStartReq>
+			</soapenv:Body>
+			</soapenv:Envelope>
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" xmlns:com="http://www.travelport.com/schema/common_v34_0">
+<soapenv:Header/>
+<soapenv:Body>
+<shar:BookingStartReq TraceId="trace" AuthorizedBy="TVPT" TargetBranch="P7090934" ProviderCode="1G">
+<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+</shar:BookingStartReq>
+</soapenv:Body>
+</soapenv:Envelope>
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" xmlns:com="http://www.travelport.com/schema/common_v34_0">
+<soapenv:Header/>
+<soapenv:Body>
+<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd3" AuthorizedBy="TVPT" TargetBranch="P7090934" ProviderCode="1G">
+<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+</shar:BookingStartReq>
+</soapenv:Body>
+</soapenv:Envelope>
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+<soapenv:Header/>
+<soapenv:Body>
+<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd3"
+ TargetBranch="P7090934" ProviderCode="1G">
+<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+</shar:BookingStartReq>
+</soapenv:Body>
+</soapenv:Envelope>
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+<soapenv:Header/>
+<soapenv:Body>
+<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8"
+ TargetBranch="P7090934" ProviderCode="1G">
+<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+</shar:BookingStartReq>
+</soapenv:Body>
+</soapenv:Envelope>
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+<soapenv:Header/>
+<soapenv:Body>
+<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8"
+ TargetBranch="P7090934" ProviderCode="1G">
+<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+</shar:BookingStartReq>
+</soapenv:Body>
+</soapenv:Envelope>
+			
+			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0"
+			xmlns:com="http://www.travelport.com/schema/common_v34_0">
+			<soapenv:Header/>
+			<soapenv:Body>
+				<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8"
+				 TargetBranch="P7090934" ProviderCode="1G">
+				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+				</shar:BookingStartReq>
+			</soapenv:Body>
+			</soapenv:Envelope>
+			

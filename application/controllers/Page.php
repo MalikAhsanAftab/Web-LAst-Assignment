@@ -40,6 +40,9 @@ class Page extends CI_Controller {
 		//so changing the comparison from == to === fixes the issue
 		return $d && $d->format($format) === $date;
 	}
+	public function makeSession(){
+		$this->uApi->startReqSession();
+	}
 	public function flightsList(){
 		//die(ini_get('max_execution_time'));
 		//sanitize / validate  posted data
@@ -390,31 +393,39 @@ class Page extends CI_Controller {
 					//getting the main pricing details now
 					$airPricingSol = $AirPriceRsp->AirPriceResult->AirPricingSolution;
 
-					foreach($airPricingSol->AirSegmentRef as $key => $ref)
-					{
-						$dom->getElementBy
-						$dom->replaceChild($allSegments[(string)$ref->attributes()["Key"]] );
-					}
+					// foreach($airPricingSol->AirSegmentRef as $key => $ref)
+					// {
+					// 	$dom->getElementBy
+					// 	$dom->replaceChild($allSegments[(string)$ref->attributes()["Key"]] );
+					// }
 
 					$dom= dom_import_simplexml($airPricingSol);
 					$allRef = $dom->getElementsByTagName('AirSegmentRef');
-					foreach ($allRef as $key => $value) {
-						// code...
-						var_dump($value);
-					}
-					die ;
-					$segmentSanitized = simplexml_import_dom($dom)->asXML();
 
-				echo "Here";
+					while ($allRef->length > 0) {
+						// code...
+						$refKey = $allRef[0]->getAttribute('Key') ;
+						//making an xml node
+						$elementSegment = dom_import_simplexml($allSegments[$refKey]);
+						// echo "Replacing :".$key.($allSegments[$refKey]->asXML())."\r\n\t";
+						//replacing the ref with the segment that's the actual segment
+						$dom->replaceChild($elementSegment , $allRef[0]);
+					}
+
+					$segmentSanitized = simplexml_import_dom($dom)->asXML();
+					$this->session->set_userdata($segmentSanitized);
+					echo "done";
+					var_dump($session);
 			}
 		}else{
-			$error = "SEssion has invalid info ";
+			$error = "Session has invalid info ";
 			$this->load->view("home");
 		}
 	}
 
 	public function bookNow(){
-		$this->uApi->bookTicket();
+		$str= '';
+		$this->uApi->bookTicket($str);
 		die;
 		if(!$_POST){
 			$this->load->view("booking");
