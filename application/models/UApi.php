@@ -323,7 +323,7 @@ class uApi extends CI_MODEL {
 			<soapenv:Header/>
 			<soapenv:Body>
 				<shar:BookingStartReq TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8"
-				 TargetBranch="P7090934" ProviderCode="1G">
+				 TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'">
 				<com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
 				</shar:BookingStartReq>
 			</soapenv:Body>
@@ -355,12 +355,9 @@ class uApi extends CI_MODEL {
 			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 			$resp = curl_exec($soap_do);
 			curl_close($soap_do);
-			echo $resp ;
-			die ("Session Developed");
 			//Loads the XML
 			$xml = simplexml_load_string($resp);
-
-return $xml;
+			return $xml;
 	}
 	public function fetchAirportsList(){
 
@@ -459,6 +456,126 @@ return $xml;
 	}
 	//Air pricing request
 	public function getPricing($solutionKey ){
+		$session = $this->session->userdata();
+		// print_r($session);die;
+		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) )
+		{
+			$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
+			$allItineraries = $this->getAllItineraries($solutionKey);
+			$message = '
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+					<soapenv:Header/>
+					<soapenv:Body>
+						<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v42_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+							<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v42_0" OriginApplication="UAPI"/>
+								'.$allItineraries.$allPassengers.'
+							<air:AirPricingCommand CabinClass="Economy"/>
+						</air:AirPriceReq>
+					</soapenv:Body>
+				</soapenv:Envelope>';
+
+				// $handle = fopen("PricingReq.txt" , 'a');
+				//	fwrite($handle , $message);
+
+			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+			$header = array(
+			"Content-Type: text/xml;charset=UTF-8",
+			"Accept: gzip,deflate",
+			"Cache-Control: no-cache",
+			"Pragma: no-cache",
+			"SOAPAction: \"\"",
+			"Authorization: Basic $auth",
+			"Content-length: ".strlen($message),
+			);
+
+			// Sending CURL Request To Fetch Data From API
+			curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($soap_do, CURLOPT_POST, true );
+			curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+			curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+			$resp = curl_exec($soap_do);
+			curl_close($soap_do);
+
+			//Loads the XML
+			// fwrite($handle , "Response  :/r/n/t".$resp);
+			$xml = simplexml_load_string($resp);
+
+			//setting the session data for the further processing and booking and so on
+
+			return $xml;
+		}
+		return false;
+	}
+
+	function confirmSegmentBookability(){
+		$sessData = $this->session->userdata();
+		$sessionIdTP= $sessData["sessionKey"];
+		$traceId = $session["traceId"];
+
+$message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:air="http://www.travelport.com/schema/air_v34_0">
+<soapenv:Header>
+		<h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
+			<SessTok id="'.$sessionIdTP.'"/>
+			</h:SessionContext>
+</soapenv:Header>
+
+<soapenv:Body>
+	<shar:BookingAirSegmentReq xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" TraceId="'.$traceId.'" AuthorizedBy="user" SessionKey="'.$sessionIdTP.'">
+	<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
+		<shar:AddAirSegment>
+
+				<air:AirSegment Key="zVPfK01HS1+PVAmreMBBag==" Group="0" Carrier="BA" FlightNumber="799" Origin="HEL" Destination="LHR" DepartureTime="2016-10-28T17:10:00.000+03:00" ArrivalTime="2016-10-28T18:20:00.000+01:00" FlightTime="190" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
+					<air:AirAvailInfo ProviderCode="1G"/>
+				</air:AirSegment>
+			<air:AirSegment Key="045Lxm6dTpa0oK9Fg3BD/Q==" Group="1" Carrier="BA" FlightNumber="794" Origin="LHR" Destination="HEL" DepartureTime="2016-11-02T11:15:00.000+00:00" ArrivalTime="2016-11-02T16:10:00.000+02:00" FlightTime="175" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
+				<air:AirAvailInfo ProviderCode="1G"/>
+			</air:AirSegment>
+
+		</shar:AddAirSegment>
+	</shar:BookingAirSegmentReq>
+</soapenv:Body>
+</soapenv:Envelope>';
+
+	// $handle = fopen("PricingReq.txt" , 'a');
+	//	fwrite($handle , $message);
+
+$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+$header = array(
+"Content-Type: text/xml;charset=UTF-8",
+"Accept: gzip,deflate",
+"Cache-Control: no-cache",
+"Pragma: no-cache",
+"SOAPAction: \"\"",
+"Authorization: Basic $auth",
+"Content-length: ".strlen($message),
+);
+
+// Sending CURL Request To Fetch Data From API
+curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($soap_do, CURLOPT_POST, true );
+curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+$resp = curl_exec($soap_do);
+curl_close($soap_do);
+
+//Loads the XML
+// fwrite($handle , "Response  :/r/n/t".$resp);
+$xml = simplexml_load_string($resp);
+	}
+	//
+	//The Booking Pricing request enables the
+	//addition of Stored Fare and Branded Fare information to the PNR/UR
+	public function ToBEValidated($solutionKey ){
 		$session = $this->session->userdata();
 		// print_r($session);die;
 		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) )

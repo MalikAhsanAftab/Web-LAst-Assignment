@@ -297,7 +297,7 @@ function makeTimeString($time){
 			 ?>
 
 
-       <div class="well well-sm"> -
+       <div class="well well-sm">
 		 	<div class="row">
 		 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-2 col-lg-4">
 		  <h5><i class="fa fa-bookmark"></i> Total Price (Inclusive All Taxes)</h5>

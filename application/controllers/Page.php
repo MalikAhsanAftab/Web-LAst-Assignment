@@ -41,7 +41,28 @@ class Page extends CI_Controller {
 		return $d && $d->format($format) === $date;
 	}
 	public function makeSession(){
-		$this->uApi->startReqSession();
+		$xml = $this->uApi->startReqSession();
+
+		//Check if we have xml in the response
+		//if it is then continue else redirect to the hoime page
+		if($xml===null)
+		{
+			//redirect to home
+
+			die("Not valid.Error-Code:djij#%^");
+		}
+
+		$bookingRsp = $xml->children("SOAP" ,true)->Body->children('sharedBooking' , true)->BookingStartRsp;
+
+		$tempArr = $bookingRsp->attributes();
+		$arr = array(
+				"traceId"=> (string)$tempArr['TraceId'],
+				"transactionId"=> (string)$tempArr['TransactionId'],
+				"sessionKey" => (string)$tempArr['SessionKey']
+		);
+		$this->session->set_userdata($arr);
+		echo ("Session developped");
+		// var_dump($this->session->userdata() );
 	}
 	public function flightsList(){
 		//die(ini_get('max_execution_time'));
@@ -119,7 +140,18 @@ class Page extends CI_Controller {
 		}
 
 	}
+	//This method
+	public function confirmBookability($key = ""){
+		if(empty($key))
+		{
+			show_404();
+			die;
+		}
+		//sanitize the key provided
+		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
 
+		
+	}
 	//the purpose of this method is to
 	//allow the user to view the flights that
 	//were loaded before
@@ -412,10 +444,12 @@ class Page extends CI_Controller {
 						$dom->replaceChild($elementSegment , $allRef[0]);
 					}
 
-					$segmentSanitized = simplexml_import_dom($dom)->asXML();
+					$segmentSanitized = array("airPricingSol"=>simplexml_import_dom($dom)->asXML());
 					$this->session->set_userdata($segmentSanitized);
-					echo "done";
-					var_dump($session);
+					var_dump($this->session->userdata()["airPricingSol"])
+					;die;
+					// var_dump($xmlResp->asXML());die;/
+					// var_dump($segmentSanitized);die;
 			}
 		}else{
 			$error = "Session has invalid info ";
