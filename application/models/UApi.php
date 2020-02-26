@@ -363,14 +363,14 @@ class uApi extends CI_MODEL {
 
 		$message = '
 		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:util="http://www.travelport.com/schema/util_v37_0" xmlns:com="http://www.travelport.com/schema/common_v37_0">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <util:ReferenceDataRetrieveReq TraceId="trace" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TypeCode="Airport">
-         <com:BillingPointOfSaleInfo OriginApplication="uAPI"/>
-         <util:ReferenceDataSearchModifiers MaxResults="20000" StartFromResult="0" ProviderCode="1G"/>
-      </util:ReferenceDataRetrieveReq>
-   </soapenv:Body>
-</soapenv:Envelope>
+	   <soapenv:Header/>
+	   <soapenv:Body>
+	      <util:ReferenceDataRetrieveReq TraceId="trace" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TypeCode="Airport">
+	         <com:BillingPointOfSaleInfo OriginApplication="uAPI"/>
+	         <util:ReferenceDataSearchModifiers MaxResults="20000" StartFromResult="0" ProviderCode="1G"/>
+	      </util:ReferenceDataRetrieveReq>
+	   </soapenv:Body>
+	 	</soapenv:Envelope>
 
 		';
 
@@ -405,13 +405,110 @@ class uApi extends CI_MODEL {
 
 		return $xml;
 	}
-	protected function getAllItineraries($solKey ){
+	protected function getAllItineraries($sol ){
 		//get info of
 		$template ='';
 		$template .= '<air:AirItinerary>';
 
 		$sessData = $this->session->userdata();
-		$xmlRaw = $sessData['flightDetails'];
+		@$xmlRaw = $sessData['flightDetails'];
+		$xml = simplexml_load_string($xmlRaw);
+		//Confirming if we have info in the session
+		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
+				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
+				$FlightDetails = $LowFareSearchRsp->AirSegmentList->children('air' , true);
+				$allSegments = $this -> getAllSegementsArray($FlightDetails);
+
+		foreach($sol->Journey as $key => $singleJourney)
+		{
+				//Foreach journey the loop runs
+				//Sub Groups on the basis of the journey
+				$tempSegmentsRef = array();
+				$this->iterate($singleJourney , $tempSegmentsRef);
+				//now we have references of all related segments
+				foreach ($tempSegmentsRef as $reference) {
+
+						$segment = $allSegments[(string)$reference->attributes()['Key']];
+						//start
+						$segment->addAttribute('ProviderCode' , "1G");
+						$dom= dom_import_simplexml($segment);
+						$this->removeChildren($dom);
+						$segmentSanitized = simplexml_import_dom($dom)->asXML();
+
+						$template.= $segmentSanitized;
+
+				}
+
+		}
+		}
+
+		$template .= '</air:AirItinerary>';
+		return $template;
+	}
+
+	//make segments xml for BookingAirSegmentReq
+	protected function getBookingSegments($sol ){
+		//get info of
+		$template ='';
+		$template .= '<shar:AddAirSegment>';
+
+		$sessData = $this->session->userdata();
+		@$xmlRaw = $sessData['flightDetails'];
+		$xml = simplexml_load_string($xmlRaw);
+		//Confirming if we have info in the session
+		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
+				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
+				$FlightDetails = $LowFareSearchRsp->AirSegmentList->children('air' , true);
+				$allSegments = $this -> getAllSegementsArray($FlightDetails);
+
+		foreach($sol->Journey as $key => $singleJourney)
+		{
+				//Foreach journey the loop runs
+				//Sub Groups on the basis of the journey
+				$tempSegmentsRef = array();
+				$this->iterate($singleJourney , $tempSegmentsRef);
+				//now we have references of all related segments
+				foreach ($tempSegmentsRef as $reference) {
+
+						$segment = $allSegments[(string)$reference->attributes()['Key']];
+						//start
+						$segment->addAttribute('ProviderCode' , "1G");
+
+						$dom= dom_import_simplexml($segment);
+						$this->removeChildren($dom);
+						//creating
+
+
+						$child = $dom->cloneNode(false);
+						if ($child->hasAttributes()) {
+						  for ($i = $child->attributes->length - 1; $i >= 0; --$i)
+						   {
+								 if($child->attributes->item($i)->nodeName != "ProviderCode")
+								  $child->removeAttributeNode($child->attributes->item($i));
+								}
+						}
+
+				    // dom adds a new element under the root
+				    $dom->appendChild($child);
+
+						$segmentSanitized = simplexml_import_dom($dom)->asXML();
+
+						$template.= $segmentSanitized;
+
+				}
+
+		}
+		}
+
+		$template .= '</shar:AddAirSegment>';
+		die($template);
+		return $template;
+
+	}
+	//Get Solution Node
+	private function getSolutionNode($solKey= ''){
+		$sessData = $this->session->userdata();
+		@$xmlRaw = $sessData['flightDetails'];
 		$xml = simplexml_load_string($xmlRaw);
 
 		//Confirming if we have info in the session
@@ -425,43 +522,27 @@ class uApi extends CI_MODEL {
 				foreach ($LowFareSearchRsp->AirPricingSolution as $ke => $sol)
 					if($solKey == (string)$sol->attributes()["Key"] )
 						{
-							foreach($sol->Journey as $key => $singleJourney)
-							{
-									//Foreach journey the loop runs
-									//Sub Groups on the basis of the journey
-									$tempSegmentsRef = array();
-									$this->iterate($singleJourney , $tempSegmentsRef);
-									//now we have references of all related segments
-									foreach ($tempSegmentsRef as $reference) {
-
-											$segment = $allSegments[(string)$reference->attributes()['Key']];
-											//start
-											$segment->addAttribute('ProviderCode' , "1G");
-											$dom= dom_import_simplexml($segment);
-											$this->removeChildren($dom);
-											$segmentSanitized = simplexml_import_dom($dom)->asXML();
-
-											$template.= $segmentSanitized;
-
-									}
-
-							}
+							return $sol;
 						}
 
 		}
-		$template .= '</air:AirItinerary>';
-
-
-		return $template;
+		return null;
 	}
 	//Air pricing request
 	public function getPricing($solutionKey ){
 		$session = $this->session->userdata();
-		// print_r($session);die;
-		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) )
+		//getting the solution node
+		$solNode =  $this->getSolutionNode($solutionKey) ;
+		//setting the soltion node to the sesion
+
+		$tempArr = array('airPricingSol'  => '<meta xmlns:air="http://www.travelport.com/schema/air_v42_0">'.$solNode-> asXML().'</meta>' );
+		$this->session->set_userdata($tempArr);
+
+
+		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) && $solNode )
 		{
 			$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
-			$allItineraries = $this->getAllItineraries($solutionKey);
+			$allItineraries = $this->getAllItineraries($solNode);
 			$message = '
 				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 					<soapenv:Header/>
@@ -512,34 +593,41 @@ class uApi extends CI_MODEL {
 		return false;
 	}
 
-	function confirmSegmentBookability(){
+	function confirmSegmentBookability($sol){
+		//getting the sesion details which has been developed with the travelport
 		$sessData = $this->session->userdata();
 		$sessionIdTP= $sessData["sessionKey"];
-		$traceId = $session["traceId"];
+		$traceId = $sessData["traceId"];
+		$this ->getBookingSegments($sol);
+		foreach ($sessData as $key => $value) {
+			// code...
+			echo "<br>\r\n";
+			echo $value;
+		}
 
 $message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:air="http://www.travelport.com/schema/air_v34_0">
-<soapenv:Header>
-		<h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
-			<SessTok id="'.$sessionIdTP.'"/>
-			</h:SessionContext>
-</soapenv:Header>
+				<soapenv:Header>
+						<h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
+							<SessTok id="'.$sessionIdTP.'"/>
+							</h:SessionContext>
+				</soapenv:Header>
 
-<soapenv:Body>
-	<shar:BookingAirSegmentReq xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" TraceId="'.$traceId.'" AuthorizedBy="user" SessionKey="'.$sessionIdTP.'">
-	<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
-		<shar:AddAirSegment>
+			<soapenv:Body>
+				<shar:BookingAirSegmentReq xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" TraceId="'.$traceId.'" AuthorizedBy="user" SessionKey="'.$sessionIdTP.'">
+				<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
+					<shar:AddAirSegment>
 
-				<air:AirSegment Key="zVPfK01HS1+PVAmreMBBag==" Group="0" Carrier="BA" FlightNumber="799" Origin="HEL" Destination="LHR" DepartureTime="2016-10-28T17:10:00.000+03:00" ArrivalTime="2016-10-28T18:20:00.000+01:00" FlightTime="190" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
-					<air:AirAvailInfo ProviderCode="1G"/>
-				</air:AirSegment>
-			<air:AirSegment Key="045Lxm6dTpa0oK9Fg3BD/Q==" Group="1" Carrier="BA" FlightNumber="794" Origin="LHR" Destination="HEL" DepartureTime="2016-11-02T11:15:00.000+00:00" ArrivalTime="2016-11-02T16:10:00.000+02:00" FlightTime="175" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
-				<air:AirAvailInfo ProviderCode="1G"/>
-			</air:AirSegment>
+							<air:AirSegment Key="zVPfK01HS1+PVAmreMBBag==" Group="0" Carrier="BA" FlightNumber="799" Origin="HEL" Destination="LHR" DepartureTime="2016-10-28T17:10:00.000+03:00" ArrivalTime="2016-10-28T18:20:00.000+01:00" FlightTime="190" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
+								<air:AirAvailInfo ProviderCode="1G"/>
+							</air:AirSegment>
+						<air:AirSegment Key="045Lxm6dTpa0oK9Fg3BD/Q==" Group="1" Carrier="BA" FlightNumber="794" Origin="LHR" Destination="HEL" DepartureTime="2016-11-02T11:15:00.000+00:00" ArrivalTime="2016-11-02T16:10:00.000+02:00" FlightTime="175" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
+							<air:AirAvailInfo ProviderCode="1G"/>
+						</air:AirSegment>
 
-		</shar:AddAirSegment>
-	</shar:BookingAirSegmentReq>
-</soapenv:Body>
-</soapenv:Envelope>';
+					</shar:AddAirSegment>
+				</shar:BookingAirSegmentReq>
+			</soapenv:Body>
+			</soapenv:Envelope>';
 
 	// $handle = fopen("PricingReq.txt" , 'a');
 	//	fwrite($handle , $message);

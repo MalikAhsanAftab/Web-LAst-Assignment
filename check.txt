@@ -98,4 +98,18 @@
 				</shar:BookingStartReq>
 			</soapenv:Body>
 			</soapenv:Envelope>
-			
+			<?xml version="1.0"?>
+<air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<xmlns:air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<air:AirAvailInfo ProviderCode="1G"/>
+<?xml version="1.0"?>
+<xmlns:air:AirAvailInfo ProviderCode="1G"/>
+<shar:AddAirSegment><air:AirSegment Key="BmuGAC8Q2BKA7HAHAAAAAA==" Group="0" Carrier="PK" FlightNumber="302" Origin="KHI" Destination="LHE" DepartureTime="2020-03-03T08:00:00.000+05:00" ArrivalTime="2020-03-03T09:45:00.000+05:00" FlightTime="105" Distance="636" ETicketability="Yes" Equipment="772" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G"/><air:AirSegment Key="BmuGAC8Q2BKA+IAHAAAAAA==" Group="1" Carrier="PK" FlightNumber="305" Origin="LHE" Destination="KHI" DepartureTime="2020-03-27T18:00:00.000+05:00" ArrivalTime="2020-03-27T19:45:00.000+05:00" FlightTime="105" Distance="636" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="No polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G"/></shar:AddAirSegment>

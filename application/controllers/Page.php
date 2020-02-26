@@ -149,8 +149,13 @@ class Page extends CI_Controller {
 		}
 		//sanitize the key provided
 		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
+		$sessData = $this->session->userdata();
+		$xml = simplexml_load_string( $sessData['airPricingSol'] , null , 0, 'air' , true ) ;
+		$priceSol = $xml->children('air' , true )->AirPricingSolution ;
 
-		
+		//validate that the key matches the solution key
+		$this->uApi->confirmSegmentBookability($priceSol);
+		die("00000000000--------00000000000") ;
 	}
 	//the purpose of this method is to
 	//allow the user to view the flights that
@@ -411,25 +416,13 @@ class Page extends CI_Controller {
 		if(isset($sessData) && isset($sessData['airPricingSol']))
 		{
 			$xmlRaw = $sessData['airPricingSol'];
-			// die($xmlRaw);
-			$xml = simplexml_load_string($xmlRaw);
 
+
+			$airPricingSol = simplexml_load_string($xmlRaw  );
 			//Confirming if we have info in the session
-			if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
-					$AirPriceRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->AirPriceRsp;
-					$FlightDetails = $AirPriceRsp->AirItinerary;
-
+			if(!($airPricingSol===false) && $airPricingSol->children("air" , true)->count() ){
 					//gettimng all segments
-					$allSegments = $this->getAllSegementsArray($FlightDetails->AirSegment);
-
-					//getting the main pricing details now
-					$airPricingSol = $AirPriceRsp->AirPriceResult->AirPricingSolution;
-
-					// foreach($airPricingSol->AirSegmentRef as $key => $ref)
-					// {
-					// 	$dom->getElementBy
-					// 	$dom->replaceChild($allSegments[(string)$ref->attributes()["Key"]] );
-					// }
+					$allSegments = $this->getAllSegementsArray($airPricingSol->children('air' , true)->AirSegment);
 
 					$dom= dom_import_simplexml($airPricingSol);
 					$allRef = $dom->getElementsByTagName('AirSegmentRef');
@@ -446,8 +439,6 @@ class Page extends CI_Controller {
 
 					$segmentSanitized = array("airPricingSol"=>simplexml_import_dom($dom)->asXML());
 					$this->session->set_userdata($segmentSanitized);
-					var_dump($this->session->userdata()["airPricingSol"])
-					;die;
 					// var_dump($xmlResp->asXML());die;/
 					// var_dump($segmentSanitized);die;
 			}
