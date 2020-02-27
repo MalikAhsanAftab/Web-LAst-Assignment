@@ -150,11 +150,17 @@ class Page extends CI_Controller {
 		//sanitize the key provided
 		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
 		$sessData = $this->session->userdata();
-		$xml = simplexml_load_string( $sessData['airPricingSol'] , null , 0, 'air' , true ) ;
-		$priceSol = $xml->children('air' , true )->AirPricingSolution ;
+		$xml = simplexml_load_string( $sessData['airPricingRsp'] , null , 0, 'air' , true ) ;
+
+		//getting all the segments
+		$airPriceRsp = $xml->children('SOAP' , true)->Body->children('air' , true)->AirPriceRsp ;
+		$airIten = $airPriceRsp->children('air' , true) ->AirItinerary;
+		$allSegments = array();
+		foreach($airIten->AirSegment as $k => $seg)
+			$allSegments[(string)$seg->attributes() ["Key"] ] = $seg;
 
 		//validate that the key matches the solution key
-		$this->uApi->confirmSegmentBookability($priceSol);
+		$this->uApi->confirmSegmentBookability($allSegments);
 		die("00000000000--------00000000000") ;
 	}
 	//the purpose of this method is to
@@ -411,41 +417,10 @@ class Page extends CI_Controller {
 		//getting the info from model
 		$xmlResp = $this->uApi->getPricing($solutionKey);
 
-		//get info of
-		$sessData = $this->session->userdata();
-		if(isset($sessData) && isset($sessData['airPricingSol']))
-		{
-			$xmlRaw = $sessData['airPricingSol'];
+		var_dump($xmlResp->asXML());
+		$this->session->set_userdata('airPricingRsp' ,$xmlResp->asXML() );
+		die;
 
-
-			$airPricingSol = simplexml_load_string($xmlRaw  );
-			//Confirming if we have info in the session
-			if(!($airPricingSol===false) && $airPricingSol->children("air" , true)->count() ){
-					//gettimng all segments
-					$allSegments = $this->getAllSegementsArray($airPricingSol->children('air' , true)->AirSegment);
-
-					$dom= dom_import_simplexml($airPricingSol);
-					$allRef = $dom->getElementsByTagName('AirSegmentRef');
-
-					while ($allRef->length > 0) {
-						// code...
-						$refKey = $allRef[0]->getAttribute('Key') ;
-						//making an xml node
-						$elementSegment = dom_import_simplexml($allSegments[$refKey]);
-						// echo "Replacing :".$key.($allSegments[$refKey]->asXML())."\r\n\t";
-						//replacing the ref with the segment that's the actual segment
-						$dom->replaceChild($elementSegment , $allRef[0]);
-					}
-
-					$segmentSanitized = array("airPricingSol"=>simplexml_import_dom($dom)->asXML());
-					$this->session->set_userdata($segmentSanitized);
-					// var_dump($xmlResp->asXML());die;/
-					// var_dump($segmentSanitized);die;
-			}
-		}else{
-			$error = "Session has invalid info ";
-			$this->load->view("home");
-		}
 	}
 
 	public function bookNow(){

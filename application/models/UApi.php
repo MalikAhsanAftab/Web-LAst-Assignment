@@ -534,7 +534,7 @@ class uApi extends CI_MODEL {
 		//getting the solution node
 		$solNode =  $this->getSolutionNode($solutionKey) ;
 		//setting the soltion node to the sesion
-
+		//while setting the errors to be handled by user
 		$tempArr = array('airPricingSol'  => '<meta xmlns:air="http://www.travelport.com/schema/air_v42_0">'.$solNode-> asXML().'</meta>' );
 		$this->session->set_userdata($tempArr);
 
@@ -593,19 +593,23 @@ class uApi extends CI_MODEL {
 		return false;
 	}
 
-	function confirmSegmentBookability($sol){
+	function confirmSegmentBookability($allSegments){
 		//getting the sesion details which has been developed with the travelport
 		$sessData = $this->session->userdata();
 		$sessionIdTP= $sessData["sessionKey"];
 		$traceId = $sessData["traceId"];
-		$this ->getBookingSegments($sol);
-		foreach ($sessData as $key => $value) {
+
+		//$this ->getBookingSegments($sol);
+		$total = $sessData['searchData']['adult']+$sessData['searchData']['child']+$sessData['searchData']['infant'];
+		$allSegmentsXML ="";
+		foreach ($allSegments as $key => $segment) {
 			// code...
-			echo "<br>\r\n";
-			echo $value;
+			$segment->addAttribute('NumberInParty' , $total);
+			$allSegmentsXML.=$segment->asXML();
 		}
 
-$message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:air="http://www.travelport.com/schema/air_v34_0">
+
+		$message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:air="http://www.travelport.com/schema/air_v34_0">
 				<soapenv:Header>
 						<h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
 							<SessTok id="'.$sessionIdTP.'"/>
@@ -617,23 +621,18 @@ $message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/env
 				<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
 					<shar:AddAirSegment>
 
-							<air:AirSegment Key="zVPfK01HS1+PVAmreMBBag==" Group="0" Carrier="BA" FlightNumber="799" Origin="HEL" Destination="LHR" DepartureTime="2016-10-28T17:10:00.000+03:00" ArrivalTime="2016-10-28T18:20:00.000+01:00" FlightTime="190" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
-								<air:AirAvailInfo ProviderCode="1G"/>
-							</air:AirSegment>
-						<air:AirSegment Key="045Lxm6dTpa0oK9Fg3BD/Q==" Group="1" Carrier="BA" FlightNumber="794" Origin="LHR" Destination="HEL" DepartureTime="2016-11-02T11:15:00.000+00:00" ArrivalTime="2016-11-02T16:10:00.000+02:00" FlightTime="175" Distance="1130" ETicketability="Yes" Equipment="320" ChangeOfPlane="false" ParticipantLevel="Secure Sell" LinkAvailability="true" PolledAvailabilityOption="Polled avail exists" OptionalServicesIndicator="false" AvailabilitySource="A" AvailabilityDisplayType="Fare Shop/Optimal Shop" ProviderCode="1G" ClassOfService="Y">
-							<air:AirAvailInfo ProviderCode="1G"/>
-						</air:AirSegment>
+					'.$allSegmentsXML.'
 
 					</shar:AddAirSegment>
 				</shar:BookingAirSegmentReq>
 			</soapenv:Body>
 			</soapenv:Envelope>';
 
-	// $handle = fopen("PricingReq.txt" , 'a');
-	//	fwrite($handle , $message);
-
+	$handle = fopen("PricingReq.txt" , 'a');
+	fwrite($handle , '\r\n\t'.$message);
+	// die ;
 $auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
 $header = array(
 "Content-Type: text/xml;charset=UTF-8",
 "Accept: gzip,deflate",
@@ -655,7 +654,7 @@ curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
 curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 $resp = curl_exec($soap_do);
 curl_close($soap_do);
-
+	var_dump($resp);die;
 //Loads the XML
 // fwrite($handle , "Response  :/r/n/t".$resp);
 $xml = simplexml_load_string($resp);
