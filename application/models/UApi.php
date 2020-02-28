@@ -143,6 +143,8 @@ class uApi extends CI_MODEL {
 		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 		$resp = curl_exec($soap_do);
 		curl_close($soap_do);
+		//write to file
+		$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
 
 		if(!$rawXml){
 		//Loads the XML
@@ -355,6 +357,9 @@ class uApi extends CI_MODEL {
 			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 			$resp = curl_exec($soap_do);
 			curl_close($soap_do);
+
+			//write to file
+					$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
 			//Loads the XML
 			$xml = simplexml_load_string($resp);
 			return $xml;
@@ -446,65 +451,7 @@ class uApi extends CI_MODEL {
 		return $template;
 	}
 
-	//make segments xml for BookingAirSegmentReq
-	protected function getBookingSegments($sol ){
-		//get info of
-		$template ='';
-		$template .= '<shar:AddAirSegment>';
 
-		$sessData = $this->session->userdata();
-		@$xmlRaw = $sessData['flightDetails'];
-		$xml = simplexml_load_string($xmlRaw);
-		//Confirming if we have info in the session
-		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
-				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
-				$FlightDetails = $LowFareSearchRsp->AirSegmentList->children('air' , true);
-				$allSegments = $this -> getAllSegementsArray($FlightDetails);
-
-		foreach($sol->Journey as $key => $singleJourney)
-		{
-				//Foreach journey the loop runs
-				//Sub Groups on the basis of the journey
-				$tempSegmentsRef = array();
-				$this->iterate($singleJourney , $tempSegmentsRef);
-				//now we have references of all related segments
-				foreach ($tempSegmentsRef as $reference) {
-
-						$segment = $allSegments[(string)$reference->attributes()['Key']];
-						//start
-						$segment->addAttribute('ProviderCode' , "1G");
-
-						$dom= dom_import_simplexml($segment);
-						$this->removeChildren($dom);
-						//creating
-
-
-						$child = $dom->cloneNode(false);
-						if ($child->hasAttributes()) {
-						  for ($i = $child->attributes->length - 1; $i >= 0; --$i)
-						   {
-								 if($child->attributes->item($i)->nodeName != "ProviderCode")
-								  $child->removeAttributeNode($child->attributes->item($i));
-								}
-						}
-
-				    // dom adds a new element under the root
-				    $dom->appendChild($child);
-
-						$segmentSanitized = simplexml_import_dom($dom)->asXML();
-
-						$template.= $segmentSanitized;
-
-				}
-
-		}
-		}
-
-		$template .= '</shar:AddAirSegment>';
-		die($template);
-		return $template;
-
-	}
 	//Get Solution Node
 	private function getSolutionNode($solKey= ''){
 		$sessData = $this->session->userdata();
@@ -582,6 +529,8 @@ class uApi extends CI_MODEL {
 			$resp = curl_exec($soap_do);
 			curl_close($soap_do);
 
+			//write the req resp to file
+			$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
 			//Loads the XML
 			// fwrite($handle , "Response  :/r/n/t".$resp);
 			$xml = simplexml_load_string($resp);
@@ -628,36 +577,36 @@ class uApi extends CI_MODEL {
 			</soapenv:Body>
 			</soapenv:Envelope>';
 
-	$handle = fopen("PricingReq.txt" , 'a');
-	fwrite($handle , '\r\n\t'.$message);
-	// die ;
-$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
-$header = array(
-"Content-Type: text/xml;charset=UTF-8",
-"Accept: gzip,deflate",
-"Cache-Control: no-cache",
-"Pragma: no-cache",
-"SOAPAction: \"\"",
-"Authorization: Basic $auth",
-"Content-length: ".strlen($message),
-);
 
-// Sending CURL Request To Fetch Data From API
-curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
-curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
-curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
-curl_setopt($soap_do, CURLOPT_POST, true );
-curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
-curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
-curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
-$resp = curl_exec($soap_do);
-curl_close($soap_do);
-	var_dump($resp);die;
-//Loads the XML
-// fwrite($handle , "Response  :/r/n/t".$resp);
-$xml = simplexml_load_string($resp);
+			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
+			$header = array(
+					"Content-Type: text/xml;charset=UTF-8",
+					"Accept: gzip,deflate",
+					"Cache-Control: no-cache",
+					"Pragma: no-cache",
+					"SOAPAction: \"\"",
+					"Authorization: Basic $auth",
+					"Content-length: ".strlen($message),
+			);
+
+		// Sending CURL Request To Fetch Data From API
+		curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+		curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+		curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($soap_do, CURLOPT_POST, true );
+		curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+		curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+		$resp = curl_exec($soap_do);
+
+		//writing to file
+		$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
+		curl_close($soap_do);
+		var_dump($resp);
+		die;
+		$xml = simplexml_load_string($resp);
 	}
 	//
 	//The Booking Pricing request enables the
@@ -720,7 +669,13 @@ $xml = simplexml_load_string($resp);
 		}
 		return false;
 	}
-
+	public function logger($msg , $tim)
+	{
+		$t = date("F d, Y h:i:s A", $tim);
+		$handler = fopen('tpCommunication.txt' , 'a');
+		fwrite($handler , '\r\nTime :'.$t.'\r\n\t'.$msg);
+		fclose($handler);
+	}
 	//get the list of carriers
 	public function getCarriers(){
 

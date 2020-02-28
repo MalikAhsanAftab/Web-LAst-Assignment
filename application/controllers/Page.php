@@ -163,6 +163,14 @@ class Page extends CI_Controller {
 		$this->uApi->confirmSegmentBookability($allSegments);
 		die("00000000000--------00000000000") ;
 	}
+
+	public function pricingRequest()
+	{
+		//check if user is allowed to go forward
+
+		//
+		$xml = $this->uApi->BookingPricingReq();
+	}
 	//the purpose of this method is to
 	//allow the user to view the flights that
 	//were loaded before

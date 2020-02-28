@@ -1,0 +1,42 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+		   <soap:Header/>
+		   <soap:Body>
+			  <air:LowFareSearchReq TraceId="trace" AuthorizedBy="user" SolutionResult="true" TargetBranch="P7090934" xmlns:air="http://www.travelport.com/schema/air_v42_0" xmlns:com="http://www.travelport.com/schema/common_v42_0">
+				 <com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+				 <air:SearchAirLeg>
+		 <air:SearchOrigin>
+				<com:Airport Code="KHI"/>
+		 </air:SearchOrigin>
+		 <air:SearchDestination>
+				<com:Airport Code="LHE"/>
+		 </air:SearchDestination>
+		 <air:SearchDepTime PreferredTime="2020-03-19">
+		 </air:SearchDepTime>
+		</air:SearchAirLeg><air:SearchAirLeg>
+		 <air:SearchOrigin>
+				<com:Airport Code="LHE"/>
+		 </air:SearchOrigin>
+		 <air:SearchDestination>
+				<com:Airport Code="ISB"/>
+		 </air:SearchDestination>
+		 <air:SearchDepTime PreferredTime="2020-04-09">
+		 </air:SearchDepTime>
+		</air:SearchAirLeg><air:SearchAirLeg>
+		 <air:SearchOrigin>
+				<com:Airport Code="ISB"/>
+		 </air:SearchOrigin>
+		 <air:SearchDestination>
+				<com:Airport Code="LHR"/>
+		 </air:SearchDestination>
+		 <air:SearchDepTime PreferredTime="2020-05-14">
+		 </air:SearchDepTime>
+		</air:SearchAirLeg>
+				 <air:AirSearchModifiers>
+					<air:PreferredProviders>
+					   <com:Provider Code="1G"/>
+					</air:PreferredProviders>
+				 </air:AirSearchModifiers>
+				 	<com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="3" Code="ADT" /><com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="1" Code="CNN" Age="11" DOB="2009-02-28" /><com:SearchPassenger xmlns:com="http://www.travelport.com/schema/common_v42_0" BookingTravelerRef="2" Code="INF" Age="1" DOB="2019-02-28" />
+			  </air:LowFareSearchReq>
+		   </soap:Body>
+		</soap:Envelope>
