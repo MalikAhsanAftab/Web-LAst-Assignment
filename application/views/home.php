@@ -132,7 +132,7 @@
                     <div class="input1_wrapper">
                       <label>Departing:</label>
                       <div class="input1_inner">
-                        <input type="date" class="input datepicker" name="departOn[]" value="" required>
+                        <input type="date" class="input datepicker" name="departOn[]" required>
 
 											</div>
                     </div>

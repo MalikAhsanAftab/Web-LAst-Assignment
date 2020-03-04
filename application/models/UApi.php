@@ -173,7 +173,7 @@ class uApi extends CI_MODEL {
 		 </air:SearchDepTime>
 		</air:SearchAirLeg>';
 	}
-	public function bookTicket($str){
+	public function bookTicket($priceResult , $allSegments){
 
 		$dateOfBirth = "1981-12-24";
 		$gender = "M";
@@ -206,80 +206,105 @@ class uApi extends CI_MODEL {
 			"ticketDate" => "2020-03020T13:09:28"
 
 		);
+
+		$pricingXML= '';
+		$pricingSolutions = $priceResult->children('air' , true )->AirPricingSolution;
+		foreach($pricingSolutions as $sol)
+		{
+			//for all the pring soltions
+			// var_dump($sol->asXML());
+			$dom = dom_import_simplexml($sol);
+
+			//getting the segment references list in this solution
+			$refList = $dom->getElementsByTagName('AirSegmentRef') ;
+
+			while ($refList ->length ) {
+				$ref = $refList[0];
+				$key = $ref->getAttribute("Key");
+				// echo $allSegments[''.$key]->asXML();continue ;
+				$newSegment = dom_import_simplexml($allSegments[''.$key]);
+				$ref->ownerDocument->importNode($newSegment , true );
+				$ref->parentNode->replaceChild($newSegment  , $ref);
+			}
+
+			$pricingXML .= str_replace('common_v42_0' , 'common_v34_0' ,simplexml_import_dom($dom)->asXML() );
+
+		}
+
 		$message = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-	<soapenv:Header/>
-	<soapenv:Body>
-		<univ:AirCreateReservationReq	xmlns:air="http://www.travelport.com/schema/air_v33_0"
-			xmlns:common_v33_0="http://www.travelport.com/schema/common_v33_0" xmlns:univ="http://www.travelport.com/schema/universal_v33_0"
-			AuthorizedBy="user" RetainReservation="Both" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
-			<com:BillingPointOfSaleInfo	xmlns:com="http://www.travelport.com/schema/common_v33_0" OriginApplication="UAPI"/>
+		<soapenv:Header/>
+		<soapenv:Body>
+				<univ:AirCreateReservationReq	xmlns:air="http://www.travelport.com/schema/air_v34_0"
+					xmlns:common_v34_0="http://www.travelport.com/schema/common_v34_0" xmlns:univ="http://www.travelport.com/schema/universal_v34_0"
+					AuthorizedBy="user" RetainReservation="Both" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+					<com:BillingPointOfSaleInfo	xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
 
-				<com:BookingTraveler xmlns:com="http://www.travelport.com/schema/common_v33_0" DOB="'.$travelerInfo['dateOfBirth'].'" Gender="'.$travelerInfo['gender'].'"
-				Key="gr8AVWGCR064r57Jt0+8bA==" Nationality="'.$travelerInfo['nationality'].'" TravelerType="'.$travelerInfo['travelerType'].'">
-					<com:BookingTravelerName First="'.$travelerInfo['first'].'" Last="'.$travelerInfo['last'].'" Prefix="'.$travelerInfo['prefix'].'"/>
-					<com:DeliveryInfo>
-						<com:ShippingAddress>
-							<com:AddressName>'.$travelerInfo['shipping']['addressName'].'</com:AddressName>
-							<com:Street>'.$travelerInfo['shipping']['street'].' Road</com:Street>
-							<com:City>'.$travelerInfo['shipping']['city'].'</com:City>
-							<com:State>'.$travelerInfo['shipping']['state'].'</com:State>
-							<com:PostalCode>'.$travelerInfo['shipping']['postalCode'].'</com:PostalCode>
-							<com:Country>'.$travelerInfo['shipping']['country'].'</com:Country>
-						</com:ShippingAddress>
-					</com:DeliveryInfo>
-					<com:PhoneNumber AreaCode="'.$travelerInfo['areaCode'].'" CountryCode="'.$travelerInfo['countryCode'].'" Location="'.$travelerInfo['location'].'" Number="'.$travelerInfo['phone'].'" Type="'.$travelerInfo['type'].'"/>
-					<com:Email EmailID="'.$travelerInfo['email'].'" Type="Home"/>
-					<com:Address>
-						<com:AddressName>'.$travelerInfo['address']['addressName'].'</com:AddressName>
-						<com:Street>'.$travelerInfo['address']['street'].' Road</com:Street>
-						<com:City>'.$travelerInfo['address']['city'].'</com:City>
-						<com:State>'.$travelerInfo['address']['state'].'</com:State>
-						<com:PostalCode>'.$travelerInfo['address']['postalCode'].'</com:PostalCode>
-						<com:Country>'.$travelerInfo['address']['country'].'</com:Country>
-					</com:Address>
-				</com:BookingTraveler>'.$str.'
+						<com:BookingTraveler xmlns:com="http://www.travelport.com/schema/common_v34_0" DOB="'.$travelerInfo['dateOfBirth'].'" Gender="'.$travelerInfo['gender'].'"
+						Key="gr8AVWGCR064r57Jt0+8bA==" Nationality="'.$travelerInfo['nationality'].'" TravelerType="'.$travelerInfo['travelerType'].'">
+							<com:BookingTravelerName First="'.$travelerInfo['first'].'" Last="'.$travelerInfo['last'].'" Prefix="'.$travelerInfo['prefix'].'"/>
+							<com:DeliveryInfo>
+								<com:ShippingAddress>
+									<com:AddressName>'.$travelerInfo['shipping']['addressName'].'</com:AddressName>
+									<com:Street>'.$travelerInfo['shipping']['street'].' Road</com:Street>
+									<com:City>'.$travelerInfo['shipping']['city'].'</com:City>
+									<com:State>'.$travelerInfo['shipping']['state'].'</com:State>
+									<com:PostalCode>'.$travelerInfo['shipping']['postalCode'].'</com:PostalCode>
+									<com:Country>'.$travelerInfo['shipping']['country'].'</com:Country>
+								</com:ShippingAddress>
+							</com:DeliveryInfo>
+							<com:SSR Carrier="FZ" FreeText="P/US/F1234567/US/17Sep69/M/24Sep15/Muhammad/Nouman" SegmentRef="a3UzhM7Q2BKAegmOCAAAAA==" Status="HK" Type="DOCS"/>
+							<com:PhoneNumber AreaCode="'.$travelerInfo['areaCode'].'" CountryCode="'.$travelerInfo['countryCode'].'" Location="'.$travelerInfo['location'].'" Number="'.$travelerInfo['phone'].'" Type="'.$travelerInfo['type'].'"/>
+							<com:Email EmailID="'.$travelerInfo['email'].'" Type="Home"/>
+							<com:Address>
+								<com:AddressName>'.$travelerInfo['address']['addressName'].'</com:AddressName>
+								<com:Street>'.$travelerInfo['address']['street'].' Road</com:Street>
+								<com:City>'.$travelerInfo['address']['city'].'</com:City>
+								<com:State>'.$travelerInfo['address']['state'].'</com:State>
+								<com:PostalCode>'.$travelerInfo['address']['postalCode'].'</com:PostalCode>
+								<com:Country>'.$travelerInfo['address']['country'].'</com:Country>
+							</com:Address>
+						</com:BookingTraveler>'.$pricingXML.'
 
-				<com:ActionStatus
-					xmlns:com="http://www.travelport.com/schema/common_v33_0" ProviderCode="ACH" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
-				</univ:AirCreateReservationReq>
-			</soapenv:Body>
-		</soapenv:Envelope>';
+						<com:ActionStatus
+							xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="ACH" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
+						</univ:AirCreateReservationReq>
+						</soapenv:Body>
+				</soapenv:Envelope>';
 		// die ($message);
 		$message = '
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <univ:AirCreateReservationReq xmlns:air="http://www.travelport.com/schema/air_v34_0" xmlns:common_v34_0="http://www.travelport.com/schema/common_v34_0" xmlns:univ="http://www.travelport.com/schema/universal_v34_0" AuthorizedBy="user" RetainReservation="Both" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
-      <com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
-      <com:BookingTraveler xmlns:com="http://www.travelport.com/schema/common_v34_0" DOB="1998-02-28" Gender="M" Key="a3UzhM7Q2BKAegmOCAAAAA==" TravelerType="ADT">
-        <com:BookingTravelerName First="Muhammad" Last="Nouman" Prefix="Mr"/>
-        <com:DeliveryInfo>
-          <com:ShippingAddress>
-            <com:AddressName>Test address</com:AddressName>
-            <com:Street>St # 14</com:Street>
-            <com:City>ISB</com:City>
-            <com:State>Punjab</com:State>
-            <com:PostalCode>44000</com:PostalCode>
-            <com:Country>PK</com:Country>
-          </com:ShippingAddress>
-        </com:DeliveryInfo>
-        <com:SSR Carrier="FZ" FreeText="P/US/F1234567/US/17Sep69/M/24Sep15/Muhammad/Nouman" SegmentRef="a3UzhM7Q2BKAegmOCAAAAA==" Status="HK" Type="DOCS"/>
-        <com:Address>
-          <com:AddressName>dffsdf</com:AddressName>
-          <com:Street>dsd</com:Street>
-          <com:City>sda</com:City>
-          <com:State>sd</com:State>
-          <com:PostalCode>45533</com:PostalCode>
-          <com:Country>PK</com:Country>
-        </com:Address>
-      </com:BookingTraveler>
-      <com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
-			'.$str.'
-      <com:ActionStatus xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'" TicketDate="2018-05-29" Type="TAW"/>
-    </univ:AirCreateReservationReq>
-  </soapenv:Body>
-</soapenv:Envelope>
-		';
+				  	<soapenv:Header/>
+				  <soapenv:Body>
+				    <univ:AirCreateReservationReq xmlns:air="http://www.travelport.com/schema/air_v34_0" xmlns:common_v34_0="http://www.travelport.com/schema/common_v34_0" xmlns:univ="http://www.travelport.com/schema/universal_v34_0" AuthorizedBy="user" RetainReservation="Both" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+				      <com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
+				      <com:BookingTraveler xmlns:com="http://www.travelport.com/schema/common_v34_0" Gender="M" Key="a3UzhM7Q2BKAegmOCAAAAA==" TravelerType="ADT">
+				        <com:BookingTravelerName First="Muhammad" Last="Nouman" Prefix="Mr"/>
+				        <com:DeliveryInfo>
+				          <com:ShippingAddress>
+				            <com:AddressName>Test address</com:AddressName>
+				            <com:Street>St # 14</com:Street>
+				            <com:City>ISB</com:City>
+				            <com:State>Punjab</com:State>
+				            <com:PostalCode>44000</com:PostalCode>
+				            <com:Country>PK</com:Country>
+				          </com:ShippingAddress>
+				        </com:DeliveryInfo>
+				        <com:Address>
+				          <com:AddressName>dffsdf</com:AddressName>
+				          <com:Street>dsd</com:Street>
+				          <com:City>sda</com:City>
+				          <com:State>sd</com:State>
+				          <com:PostalCode>45533</com:PostalCode>
+				          <com:Country>PK</com:Country>
+				        </com:Address>
+				      </com:BookingTraveler>
+				      <com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
+							'.$pricingXML.'
+				      <com:ActionStatus xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'" TicketDate="2020-04-02T16:00:00.000+05:00" Type="TAW"/>
+				    </univ:AirCreateReservationReq>
+				  </soapenv:Body>
+				</soapenv:Envelope>
+						';
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
 		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
@@ -305,6 +330,7 @@ class uApi extends CI_MODEL {
 		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 		$resp = curl_exec($soap_do);
 		curl_close($soap_do);
+		$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
 
 		echo $resp;
 		echo "here";
@@ -455,10 +481,9 @@ class uApi extends CI_MODEL {
 	//Get Solution Node
 	private function getSolutionNode($solKey= ''){
 		$sessData = $this->session->userdata();
-		@$xmlRaw = $sessData['flightDetails'];
+		$xmlRaw = $sessData['flightDetails'];
 		$xml = simplexml_load_string($xmlRaw);
-
-		//Confirming if we have info in the session
+			//Confirming if we have info in the session
 		if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
 				$LowFareSearchRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->LowFareSearchRsp;
 				$FlightDetails = $LowFareSearchRsp->AirSegmentList->children('air' , true);
@@ -480,8 +505,14 @@ class uApi extends CI_MODEL {
 		$session = $this->session->userdata();
 		//getting the solution node
 		$solNode =  $this->getSolutionNode($solutionKey) ;
+
 		//setting the soltion node to the sesion
 		//while setting the errors to be handled by user
+		if($solNode === null )
+		{
+			var_dump($solNode);
+			die;
+		}
 		$tempArr = array('airPricingSol'  => '<meta xmlns:air="http://www.travelport.com/schema/air_v42_0">'.$solNode-> asXML().'</meta>' );
 		$this->session->set_userdata($tempArr);
 
@@ -501,7 +532,6 @@ class uApi extends CI_MODEL {
 						</air:AirPriceReq>
 					</soapenv:Body>
 				</soapenv:Envelope>';
-
 				// $handle = fopen("PricingReq.txt" , 'a');
 				//	fwrite($handle , $message);
 
@@ -553,8 +583,19 @@ class uApi extends CI_MODEL {
 		$allSegmentsXML ="";
 		foreach ($allSegments as $key => $segment) {
 			// code...
+			//Adjusting segment such that adding the number in party attribute
 			$segment->addAttribute('NumberInParty' , $total);
+			//Also Adjusting for the segment so that it's all
+			//children are removed and availinfo child is added
+			$dom = dom_import_simplexml($segment);
+		  while ($dom->firstChild) {
+		    $dom->removeChild($dom->lastChild);
+		  }
+			$newElement = $dom->ownerDocument->createElement('air:AirAvailInfo');
+			$newElement->setAttribute('ProviderCode' , (string)$segment->attributes()['ProviderCode']);
+			$dom->appendChild($newElement);
 			$allSegmentsXML.=$segment->asXML();
+
 		}
 
 
@@ -611,30 +652,43 @@ class uApi extends CI_MODEL {
 	//
 	//The Booking Pricing request enables the
 	//addition of Stored Fare and Branded Fare information to the PNR/UR
-	public function ToBEValidated($solutionKey ){
+	public function BookingPricingReq($pricingInfoArr ){
 		$session = $this->session->userdata();
+
+		//making the pricing Info xml
+		$xmlPricingInfo = '';
+		foreach ($pricingInfoArr as $info) {
+			// code...
+			$info->addAttribute('xmlns:xmlns:air' , 'http://www.travelport.com/schema/air_v34_0');
+			$xmlPricingInfo .= str_replace('common_v42_0:Endorsement' ,  'com:Endorsement xmlns:com="http://www.travelport.com/schema/common_v34_0"  ' , $info->asXML() ) ;
+		}
+
 		// print_r($session);die;
 		if(isset($session['adultXML']) && isset($session['childXML']) && isset($session['infantXML']) )
 		{
 			$allPassengers = $session['adultXML'].$session['childXML'].$session['infantXML'];
-			$allItineraries = $this->getAllItineraries($solutionKey);
 			$message = '
 				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-					<soapenv:Header/>
-					<soapenv:Body>
-						<air:AirPriceReq xmlns:air="http://www.travelport.com/schema/air_v42_0" AuthorizedBy="user" TargetBranch="'.$this->uApi->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
-							<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v42_0" OriginApplication="UAPI"/>
-								'.$allItineraries.$allPassengers.'
-							<air:AirPricingCommand CabinClass="Economy"/>
-						</air:AirPriceReq>
-					</soapenv:Body>
-				</soapenv:Envelope>';
-
-				// $handle = fopen("PricingReq.txt" , 'a');
-				//	fwrite($handle , $message);
+				<soapenv:Header>
+				<h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
+				<SessTok id="'.$session['sessionKey'].'"/>
+				</h:SessionContext>
+				</soapenv:Header>
+				<soapenv:Body>
+				<shar:BookingPricingReq xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" TraceId="'.$session['traceId'].'" AuthorizedBy="user" SessionKey="'.$session['sessionKey'].'"  >
+				<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
+				<shar:AddPricing>
+				'.$xmlPricingInfo.'
+				</shar:AddPricing>
+				</shar:BookingPricingReq>
+				</soapenv:Body>
+				</soapenv:Envelope>
+				';
+				$handle = fopen("PricingReq.txt" , 'a');
+					fwrite($handle , "\r\n\t-----".$message);
 
 			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
 			$header = array(
 			"Content-Type: text/xml;charset=UTF-8",
 			"Accept: gzip,deflate",
@@ -656,16 +710,20 @@ class uApi extends CI_MODEL {
 			curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 			$resp = curl_exec($soap_do);
 			curl_close($soap_do);
-
+			echo "here";
+			die($resp);
 			//Loads the XML
 			// fwrite($handle , "Response  :/r/n/t".$resp);
 			$xml = simplexml_load_string($resp);
+			//get to know f we have a fault in the response use try catch
+			$fault = $xml->children('SOAP-ENV' , true)->Body->children('SOAP-ENV', true)->Fault->asXML();
+			if($fault === null)
+				return $xml;
+			else {
+				echo $resp ;
+				die;
+			}
 
-			//setting the session data for the further processing and booking and so on
-			$tempArr = array('airPricingSol' => $resp);
-			$this->session->set_userdata($tempArr);
-
-			return $xml;
 		}
 		return false;
 	}

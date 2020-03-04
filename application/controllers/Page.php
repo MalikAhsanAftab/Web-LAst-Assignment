@@ -168,8 +168,25 @@ class Page extends CI_Controller {
 	{
 		//check if user is allowed to go forward
 
-		//
-		$xml = $this->uApi->BookingPricingReq();
+		//getting the session
+		$sessData = $this->session->userdata();
+		//Getting the air pricing
+
+		$xml = simplexml_load_string( $sessData['airPricingRsp'] , null , 0, 'air' , true ) ;
+
+		//getting all the segments
+		$airPriceRsp = $xml->children('SOAP' , true)->Body->children('air' , true)->AirPriceRsp ;
+
+		//getting the pricing solution out of response
+		$airPricingSol = $airPriceRsp->AirPriceResult->AirPricingSolution;
+
+		//getting the pricing info
+		$airPricingInfo = $airPricingSol->children('air' , true)->AirPricingInfo;
+
+		$xml = $this->uApi->BookingPricingReq($airPricingInfo);
+		// $handle = fopen('')
+		die;
+
 	}
 	//the purpose of this method is to
 	//allow the user to view the flights that
@@ -231,7 +248,8 @@ class Page extends CI_Controller {
 			show_404();
 		}
 		else{
-			$flightsXml = simplexml_load_string($this->session->flightDetails);
+			$simpXML = $this->session->userdata()["flightDetails"];
+			$flightsXml = simplexml_load_string($simpXML);
 
 			// Grabs the info
 			if(!($flightsXml===false) && $flightsXml->children("SOAP" , true)->Body->count() )
@@ -432,15 +450,24 @@ class Page extends CI_Controller {
 	}
 
 	public function bookNow(){
-		$str= '';
-		$this->uApi->bookTicket($str);
+		$sessData = $this->session->userdata();
+		$xml = simplexml_load_string( $sessData['airPricingRsp'] , null , 0, 'air' , true ) ;
+
+		//getting all the segments
+		$airPriceRsp = $xml->children('SOAP' , true)->Body->children('air' , true)->AirPriceRsp ;
+		$airIten = $airPriceRsp->children('air' , true) ->AirItinerary;
+		$allSegments = array();
+		foreach($airIten->AirSegment as $k => $seg)
+			$allSegments[(string)$seg->attributes() ["Key"] ] = $seg;
+
+		$this->uApi->bookTicket($airPriceRsp->children('air' , true )->AirPriceResult , $allSegments);
 		die;
 		if(!$_POST){
 			$this->load->view("booking");
 		}
 		else
 		{
-			if(isset($_POST['signup'])){
+			if(isset($_POST['signup']) || 1){
 
 				$dataArray = array(
 
@@ -456,7 +483,7 @@ class Page extends CI_Controller {
 							'address' => $_POST['address'],
 							);
 
-    		$this->db->insert('customers',$dataArray);
+//    		$this->db->insert('customers',$dataArray);
 
 			  $time = explode("T",$_GET['Time'][0]);
 
