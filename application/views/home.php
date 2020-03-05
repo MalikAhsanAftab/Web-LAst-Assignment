@@ -11,8 +11,9 @@
 
 	<!-- Header Scripts-->
 	<?php echo $this->PageLoadingFtns->getHeadScripts();?>
-	<body class="front">
+	<body class="front ">
 	<div class="loader"></div>
+
 	<div id="main">
 
 	<!-- Tobbar -->
@@ -21,6 +22,11 @@
 	<!-- Navigation -->
 	<?php echo $this->PageLoadingFtns->getNavBar();?>
 
+	<style>
+		 .datepicker{
+			padding: 5px !important	;
+		}
+	</style>
 
 	<div id="slider_wrapper">
 	<div id="bg_slider" class="carousel slide" data-ride="carousel">
@@ -132,7 +138,7 @@
                     <div class="input1_wrapper">
                       <label>Departing:</label>
                       <div class="input1_inner">
-                        <input type="date" class="input datepicker" name="departOn[]" required>
+                        <input type="text" autocomplete="off" class="input datepicker" value="Mm/Dd/Yy" name="departOn[]" required id="inp_1" onchange="validateDates(this)">
 
 											</div>
                     </div>
@@ -147,7 +153,7 @@
                     <div class="input1_wrapper">
                       <label>Returning:</label>
                       <div class="input1_inner">
-                        <input type="text" class="input datepicker" value="Mm/Dd/Yy" name="returnOn">
+                        <input type="text" class="input datepicker" value="Mm/Dd/Yy" name="returnOn" >
                       </div>
                     </div>
                   </div>
@@ -155,9 +161,9 @@
                     <div class="select1_wrapper">
                       <label>Adult:</label>
                       <div class="select1_inner">
-                        <select class="select2 select select3" style="width: 100%" name="adult">
-													<option value="0">0</option>
-                          <option value="1">1</option>
+                        <select id="adult" class="select2 select select3" style="width: 100%" name="adult" onchange="preferncesChanged(this)">
+
+                          <option value="1" selected>1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
@@ -173,16 +179,15 @@
                     <div class="select1_wrapper">
                       <label>Child:</label>
                       <div class="select1_inner">
-                        <select class="select2 select select3" style="width: 100%" name="child" onchange="preferncesChanged(this)">
-													<option value="0">0</option>
+                        <select class="select2 select select3" id="noOfChildren" style="width: 100%" name="child" onchange="preferncesChanged(this)">
+													<option value="0" selected>None</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
                           <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
+
                         </select>
                       </div>
                     </div>
@@ -191,21 +196,23 @@
                     <div class="select1_wrapper">
                       <label>Infant:</label>
                       <div class="select1_inner">
-                        <select class="select2 select select3" style="width: 100%" name="infant" onchange="preferncesChanged(this)">
-													<option value="0">0</option>
+                        <select class="select2 select select3" id="noOfInfants" style="width: 100%" name="infant" onchange="preferncesChanged(this)">
+													<option value="0" selected>None</option>
 													<option value="1">1</option>
-                          <option value="2">2</option>
+													<option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
                           <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
+
                         </select>
                       </div>
                     </div>
                   </div>
 								</div>
+								<script>
+
+								</script>
 								<!--End of othjer info section -->
 								</div>
 									<div class="row" id="children"></div>
@@ -221,9 +228,30 @@
               </form>
 							<script type="text/javascript">
 							var child,infant = 0;
+								function allowMax(selObj , max){
+									alert($(selObj).children('option:not(:first)').length);
+								}
+								function __get(id)
+								{
+									return document.getElementById(id);
+								}
 								function preferncesChanged(obj){
-									console.log(obj.value);
 									var label="child";
+									if(obj.name=="adult")
+									{
+										let currentAdults = obj ;
+										let children = __get("noOfChildren");
+										let infants = __get("noOfInfants");
+										console.log( currentAdults.value, children.value , infants.value)
+										if(currentAdults.value < infants.value)
+											allowMax(infants , currentAdults.value
+											);
+										return ;
+										if(currentAdults.value+children.value+infants.value < 8)
+											return ;
+
+
+									}
 									if(obj.name=="infant")
 									{
 										label="infant";
@@ -1422,16 +1450,21 @@ $(document).ready(function(){
     		});
 		});
 		//id to track
-		var inputId = 2;
+		var inputId = 1;
 		function addRemoveRow(btnObj){
 			if(btnObj.innerText == "+")
 			{
 				//add a row
-				btnObj.parentNode.innerHTML += developHTML();
+				$(btnObj.parentNode).append( developHTML() );
 				console.log(btnObj);
 				document.getElementById(btnObj.id).innerText = "-";
-				btnObj.style.display ="none";
-				btnObj.remove();
+				if($('#inp_'+(inputId-1)).val())
+					$('#inp_'+inputId).datepicker({orientation : "top" , minDate : $('#inp_'+(inputId-1)).val() });
+				else
+					$('#inp_'+inputId).datepicker({orientation : "top" , minDate : new Date() });
+
+				//btnObj.style.display ="none";
+				//btnObj.remove();
 			}else{
 				//remove a row
 				$(".tempJourney_"+btnObj.id.split("_")[1]).remove();
@@ -1459,13 +1492,138 @@ $(document).ready(function(){
 			                    <div class="input1_wrapper">
 			                      <label>Departing:</label>
 			                      <div class="input1_inner">
-			                        <input type="date" class="input datepicker" name="departOn[]" value="Mm/Dd/Yy" required>
+			                        <input type="text" class="input datepicker" autocomplete="off" id="inp_`+inputId+`" name="departOn[]" value="Mm/Dd/Yy" required onchange="validateDates(this)">
 														</div>
 			                    </div>
 			                  </div>
 												<button type="button" style="margin-top:30px;" id="btn_`+inputId+`" onclick="addRemoveRow(this)">+</button>
 											`;
 		}
+		function validateDates(obj){
+
+			var idTracker = obj.id.split("_")[1];
+			let thisObj = $('#inp_'+idTracker) ;
+			let nextObj = $('#inp_'+(parseInt(idTracker)+1) );
+			let prevObj = $('#inp_'+(parseInt(idTracker)-1) )
+			console.log($('#inp_'+(parseInt(idTracker)+1) ).val() , thisObj.val() );
+
+			//verrify if we have a sibling ahead
+			if(nextObj.val()=='Mm/Dd/Yy' || thisObj.val()>nextObj.val() )
+			{
+					$(nextObj).datepicker("option" , "minDate" , thisObj.val());
+					//best 0 level
+					if( $('#inp_'+(parseInt(idTracker)+2) ).length > 0)
+					{
+						//average 1 level
+						$objAfter = $('#inp_'+(parseInt(idTracker)+2) );
+						if($objAfter.val()=='Mm/Dd/Yy' || $objAfter.val()<nextObj.val() )
+								$($objAfter).datepicker("option" , "minDate" , nextObj.val());
+						//worst case agay 2 levels
+						nextObj = $objAfter;
+					}
+					if( $('#inp_'+(parseInt(idTracker)+3) ).length > 0)
+					{
+						//average 1 level
+						$objAfter = $('#inp_'+(parseInt(idTracker)+3) )
+						if($objAfter.val()=='Mm/Dd/Yy' || $objAfter.val()<nextObj.val() )
+								$($objAfter).datepicker("option" , "minDate" , nextObj.val());
+						//worst case agay 2 levels
+					}
+
+			}
+			//verrify if we have a sibling ahead
+			if(prevObj.val()=='Mm/Dd/Yy' && thisObj.val() < prevObj.val() )
+			{
+				//check if new value set to this obj is greater then next
+				if(prevObj.val() > thisObj.val())
+				{
+					prevObj.val(thisObj.val());
+				}
+			}
+
+		}
+
+		// apply these changing on adult change field
+
+		$("#adult").change( ()=>{
+    console.log($("#adult").val());
+    $text = '';
+    $('#noOfInfants').children('option:not(:nth-child(1)):not(:nth-child(2))').remove();
+    // $("#noOfInfants").(':not(:nth-child(1)),:not(:nth-child(2))').remove();
+    // $("#noOfInfants option").remove();
+    for (let i = 2; i <= $("#adult").val(); i++) {
+        // $text += "<option value="+i+">"+i+"</option>"
+        $('#noOfInfants').append($('<option>', {
+            value: i,
+            text: i
+        }));
+        // console.log("dsfsdf ::"+1);
+    }
+    var noOfChildrens = $("#noOfChildren").children("option").length;
+    // console.log(noOfChildrens);
+    $total = (parseInt($("#adult").val()) + parseInt($("#noOfChildren").children("option").length-1)) ;
+        console.log("total :: " + $total);
+
+            // console.log("i'm greater then 8");
+            $howMuchGreater = parseInt($total) - parseInt(8);
+            var updatedNoOfChild = parseInt($("#noOfChildren").children("option").length-1) - parseInt($howMuchGreater);
+            console.log("hoe much greater :: " + updatedNoOfChild);
+            $('#noOfChildren').children('option:not(:first)').remove();
+            for (let j = 1; j <= updatedNoOfChild ; j++) {
+                $('#noOfChildren').append($('<option>', {
+                    value: j,
+                    text: j
+                }));
+            }
+
+
+
+
+    // console.log($text);
+
+    // $("#noInfants").html($text);
+    // $($text).insertAfter("#noInfants");
+
+});
+
+// apply these changing on the children field changes
+// edit on date feb-19-2020
+$("#noOfChildren").change( ()=>{
+		var adult = $("#adult").children("options");
+		console.log(adult);
+		$total = (parseInt($("#noOfChildren").val()) + parseInt($("#adult").children("option").length)) ;
+				// console.log("total :: " + $total);
+				// if($total > 8){
+						// console.log("i'm greater then 8");
+						$howMuchGreater = parseInt($total) - parseInt(8);
+						console.log($howMuchGreater);
+
+						var updatedNoOfAdults = parseInt($("#adult").children("option").length) - parseInt($howMuchGreater);
+						console.log("hoe much greater :: " + updatedNoOfAdults);
+						var selectedAdtVal = $("#adult").val();
+						var selectedInfVal = $("#noOfInfants").val();
+						$('#adult').children('option:not(:first)').remove();
+						$('#noOfInfants').children('option:not(:nth-child(1)):not(:nth-child(2))').remove();
+						for (let j = 2; j <= updatedNoOfAdults ; j++) {
+								$('#adult').append($('<option>', {
+										value: j,
+										text: j
+								}));
+
+								// $('#adult').children(':nth-child('+j+')').remove();
+								$('#noOfInfants').append($('<option>', {
+										value: j,
+										text: j
+								}));
+						}
+
+						$("#adult").val(selectedAdtVal);
+						$("#noOfInfants").val(selectedInfVal);
+
+				// }
+
+});
+
 </script>
 
 

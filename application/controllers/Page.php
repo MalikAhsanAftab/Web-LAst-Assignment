@@ -441,14 +441,306 @@ class Page extends CI_Controller {
 		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
 
 		//getting the info from model
-		$xmlResp = $this->uApi->getPricing($solutionKey);
+		$xml = $this->uApi->getPricing($solutionKey);		
+			//Confirming if we have info in the session
+			if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
+					$this->session->set_userdata('airPricingRsp' ,$xml->asXML() );
 
-		var_dump($xmlResp->asXML());
-		$this->session->set_userdata('airPricingRsp' ,$xmlResp->asXML() );
-		die;
+					$AirPriceRsp = $xml->children("SOAP" , true)->Body->children('air' , true)->AirPriceRsp;
+					$FlightDetails = $AirPriceRsp->AirItinerary;
+
+					//gettimng all segments
+					$allSegments = $this->getAllSegementsArray($FlightDetails->AirSegment);
+
+					//getting the main pricing details now
+					$airPricingSol = $AirPriceRsp->AirPriceResult->AirPricingSolution;
+
+					// foreach($airPricingSol->AirSegmentRef as $key => $ref)
+					// {
+					// 	$dom->getElementBy
+					// 	$dom->replaceChild($allSegments[(string)$ref->attributes()["Key"]] );
+					// }
+
+					$dom= dom_import_simplexml($airPricingSol);
+					$allRef = $dom->getElementsByTagName('AirSegmentRef');
+					// var_dump($allRef);die;
+					while ($allRef->length > 0) {
+						// code...
+						$refKey = $allRef[0]->getAttribute('Key') ;
+						//making an xml node
+						$elementSegment = dom_import_simplexml($allSegments[$refKey]);
+						// var_dump($elementSegment);die;
+						// echo "Replacing :".$key.($allSegments[$refKey]->asXML())."\r\n\t";
+						//replacing the ref with the segment that's the actual segment
+						$dom->replaceChild($elementSegment , $allRef[0]);
+
+					}
+						// var_dump($dom);die;
+
+					$segmentSanitized = simplexml_import_dom($dom);
+					$this->session->set_userdata(array('pricing'=>$dom) );
+					 // echo $segmentSanitized->asXML();die;
+					 // $myFile = fopen("resp.txt" , "a") or die ("unable to open file !");
+					 // fwrite($myFile ,  $segmentSanitized);
+					 // fclose($myFile);
+					 // die;
+
+					$allInfo = $segmentSanitized->children('air', true);
+					// var_dump ($segmentSanitized->children('air' , true)->AirSegment);die;
+// get all the pricing solution attributs here
+// ---------------------------------------------------
+										$pricingSlotionArray = array();
+										foreach ($segmentSanitized->attributes() as $key => $value) {
+												 $pricingSlotionArray[$key] = $value;
+										}
+
+										// echo($pricingSlotionArray['TotalPrice']);die;
+
+// -----------------------------------------------------------
+
+// get the air segment attributes here
+// --------------------------------------------------------------
+					$airSegmentAttr = array();
+					// $airSegmentAttrr = array();
+					$i=0;
+					foreach ($segmentSanitized->children('air' , true)->AirSegment as $k => $val) {
+							$airSegmentAttr[$i][$k] = $val;
+							// $j=0;
+						 foreach ($val->children('air' , true)->CodeshareInfo as $CodeshareInfokey => $CodeshareInfovalue) {
+						 		$airSegmentAttr[$i][$CodeshareInfokey] = $CodeshareInfovalue;
+								$airSegmentAttr[$i]["textCotnet"] = $CodeshareInfovalue;
+								// $j++;$pricingSlotionArray $airSegmentAttr
+						 }
+						 $i++;
+						 // $airSegmentAttr[$i] = $airSegmentAttrr;
+
+					}
+					// var_dump($airSegmentAttr[0]['AirSegment']->attributes()['key']);die;
+
+
+// ---------=----------------------------------------------
+
+// getting air pricing information
+$pricingInfoArray = array();
+$pricingFareInfoArray = array();
+$pricingBookinngInfoArray = array();
+$pricingTextInfoArray  = array();
+$passengerInfoArray = array();
+
+// --------------------------------------------------------
+$i = 0;
+		foreach ($segmentSanitized->children('air' , true)->AirPricingInfo as $pricinginfoKey=> $pricinginfoval) {
+			 $pricingInfoArray[$i][$pricinginfoKey] = $pricinginfoval->attributes();
+			 // $j=0;
+//getting attributes here
+// -------------------------------------------
+				foreach ($pricinginfoval->children('air' , true)->FareInfo as $FareInfolkey => $FareInfovalue) {
+						$pricingInfoArray[$i][$FareInfolkey][] = $FareInfovalue;
+
+				}
+// // ----------------------------------------------
+
+// // getting booking info here
+// // -----------------------------------------------
+			foreach ($pricinginfoval->children('air' , true)->BookingInfo as $bookingInfoKey => $bookingInfovalue) {
+				$pricingInfoArray[$i][$bookingInfoKey][] = $bookingInfovalue->attributes();
+
+			}
+// // -------------------------------------------
+// // getting textinfo here
+// // ---------------------------------------------
+			foreach ($pricinginfoval->children('air' , true)->TaxInfo as $texInfoKey => $texInfovalue) {
+				$pricingInfoArray[$i][$texInfoKey][] = $texInfovalue->attributes();
+
+			}
+
+// // ---------------------------------------------------------------
+// // getting fareCal
+// // ----------------------------------------
+			$pricingInfoArray[$i]['FareCalc'] =	$pricinginfoval->children('air' , true)->FareCalc;
+// // gettting passenger type headers_get
+// // ----------------------------------------------------
+			foreach ($pricinginfoval->children('air' , true)->PassengerType as  $passengerInfoKey => $passengerInfoVal) {
+					$pricingInfoArray[$i][$passengerInfoKey][] = $passengerInfoVal->attributes();
+
+			}
+
+// // -------------------------------------------------------
+// // getting change penenlty here
+// // -----------------------------------------------
+			$pricingInfoArray[$i]['changePenalty'] =	$pricinginfoval->children('air' , true)->ChangePenalty->children('air' , true)->Amount;
+// // -----------------------------------------------
+			$pricingInfoArray[$i]['cancelPenalty'] =	$pricinginfoval->children('air' , true)->CancelPenalty->children('air' , true)->Amount;
+
+// // getting all child of baggage allowence
+// // ----------------------------------------------------------------------------
+
+//
+//
+
+			foreach ($pricinginfoval->children('air' , true)->BaggageAllowances as $baggageAllowancesKey => $baggageAllowancesval) {
+					$j=0;
+
+					foreach ($baggageAllowancesval->children('air' , true)->BaggageAllowanceInfo as $baggageAllowanceInfoKey => $baggageAllowanceInfovalue) {
+							$pricingInfoArray[$i][$baggageAllowancesKey][$baggageAllowanceInfoKey][$j]['attr'] = $baggageAllowanceInfovalue->attributes();
+
+							// get the textinfo of baggageAlooweneceiFOaRRAY
+							// print("<pre>".print_r($baggageAllowanceInfovalue->children('air' , true)->TextInfo->children('air' , true)->Text)."</pre>");
+							// $textinfoArray = array();
+							$pricingTextInfoArray  = array();
+							foreach ($baggageAllowanceInfovalue->children('air' , true)->TextInfo->children('air' , true)->Text as $textvalKey => $textvalue) {
+									 // $pricingInfoArray[$i][$baggageAllowancesKey][(string)$baggageAllowanceInfoKey][$j][$textvalKey][] = (string)$textvalue[0];
+									 $pricingTextInfoArray[] = (string)$textvalue[0];
+							}
+							$pricingInfoArray[$i][$baggageAllowancesKey][$baggageAllowanceInfoKey][$j]['textInfo'] = $pricingTextInfoArray;
+
+							$pricingTextInfoArray[] = (string)$textvalue[0];
+							// ---------------------------- get baggage details -------------------------------
+							$pricingBagageDeatil = array();
+							foreach ($baggageAllowanceInfovalue->children('air' , true)->BagDetails as $bagDetailsvalKey => $bagDetailsvalue) {
+									 // $pricingInfoArray[$i][$baggageAllowancesKey][(string)$baggageAllowanceInfoKey][$j][$textvalKey][] = (string)$textvalue[0];
+									 // ->children('air' , true)->Text
+									 $pricingBagageDeatil['atrr'] =  $bagDetailsvalue->attributes();
+									 //----------------- get the baggage restriction --------------------------------------------------
+									 $PricingbaggageResctText = array();
+										foreach ($bagDetailsvalue->children('air' , true)->BaggageRestriction->children('air' , true)->TextInfo->children('air' , true)->Text as $baggageresctTextKey => $baggageresctTextvalue) {
+									  	 $PricingbaggageResctText[] = (string)$baggageresctTextvalue;
+									  }
+										$pricingBagageDeatil['TextInfo'] = $PricingbaggageResctText;
+										// $pricingBagageDeatil[][] =
+							}
+							$pricingInfoArray[$i][$baggageAllowancesKey][$baggageAllowanceInfoKey][$j]['baggageDetails'][] = $pricingBagageDeatil;
+
+
+							$j++;
+
+							// ------------------------------------------------------------
+					} // end of baggageAllowencewInfo
+
+					//  start of carrryallowence
+					// -------------------------------------------------------------
+					// ---------------------------------------------------------------
+					// -------------------------------------------------------------
+					$K = 0;
+						foreach ($baggageAllowancesval->children('air' , true)->CarryOnAllowanceInfo as $carryOnAllowanceInfoKey => $carryOnAllowanceInfovalue) {
+
+
+								$pricingInfoArray[$i][$baggageAllowancesKey][$carryOnAllowanceInfoKey][$K]['attr'] = $carryOnAllowanceInfovalue->attributes();
+
+								// ---------------------------------------------
+								// ---------------------------------------------
+								// ----------------- get the carryaloowence info----------------------------
+								$pricingTextInfoArray  = array();
+								foreach ($carryOnAllowanceInfovalue->children('air' , true)->TextInfo->children('air' , true)->Text as $textvalKey => $textvalue) {
+										 // $pricingInfoArray[$i][$baggageAllowancesKey][(string)$baggageAllowanceInfoKey][$j][$textvalKey][] = (string)$textvalue[0];
+										 $pricingTextInfoArray[] = (string)$textvalue[0];
+								}
+								$pricingInfoArray[$i][$baggageAllowancesKey][$carryOnAllowanceInfoKey][$K]['textInfo'] = $pricingTextInfoArray;
+
+								// -------------------------------------------------------------
+								// -------------------------------------------------------------
+								// ------------------------------ START TOF GETTING THE CARRY ALLOWENCE DETRAILS-------------------------------
+								// $pricingCarryOnDeatil = array();
+								$jhj = array();
+								foreach ($carryOnAllowanceInfovalue->children('air' , true)->CarryOnDetails as $carryOnDetailsvalKey => $carryOnDetailsvalue) {
+										 // $pricingInfoArray[$i][$baggageAllowancesKey][(string)$baggageAllowanceInfoKey][$j][$textvalKey][] = (string)$textvalue[0];
+										 // $pricingCarryOnDeatil['attr'] = 'h';$pricingTextInfoArray
+										 	$pricingInfoArray[$i][$baggageAllowancesKey][$carryOnAllowanceInfoKey][$K][$carryOnDetailsvalKey]['attr'] = $carryOnDetailsvalue->attributes();
+// var_dump($carryOnDetailsvalKey);
+										 $PricingbaggageResctText = array();
+											foreach ($carryOnDetailsvalue->children('air' , true)->BaggageRestriction->children('air' , true)->TextInfo->children('air' , true)->Text as $baggageresctTextKey => $baggageresctTextvalue) {
+
+												 $PricingbaggageResctText[] = (string)$baggageresctTextvalue;
+										  }
+											// $pricingCarryOnDeatil[] = $PricingbaggageResctText;
+											$pricingInfoArray[$i][$baggageAllowancesKey][$carryOnAllowanceInfoKey][$K][$carryOnDetailsvalKey]['attr'] = $PricingbaggageResctText;
+
+
+								}
+								// $pricingInfoArray[$i][$baggageAllowancesKey][$textvalKey][$carryOnDetailsvalKey][] ='f';
+
+								// $pricingCarryOnDeatil = array();
+								// foreach ($carryOnAllowanceInfovalue->children('air' , true)->CarryOnDetails as $carryDetailsvalKey => $carryDetailsvalue) {
+								// 		 // $pricingInfoArray[$i][$baggageAllowancesKey][(string)$baggageAllowanceInfoKey][$j][$textvalKey][] = (string)$textvalue[0];
+								// 		 // ->children('air' , true)->Text
+								// 		 print_r($carryDetailsvalue->attributes());
+								// 		 //----------------- get the baggage restriction --------------------------------------------------
+								// 		 // $PricingbaggageResctText = array();
+								// 			// foreach ($carryDetailsvalue->children('air' , true)->BaggageRestriction->children('air' , true)->TextInfo->children('air' , true)->Text as $baggageresctTextKey => $baggageresctTextvalue) {
+								// 		 //  	 $PricingbaggageResctText[] = (string)$baggageresctTextvalue;
+								// 		 //  }
+								// 			// $pricingCarryOnDeatil['TextInfo'] = $PricingbaggageResctText;
+								// 			// $pricingBagageDeatil[][] =
+								// }
+								// $pricingInfoArray[$i][$baggageAllowancesKey][$carryOnAllowanceInfoKey][$k]['baggageDetails'][] = $pricingCarryOnDeatil;
+
+
+								// -------------------------------------------------------------
+								// -------------------------------------------------------------
+								// -------------------------------------------------------------
+
+
+								$K++;
+
+						} // END OF CARRYALOOWENCE INFO
+
+						// -------------------------------------------------------------
+						// ---------------------------------------------------------------
+						// -------------------------------------------------------------
+
+						// $j++;
+			} // end of baggageAllowence
+//
+// 			$pricingInfoArray[$i][] = $baggageAllowence;
+// // --------------------------------------------------------
+//
+				$i++;
+		} // air pricinginfo forach end
+// die;
+		// print("<pre>".print_r($pricingInfoArray)."</pre>");
+		// print_r($pricingFareInfoArray);
+		// die;
+// ----------------------------end ------------------------
+
+// end of air segment getting attributes part
+
+					// libxml_use_internal_errors($segmentSanitized);
+
+					// $allDetails = simplexml_load_string($segmentSanitized);
+					// var_dump($segmentSanitized->attributes()['TotalPrice']);die;
+
+
+					// $allFlightDetails = $allDetails->children('air' , true)->AirPricingSolution;
+					// var_dump($allFlightDetails);die;
+
+					// $air = ($allDetails->children()->AirPricingInfo)->children('air' , true);
+					// foreach($air as $k=>$v)
+					// 	// var_dump($v);
+					// die;
+						// $fareInfoList = Page::customeMapper($allDetails->children("air", true) ) ;
+						// print_r($allDetails);die;
+					// var_dump($fareInfoList);die;
+					// $fareInfoList = Page::customeMapper($allDetails->children("air", true) ) ;
+
+					// var_dump($fareInfoList);die;
+					// foreach ($allDetails->children() as $value) {
+					// 	var_dump($value);
+					// }
+					//
+					// die;
+
+					// var_dump ($this->session;die;
+					// $detailFlights = simplexml_load_string($segmentSanitized);
+					// var_dump ($segmentSanitized);die;
+					$allDetails = array();
+					$allDetails['pricingSolution'] = $pricingSlotionArray ;
+					$allDetails['airSegment'] =  $airSegmentAttr;
+					$allDetails['pricingInfoArray'] = $pricingInfoArray;
+					// print("<pre>".print_r($allDetails['airSegment'])."</pre>");die;
+					$this->load->view("flight-complete-details.php"  , $allDetails);
+		}
 
 	}
-
 	public function bookNow(){
 		$sessData = $this->session->userdata();
 		$xml = simplexml_load_string( $sessData['airPricingRsp'] , null , 0, 'air' , true ) ;

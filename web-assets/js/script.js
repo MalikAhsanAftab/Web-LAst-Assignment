@@ -319,7 +319,9 @@ $(document).ready(function() {
 
   // datapicker
   $( ".datepicker" ).datepicker({
-     orientation: "top"
+     orientation: "top" ,
+     minDate : new Date()
+
   });
 
   // Tabs.
