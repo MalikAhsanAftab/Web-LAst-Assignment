@@ -743,6 +743,15 @@ class uApi extends CI_MODEL {
 
 			return $query->result_array();
 	}
+	//get Equipment codes
+	public function getEquipmentCodes(){
+
+			$this->db->select('*')->from('equipments');
+
+			$query = $this->db->get();
+
+			return $query->result_array();
+	}
 	//getting all the segments and placing the Key as key
 	private function getAllSegementsArray($segList)
 	{

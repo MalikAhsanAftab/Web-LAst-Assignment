@@ -31,7 +31,7 @@
 	//this function defines a template for each flight section so that
 	//for each section we dont uhave to write the html
 	//thus this method will return the htmlas per requirements
-	function makeFlightHtml($origin , $destination ,$departureTime  , $arrivalTime , $transitTime ,  $flightNumber , $cabinClass , $carrierCode){
+	function makeFlightHtml($origin , $destination ,$departureTime  , $arrivalTime , $transitTime ,  $flightNumber , $cabinClass , $carrierCode , $equipment){
 		$time =array();
 		$time[] =date_format(date_create($arrivalTime),"h:i");
 		$time[] =date_format(date_create($arrivalTime),"D, d M");
@@ -39,6 +39,7 @@
 		$time[] =date_format(date_create($departureTime),"h:i");
 		$time[] =date_format(date_create($departureTime),"D, d M");
 		$baseUrl = base_url('web-assets/images/saudia.jpg');
+		$eqDesc = $equipment[0];
 		return <<<HTML
 		<div class="panel panel-default">
 			<div class="panel-body">
@@ -55,7 +56,7 @@
 			</div>
 
 			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
-					<b><h4 class="text-center">Aircraft: BOEING $flightNumber</h4></b>
+					<b><h4 class="text-center">Aircraft: $eqDesc <br> Flight No: $flightNumber</h4></b>
 									<b><h4 class="text-center">$cabinClass(T-)</h4></b>
 									<b><h4 class="text-center">$transitTime</h4></b>
 			</div>
@@ -166,6 +167,7 @@ function makeTimeString($time){
 			<!--A Flight Section -->
 			<?php
 			$html = "";
+
 			if(is_array($flights) && count($flights) == 1){
 
 
@@ -196,7 +198,7 @@ function makeTimeString($time){
 			$carrierCode = $flights->attributes()["Carrier"];
 			$html .= makeFlightHtml($flights->attributes()['Origin'], $flights->attributes()['Destination'] ,
 			$flights->attributes()['DepartureTime']  , $flights->attributes()['ArrivalTime'] ,
-			$transitTimeStr , $flights->attributes()['FlightNumber'] , $BookingArray['CabinClass'] , $carriers[(string)$carrierCode]);
+			$transitTimeStr , $flights->attributes()['FlightNumber'] , $BookingArray['CabinClass'] , $carriers[(string)$carrierCode] , $equipments[(string)$flights->attributes()['Equipment']]);
 
 		}//End of direct flight if
 		else if(count($flights[0]["Segments"]) > 1)
@@ -229,7 +231,7 @@ function makeTimeString($time){
 										$carrierCode = $attributeArr["Carrier"];
 										$html.=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
 																				 $attributeArr["DepartureTime"] , $attributeArr["ArrivalTime"] ,
-																				 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
+																				 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode], $equipments[(string)$attributeArr['Equipment']]);
 
 							}
 						$headerHtm.="".$value->attributes()['Destination']."</h4>";
@@ -277,7 +279,7 @@ function makeTimeString($time){
 				$carrierCode = $attributeArr["Carrier"];
 				$tempHTML .=makeFlightHtml($attributeArr["Origin"] , $attributeArr["Destination"] ,
 														 $attributeArr["DepartureTime"] , $attributeArr["ArrivalTime"] ,
-														 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode]);
+														 $transitTimeStr , $attributeArr["FlightNumber"] , $bookingInfo["CabinClass"] , $carriers[(string)$carrierCode], $equipments[(string)$attributeArr['Equipment']]);
 
 			}//foreach group
 			$stops[] = ((string)$singleFlight->attributes()['Destination']);

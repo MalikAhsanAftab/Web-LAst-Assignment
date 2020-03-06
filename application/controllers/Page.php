@@ -416,6 +416,13 @@ class Page extends CI_Controller {
 				foreach ($list as $key => $value) {
 					$carriers[$value['Code']] = $value['Name'];
 				}
+				$equipmentsList = $this->uApi->getEquipmentCodes();
+				$equipments =array();
+				//making an associative array for equipments
+				foreach ($equipmentsList as $key => $value) {
+				    $equipments[$value['code']] = array($value['description'] , $value['title'] );
+				}
+				$data['equipments'] = $equipments;
 
 			//now we have all segments
 			$data['flights']=$sortedInOrder;
@@ -441,7 +448,7 @@ class Page extends CI_Controller {
 		$solutionKey = str_replace("__" ,"/" ,urldecode($key) );
 
 		//getting the info from model
-		$xml = $this->uApi->getPricing($solutionKey);		
+		$xml = $this->uApi->getPricing($solutionKey);
 			//Confirming if we have info in the session
 			if(!($xml===false) && $xml->children("SOAP" , true)->Body->count() ){
 					$this->session->set_userdata('airPricingRsp' ,$xml->asXML() );
