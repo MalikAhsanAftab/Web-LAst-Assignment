@@ -121,7 +121,7 @@
 					 <script>
 						function fetchCountries(value){
 
-						if(value.length >= 3){
+						if(value.length >= 1){
 
 						$.post("<?php echo base_url("admin/Ajax/Ajax")?>",{action:"fetchCountries", keyword:value},function(data){
 

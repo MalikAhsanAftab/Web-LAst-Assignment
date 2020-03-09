@@ -578,11 +578,11 @@ $totalFinalFare = 0;
 
  <div class="row">
 		 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-4 col-lg-1">
-    <button type="button" class="btn btn-success btn-lg" ><a href="<?php //echo base_url('Page/changeFlight')?>" style="text-decoration:none;color:white;"><i class="fa fa-arrow-left"></i> CHANGE FLIGHT</a></button>
+    <button type="button" class="btn btn-success btn-lg" ><a href="<?php echo base_url('Page/changeFlight')?>" style="text-decoration:none;color:white;"><i class="fa fa-arrow-left"></i> CHANGE FLIGHT</a></button>
     		</div>
 
     		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-offset-1 col-lg-5">
-				<a class="btn btn-success btn-lg" href="<?php //echo base_url("Page/getPricing/".urlencode(str_replace("/" , "__" ,$pricing->attributes()['Key'] ) ) ) ?>">CONTINUE <i class="fa fa-arrow-right"></i></a>
+				<a class="btn btn-success btn-lg" href="<?php echo base_url("Page/startBooking")?>">CONTINUE <i class="fa fa-arrow-right"></i></a>
     		</div>
     	</div>
 </div><!--row end here-->

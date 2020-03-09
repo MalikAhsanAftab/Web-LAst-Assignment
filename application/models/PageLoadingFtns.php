@@ -63,6 +63,8 @@ class PageLoadingFtns extends CI_MODEL {
 		<link href="'.base_url("web-assets/css/select2.css").'" rel="stylesheet">
 		<link href="'.base_url("web-assets/css/smoothness/jquery-ui-1.10.0.custom.css").'" rel="stylesheet">
 		<link href="'.base_url("web-assets/css/style.css").'" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css" rel="stylesheet">
+
 		<style>
 		  /* Note: Try to remove the following lines to see the effect of CSS positioning */
 		  .affix {

@@ -748,6 +748,10 @@ $i = 0;
 		}
 
 	}
+	//get personal details
+	public function startBooking(){
+		$this->load->view('booking');
+	}
 	public function bookNow(){
 		$sessData = $this->session->userdata();
 		$xml = simplexml_load_string( $sessData['airPricingRsp'] , null , 0, 'air' , true ) ;
