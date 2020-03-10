@@ -750,7 +750,9 @@ $i = 0;
 	}
 	//get personal details
 	public function startBooking(){
-		$this->load->view('booking');
+		$sessData = $this->session->userdata()['searchData']  ;
+
+		$this->load->view('booking' , $sessData);
 	}
 	public function bookNow(){
 		$sessData = $this->session->userdata();

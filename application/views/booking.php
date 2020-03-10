@@ -13,14 +13,15 @@ function numToOrdinalWord($num)
 
 			return $string = str_replace('y-eth','ieth',$second_word[$second_num].'-'.$first_word[$first_num]);
 		}
+
 function makeFormHTML($title, $id){
 	$title = numToOrdinalWord($id+1)." ".$title;
 	return <<<htm
 	<div class="panel panel-info">
-		<div class="panel-heading">$title</div>
+		<div class="panel-heading">$title Info</div>
 			<div class="panel-body">
 
-				<form method="POST" action="" id="{$title.''.$id}">
+				<form method="POST" action="" id="{$title}_{$id}">
 
 				<br/>
 
@@ -126,7 +127,7 @@ htm;
 				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
 					<form name="passengerForm">
 					<?php
-						$passengers = array("Adult"=>2 , "Child"=>2 , "Infant"=>2);
+						$passengers = array("Adult"=>$adult , "Child"=>$child , "Infant"=>$infant);
 
 						foreach($passengers as $k => $passenger)
 								for($i=0 ; $i<(int)$passenger ; $i++)

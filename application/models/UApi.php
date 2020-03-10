@@ -179,15 +179,15 @@ class uApi extends CI_MODEL {
 		$gender = "M";
 		$travelerInfo = array(
 			"gender" => "M",
-			"dateOfBirth" => "1981-12-24" ,
+			"dateOfBirth" => "1996-03-15" ,
 			"travelerType" => "ADT" ,
-			"nationality" => "IN" ,
+			"nationality" => "PK" ,
 			"first" => "Malik" ,
 			"last" =>  "Ahsan" ,
 			"prefix" => "Mr" ,
 			"email" => "malikahsan@gmail.com" ,
 			"phone" => "+923450345645" ,
-			"areaCode" => "91" ,
+			"areaCode" => "92" ,
 			"countryCode" => "35" ,
 			"location" => "CCU" ,
 			"type" => "Home"
@@ -199,11 +199,11 @@ class uApi extends CI_MODEL {
 			, "city"=> "Darjeeling"
 			, "state"=> "WB"
 			,"postalCode"=> "721124"
-			, "country"=> "IN"
+			, "country"=> "PK"
 		);
 		$travelerInfo["address"] = $travelerInfo["shipping"];
 		$bookingDetail = array(
-			"ticketDate" => "2020-03020T13:09:28"
+			"ticketDate" => "2020-06-18"
 
 		);
 
@@ -252,9 +252,11 @@ class uApi extends CI_MODEL {
 									<com:Country>'.$travelerInfo['shipping']['country'].'</com:Country>
 								</com:ShippingAddress>
 							</com:DeliveryInfo>
-							<com:SSR Carrier="FZ" FreeText="P/US/F1234567/US/17Sep69/M/24Sep15/Muhammad/Nouman" SegmentRef="a3UzhM7Q2BKAegmOCAAAAA==" Status="HK" Type="DOCS"/>
 							<com:PhoneNumber AreaCode="'.$travelerInfo['areaCode'].'" CountryCode="'.$travelerInfo['countryCode'].'" Location="'.$travelerInfo['location'].'" Number="'.$travelerInfo['phone'].'" Type="'.$travelerInfo['type'].'"/>
+
 							<com:Email EmailID="'.$travelerInfo['email'].'" Type="Home"/>
+
+							<com:SSR Carrier="FZ" FreeText="P/US/F1234567/US/27Mar20/M/27Mar20/Muhammad/Nouman"  Status="HK" Type="DOCS"/>
 							<com:Address>
 								<com:AddressName>'.$travelerInfo['address']['addressName'].'</com:AddressName>
 								<com:Street>'.$travelerInfo['address']['street'].' Road</com:Street>
@@ -266,12 +268,12 @@ class uApi extends CI_MODEL {
 						</com:BookingTraveler>'.$pricingXML.'
 
 						<com:ActionStatus
-							xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="ACH" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
+							xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="1G" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
 						</univ:AirCreateReservationReq>
 						</soapenv:Body>
 				</soapenv:Envelope>';
 		// die ($message);
-		$message = '
+		$message1 = '
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 				  	<soapenv:Header/>
 				  <soapenv:Body>
@@ -289,7 +291,9 @@ class uApi extends CI_MODEL {
 				            <com:Country>PK</com:Country>
 				          </com:ShippingAddress>
 				        </com:DeliveryInfo>
-				        <com:Address>
+								<com:PhoneNumber AreaCode="'.$travelerInfo['areaCode'].'" CountryCode="'.$travelerInfo['countryCode'].'" Location="'.$travelerInfo['location'].'" Number="'.$travelerInfo['phone'].'" Type="'.$travelerInfo['type'].'"/>
+
+								<com:Address>
 				          <com:AddressName>dffsdf</com:AddressName>
 				          <com:Street>dsd</com:Street>
 				          <com:City>sda</com:City>

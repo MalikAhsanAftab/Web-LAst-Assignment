@@ -37,7 +37,7 @@ class Ajax extends CI_Controller {
 
 			if($recCount > 0){
 				foreach($airportList as $c){
-					$data .= "<option class=\"flag-icon flag-icon-".strtolower($c['country_code'])."\" value='".$c['airport_code']."'>".$c['airport_title']." , ".$c['city_title']." </option>";
+					$data .= "<option value='".$c['airport_code']."'>".$c['airport_title']." , ".$c['city_title']." <i class=\"flag-icon flag-icon-".strtolower($c['country_code'])."\"></i></option>";
 				}
 
 				echo $data;
@@ -52,7 +52,7 @@ class Ajax extends CI_Controller {
 					}
 				$nameQuery = $this->db->select("*")->from("opt_select_ap")->where($qry." LIKE '%".$keyword."%'")->limit(5)->get()->result_array();
 				foreach($nameQuery as $n){
-					$data .= "<option class=\"flag-icon flag-icon-".strtolower($n['country_code'])."\" value='".$n['airport_code']."'>".$n['airport_title']." , ".$n['city_title']."</option>";
+					$data .= "<option value='".$n['airport_code']."'>".$n['airport_title']." , ".$n['city_title']."<i class=\"flag-icon flag-icon-".strtolower($n['country_code'])."\"></i></option>";
 				}
 				if(strlen($data) == 0)
 					echo "No Data:".$qry." LIKE '%".trim($_POST['keyword'])."%'";
