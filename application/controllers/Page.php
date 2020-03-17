@@ -820,7 +820,16 @@ $i = 0;
 		}
 
 	}
-
+	//Book the ticket that is reserved
+	//So to finalize the booking
+	public function bookReservedTicket(){
+		$xml = 	$this->uApi->bookReservedTicket();
+		echo $xml ;
+		die ;
+	}
+  public function endBooking(){
+		$his->uApi->endSession();
+	}
 	public function checkout($id){
 
 		$data['details'] = $this->db->select(array("bookings.*","customers.email","customers.contact_no"))->from("bookings")->join("customers","customers.customer_id = bookings.customer_id")->where("booking_id",$id)->get()->row();

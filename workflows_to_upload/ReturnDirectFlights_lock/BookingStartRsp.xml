@@ -1,1 +1,0 @@
-<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><sharedBooking:BookingStartRsp TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd8" TransactionId="8AA990C60A07643BACD9EBEE72FB0B26" ResponseTime="173" SessionKey="9f8aca30-375d-46df-a343-16ec0d989888" xmlns:sharedBooking="http://www.travelport.com/schema/sharedBooking_v34_0"/></SOAP:Body></SOAP:Envelope>
