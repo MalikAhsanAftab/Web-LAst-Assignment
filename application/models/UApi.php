@@ -33,6 +33,23 @@ class uApi extends CI_MODEL {
 				return "1G";
 			break;
 
+			case 'PRE_PROD_URL':
+				return 'https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService';
+			break ;
+
+
+			case 'PROD_URL' :
+				return 'https://apac.universal-api.travelport.com/B2BGateway/connect/uAPI/AirService';
+			break ;
+
+			case 'PRE_PROD_URL_SESSIONED' :
+				return 'https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uProfile/UProfileSharedService';
+				break ;
+
+			case 'PROD_URL_SESSIONED' :
+				return 'https://apac.universal-api.travelport.com/B2BGateway/connect/uProfile/UProfileSharedService';
+			break;
+
 			default: return "CONSTANT NOT FOUND";
 
 			}
@@ -120,7 +137,7 @@ class uApi extends CI_MODEL {
 		';
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+		$soap_do = curl_init($this->uApi->getApiDetails('PRE_PROD_URL'));
 		$header = array(
 		"Content-Type: text/xml;charset=UTF-8",
 		"Accept: gzip,deflate",
@@ -203,7 +220,7 @@ class uApi extends CI_MODEL {
 		);
 		$travelerInfo["address"] = $travelerInfo["shipping"];
 		$bookingDetail = array(
-			"ticketDate" => "2020-06-18"
+			"ticketDate" => "2020-05-29T00:09:13"
 
 		);
 
@@ -265,8 +282,10 @@ class uApi extends CI_MODEL {
 								<com:PostalCode>'.$travelerInfo['address']['postalCode'].'</com:PostalCode>
 								<com:Country>'.$travelerInfo['address']['country'].'</com:Country>
 							</com:Address>
-						</com:BookingTraveler>'.$pricingXML.'
+						</com:BookingTraveler>
+						<com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
 
+						'.$pricingXML.'
 						<com:ActionStatus
 							xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="1G" TicketDate="'.$bookingDetail['ticketDate'].'" Type="TAW"/>
 						</univ:AirCreateReservationReq>
@@ -304,14 +323,14 @@ class uApi extends CI_MODEL {
 				      </com:BookingTraveler>
 				      <com:FormOfPayment xmlns:com="http://www.travelport.com/schema/common_v34_0" Key="a3UzhM7Q2BKAegmOCAAAAA==" Type="Cash"/>
 							'.$pricingXML.'
-				      <com:ActionStatus xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'" TicketDate="2020-04-02T16:00:00.000+05:00" Type="TAW"/>
+				      <com:ActionStatus xmlns:com="http://www.travelport.com/schema/common_v34_0" ProviderCode="'.$this->uApi->getApiDetails('PROVIDER').'" TicketDate="2020-05-29T16:00:00.000+05:00" Type="TAW"/>
 				    </univ:AirCreateReservationReq>
 				  </soapenv:Body>
 				</soapenv:Envelope>
 						';
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+		$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL'));
 		$header = array(
 		"Content-Type: text/xml;charset=UTF-8",
 		"Accept: gzip,deflate",
@@ -334,7 +353,7 @@ class uApi extends CI_MODEL {
 		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
 		$resp = curl_exec($soap_do);
 		curl_close($soap_do);
-		$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
+		$this->logger('Req:\r\n\tURL::['.$this->uApi->getApiDetails('PRE_PROD_URL').']'.$message.'\r\nResp:'.$resp , time());
 
 		echo $resp;
 		echo "here";
@@ -343,6 +362,24 @@ class uApi extends CI_MODEL {
 
 		//return $xml;
 
+	}
+	public function endSession(){
+		$message = '
+			<?xml version="1.0" encoding="UTF-8"?>
+			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:shar="http://www.travelport.com/schema/sharedBooking_v34_0" xmlns:com="http://www.travelport.com/schema/common_v34_0">
+			  <soapenv:Header>
+			    <h:SessionContext xmlns:h="http://www.travelport.com/soa/common/security/SessionContext_v1" xmlns="http://www.travelport.com/soa/common/security/SessionContext_v1">
+			      <SessTok id="4a5fa17b-3cd0-46f4-b33f-af4d24a541c2"/>
+			    </h:SessionContext>
+			  </soapenv:Header>
+			  <soapenv:Body>
+			    <shar:BookingEndReq AuthorizedBy="TVPT" TraceId="c7e2d212-0e77-458e-87e9-e4b361ffdd3d" SessionKey="4a5fa17b-3cd0-46f4-b33f-af4d24a541c2">
+			      <com:BillingPointOfSaleInfo OriginApplication="UAPI"/>
+			      <shar:SessionActivity>End</shar:SessionActivity>
+			    </shar:BookingEndReq>
+			  </soapenv:Body>
+			</soapenv:Envelope>
+		';
 	}
 	//This function will initiate a section with traveport also
 	//that a session canot exceed 15 minutes
@@ -364,7 +401,7 @@ class uApi extends CI_MODEL {
 
 
 			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
+			$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL_SESSIONED'));
 			$header = array(
 			"Content-Type: text/xml;charset=UTF-8",
 			"Accept: gzip,deflate",
@@ -411,7 +448,7 @@ class uApi extends CI_MODEL {
 
 
 		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-		$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+		$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL'));
 		$header = array(
 		"Content-Type: text/xml;charset=UTF-8",
 		"Accept: gzip,deflate",
@@ -540,7 +577,7 @@ class uApi extends CI_MODEL {
 				//	fwrite($handle , $message);
 
 			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+			$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL'));
 			$header = array(
 			"Content-Type: text/xml;charset=UTF-8",
 			"Accept: gzip,deflate",
@@ -575,7 +612,48 @@ class uApi extends CI_MODEL {
 		}
 		return false;
 	}
+	function bookReservedTicket(){
+		$message = '
+		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+			<soapenv:Header/>
+			<soapenv:Body>
+				<air:AirTicketingReq xmlns:air="http://www.travelport.com/schema/air_v34_0" AuthorizedBy="user" BulkTicket="false" ReturnInfoOnFail="true" TargetBranch="'.$this->getApiDetails('TARGET_BRANCH').'" TraceId="trace">
+					<com:BillingPointOfSaleInfo xmlns:com="http://www.travelport.com/schema/common_v34_0" OriginApplication="UAPI"/>
+					<air:AirReservationLocatorCode>0TE2EO</air:AirReservationLocatorCode>
+					<air:AirPricingInfoRef  Key="IZyVkD4R2BKAFUNLAAAAAA==" />
+				</air:AirTicketingReq>
+			</soapenv:Body>
+		</soapenv:Envelope>';
+		$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
+		$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL'));
+		$header = array(
+				"Content-Type: text/xml;charset=UTF-8",
+				"Accept: gzip,deflate",
+				"Cache-Control: no-cache",
+				"Pragma: no-cache",
+				"SOAPAction: \"\"",
+				"Authorization: Basic $auth",
+				"Content-length: ".strlen($message),
+		);
 
+	// Sending CURL Request To Fetch Data From API
+		curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 120);
+		curl_setopt($soap_do, CURLOPT_TIMEOUT, 120);
+		curl_setopt($soap_do, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($soap_do, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($soap_do, CURLOPT_POST, true );
+		curl_setopt($soap_do, CURLOPT_POSTFIELDS, $message);
+		curl_setopt($soap_do, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true);
+		$resp = curl_exec($soap_do);
+
+	//writing to file
+	$this->logger('Req:\r\n\t'.$message.'\r\nResp:'.$resp , time());
+	curl_close($soap_do);
+	var_dump($resp);
+	die;
+	$xml = simplexml_load_string($resp);
+	}
 	function confirmSegmentBookability($allSegments){
 		//getting the sesion details which has been developed with the travelport
 		$sessData = $this->session->userdata();
@@ -624,7 +702,7 @@ class uApi extends CI_MODEL {
 
 
 			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
+			$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL_SESSIONED'));
 			$header = array(
 					"Content-Type: text/xml;charset=UTF-8",
 					"Accept: gzip,deflate",
@@ -692,7 +770,7 @@ class uApi extends CI_MODEL {
 					fwrite($handle , "\r\n\t-----".$message);
 
 			$auth = base64_encode($this->uApi->getApiDetails('CREDENTIALS'));
-			$soap_do = curl_init("https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SharedBookingService");
+			$soap_do = curl_init(		$this->uApi->getApiDetails('PRE_PROD_URL_SESSIONED'));
 			$header = array(
 			"Content-Type: text/xml;charset=UTF-8",
 			"Accept: gzip,deflate",
